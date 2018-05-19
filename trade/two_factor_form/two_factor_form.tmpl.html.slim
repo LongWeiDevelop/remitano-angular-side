@@ -1,0 +1,14 @@
+.modal-header
+  h4.modal-title translate-once="other_confirmation"
+.modal-body
+  ng-form name="form" novalidate="" role="form"
+    .form-group
+      label.control-label[for="otp"]
+        | Enter your two factor code to relese the trade
+      input#otp.form-control type="text" name="otp" ng-model="vm.otp" required=""
+
+.modal-footer
+  button.btn.btn-default type="button" ng-click="vm.cancel()"
+    | Cancel
+  button.btn.btn-primary type="button" ng-click="vm.release()" ng-disabled="form.$invalid"
+    | Release

@@ -1,0 +1,24 @@
+section.page-content.dashboard-page
+  .container#dashboard
+    .row
+      .col-lg-12
+        .tabs
+          ul.nav.nav-tabs
+            li ui-sref-active="active"
+              a ui-sref="root.dashboard.escrow.trades({tradeStatus: 'active'})"
+                i.icon-clock
+                span.hidden-xs translate-once="dashboard_escrow_active_trades"
+            li(ui-sref-active="active")
+              a ui-sref="root.dashboard.escrow.trades({tradeStatus: 'closed'})"
+                i.icon-check
+                span.hidden-xs translate-once="dashboard_escrow_closed_trades"
+            li(ui-sref-active="active")
+              a ui-sref="root.dashboard.escrow.offers"
+                i.icon-bullhorn
+                span.hidden-xs translate-once="dashboard_escrow_offers"
+            li(ui-sref-active="active")
+              a ui-sref="root.dashboard.referrals"
+                i.icon-gift
+                span.hidden-xs translate-once="dashboard_referrals"
+          .tab-content
+            .tab-pane.active(ui-view="")

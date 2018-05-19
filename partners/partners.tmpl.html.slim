@@ -1,0 +1,57 @@
+section.container.partners-container
+  .row
+    .col-md-5
+      img.img-responsive cdn-src="" ng-src="/imgs/partners.jpg"
+    .col-md-7
+      .title-accent
+        h3.text-center
+          span Becoming our business partner
+
+      .well.well-transparent.box-description
+        .content
+          ' <b>Remitano</b> is a product of <b>Babylon Solutions Limited</b> - incorporated in Seychelles.
+          ' We provide an escrowed P2P Bitcoin marketplace where people buy and sell Bitcoin easily and safely.
+          ' We have business partners in Vietnam, Cambodia, Nigeria and have been growing strong there.
+          ' Especially in Vietnam, we are now the largest Bitcoin exchange. We know there are strong demand
+          ' for our service in other area of the world. If you are currently interested in Bitcoin and seeking
+          ' your financial freedom, we invited you to join us and become our business partner in your country.
+          ' There will be many exciting things to you as our business partner including an attractive profit share.
+          ' We already having partners in Vietnam, Cambodia, Nigeria and we are seeking for partners from other countries.
+          ' Leave your message below and we will contact you shortly.
+
+        .buttons.text-center
+          a.btn.btn-primary#btn_show_form(slide-toggle="#form_contact_message") Become a part of our story! Leave your message now.
+
+      .alert.alert-success(ng-if="vm.successMessage" ng-cloak)
+        span(ng-bind-html="vm.successMessage")
+      .alert.alert-danger(ng-if="vm.errorMessage" ng-cloak)
+        span(ng-bind-html="vm.errorMessage")
+
+      .slideable#form_contact_message
+        .well
+          form.form-horizontal.form-contact-message(name="form" ng-submit="vm.submit(form, $event)" novalidate="")
+            .form-group.required has-error-for="name"
+              label.col-sm-3.control-label for="contact-name" Name
+              .col-sm-9
+                input#contact-email.form-control ng-model="vm.contact_message.name" name="name" placeholder="Enter your name" required="true"
+            .form-group.required has-error-for="email"
+              label.col-sm-3.control-label for="contact-email" Email
+              .col-sm-9
+                input#contact-email.form-control ng-model="vm.contact_message.email" type="email" name="email" placeholder="Enter your email" required="true"
+            .form-group.required has-error-for="chat_username"
+              label.col-sm-3.control-label for="contact-phone_number" Phone number
+              .col-sm-9
+                input#contact-chat_tool.form-control ng-model="vm.contact_message.chat_username" type="text" name="chat_username" placeholder="Enter your phone number" required="true"
+            .form-group.required has-error-for="country"
+              label.col-sm-3.control-label for="contact-country" Country
+              .col-sm-9
+                select#contact-country.form-control ng-model="vm.contact_message.country" name="country" ng-options="item for item in vm.countries" required="true"
+            .form-group
+              label.col-sm-3.control-label for="contact-content" Introduce yourself
+              .col-sm-9
+                textarea#contact-content.form-control ng-model="vm.contact_message.content" name="content" placeholder="Introduce yourself" rows="4"
+            .form-group
+              .col-sm-offset-3.col-sm-10
+                button.btn.btn-primary.btn-submit type="submit" ng-disabled="vm.submitting"
+                  em.icon-spin4.animate-spin(ng-if="vm.submitting")
+                  ' Submit

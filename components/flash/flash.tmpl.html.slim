@@ -1,0 +1,30 @@
+.container.alert-container
+  .row
+    .col-sm-12
+      .position-stablizer
+      .fade-and-collapse(uib-alert ng-repeat="message in vm.Flash.messages" ng-class="'alert-' + message.type" close="vm.Flash.delete(message.message_id)")
+        span(ng-bind-html="message.text")
+      react-flash-messages
+
+      .alert-danger.authy-suggestion(uib-alert ng-if="vm.callToAuthy")
+        span>(translate="turn_on_authy_warning")
+        a.btn.btn-danger(ui-sref="root.settings2({ section: 'two_factor' })" translate="turn_on_now")
+
+      .alert-warning.access-limited(uib-alert ng-if="vm.accessLimited")
+        span>(translate-once="access_limited")
+        span>(translate-once="you_need" ng-if="vm.requireUserAction")
+        ul(ng-if="vm.requireUserAction")
+          li(ng-if="vm.needVerifyDocument")
+            a(ui-sref="root.verify")
+              strong translate="verify_now"
+          li(ng-if="vm.needVerifyPhone")
+            a(ui-sref="root.settings2({section: 'profile'})")
+              strong translate="verify_phone_now"
+          li(ng-if="vm.needEnableTwoFactor")
+            a(ui-sref="root.settings2({section: 'two_factor'})")
+              strong translate="enable_two_factor_now"
+
+      phone-removal-warning.alert-warning full-details='false'
+      two-factor-removal-warning.alert-warning full-details='false'
+      react-phone-warn
+      .position-stablizer

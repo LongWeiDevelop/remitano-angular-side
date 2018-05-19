@@ -1,0 +1,21 @@
+.fiat-withdrawal-account-item.panel.panel-primary(ng-click="vm.onItemSelect()"
+  ng-class="{ deleted: vm.deleted, unconfirmed: vm.details.status == 'unconfirmed' }" data-fiat-withdrawal-details-id="{{ vm.details.id }}")
+  .panel-heading
+    .btn-group.pull-right(ng-if="!vm.deleted")
+      a.btn.btn-default.btn-sm.btn-remove translate="other_delete" ng-click="vm.setDeleting($event, true)" ng-if="!vm.deleting"
+      a.btn.btn-default.btn-sm.btn-cancel translate="button_cancel" ng-click="vm.setDeleting($event, false)" ng-if="vm.deleting"
+      a.btn.btn-default.btn-sm.btn-confirm translate="button_confirm" ng-click="vm.delete($event)" ng-if="vm.deleting"
+    h4.panel-title
+      span ng-bind="vm.details.name"
+
+  .panel-body
+    .detail-row(ng-repeat="(key,value) in vm.details.details"
+      ng-class="{
+        'text-left col-md-6': vm.length > 3 && $even,
+        'text-right col-md-6': vm.length > 3 && $odd,
+        'text-left col-md-12': vm.length <= 3,
+      }"
+    )
+      .key translate="{{key}}"
+      .value
+        strong ng-bind="value"

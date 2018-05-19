@@ -1,0 +1,17 @@
+.timer {
+  vertical-align: middle;
+  &.huge {
+    font-size: 5em;
+    line-height: 1em;
+
+    @media (max-width: $screen-xs-max) {
+      font-size: 4em;
+    }
+  }
+
+  span { vertical-align: middle; }
+
+  .super {
+    font-size: 0.2em;
+  }
+}

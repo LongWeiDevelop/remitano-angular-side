@@ -1,0 +1,11 @@
+button(ng-click="vm.internalClick($event)" ng-disabled="!vm.enabled || vm.processing")
+  i.icon-spinner.animate-spin(ng-show="vm.processing")
+  span>(ng-show="!vm.enabled")
+    | (
+    timer(interval="1000" end-time="vm.enabledAtMs"
+      finish-callback="vm.enable()")
+      span
+        | {{mminutes}}:{{sseconds}}
+    | )
+  span ng-bind="vm.caption"
+

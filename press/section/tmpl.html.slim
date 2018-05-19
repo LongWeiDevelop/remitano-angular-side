@@ -1,0 +1,8 @@
+.press-section
+  .title-section.text-center
+    hr.hr-over
+    span.title-text translate="other_press"
+
+  .row
+    .press-item.text-center ng-class="vm.colClass" data-animation="fadeInDown" data-animation-delay="0" ng-repeat="press in vm.pressUrls"
+      img.img-responsive alt="{{vm.presses[$index]}}" title="{{vm.presses[$index]}}" cdn-src="" ng-src="{{ press }}"

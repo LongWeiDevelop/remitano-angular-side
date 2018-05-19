@@ -1,0 +1,12 @@
+.escrow-service-page {
+  .row-video {
+    margin-top: 20px;
+  }
+  .embed-responsive {
+    max-width: 600px;
+    margin: 0 auto;
+    iframe {
+      max-height: 400px;
+    }
+  }
+}

@@ -1,0 +1,67 @@
+form.fiat-deposit-appendix-dialog#appendixForm name="vm.appendixForm" ng-submit="vm.submit()"
+  .modal-header.dialog-header-confirm
+    h4.modal-title translate-once="trade_submit_appendix"
+  .modal-body
+    div.alert-danger(uib-alert ng-if="vm.message")
+      div.text-center
+        strong.text-warning ng-bind="vm.message"
+
+    div ng-switch="vm.fiatDeposit.country_code"
+      div ng-switch-when="vn"
+        .form-group
+          label for="pay_via" translate="pay_via"
+          select.form-control#pay_via(ng-model="vm.appendix.pay_via"
+            ng-options="option as (option | vcbMethodTranslate) for option in vm.vcbPaymentOptions")
+        .form-group.bank_account_number(ng-switch="vm.appendix.pay_via" ng-if="vm.appendix.pay_via" has-error-for="{{vm.vcbExtraFieldName}}")
+          label ng-switch-when="mobile_banking" for="bank_account_number" translate="sending_account_number"
+          label(ng-switch-when="bank_plus|ibanking|cash_deposit" for="{{vm.vcbExtraFieldName}}"
+            translate="{{vm.vcbExtraFieldName}}" ng-switch-when-separator="|")
+
+          input.form-control(ng-switch-when="bank_plus" id="{{vm.vcbExtraFieldName}}"
+            type="text" ng-model="vm.appendix[vm.vcbExtraFieldName]"
+            required="" ng-pattern="/^0\d{9,10}$/" name="{{vm.vcbExtraFieldName}}")
+
+          auto-bank-account-number-input(ng-switch-when="mobile_banking" payment-details="vm.appendix")
+
+          div(ng-switch-when="ibanking|cash_deposit" ng-switch-when-separator="|")
+            file-upload(
+              path="/api/v1/images/"
+              ng-model="vm.appendix[vm.vcbExtraFieldName]"
+              name="{{vm.vcbExtraFieldName}}"
+              ng-required="true"
+              ng-preview-url="vm.appendix[vm.vcbExtraFieldName + '_preview']"
+            )
+            span.help-block translate='image_need_to_be_crystal'
+
+          span.help-block show-error-for='{{vm.vcbExtraFieldName}}' error='required' translate='input_required'
+          span.help-block show-error-for='{{vm.vcbExtraFieldName}}' error='pattern' translate='input_invalid_format'
+
+        .form-group(ng-if="vm.appendix.pay_via == 'mobile_banking'" has-error-for="payment_details.bank_account_name")
+          label for="bank_account_name" translate="bank_account_name"
+          input.form-control#bank_account_name(type="text" ng-model="vm.appendix.bank_account_name" readonly="true"
+            required="" name="payment_details.bank_account_name")
+          span.help-block show-error-for='payment_details.bank_account_name' error='required' translate='input_required'
+
+      div ng-switch-when="kh"
+        .form-group.bank_account_number(has-error-for="payment_details.bank_account_number")
+          label translate="sending_account_number"
+          auto-bank-account-number-input(payment-details="vm.appendix")
+
+          span.help-block show-error-for='bank_account_number' error='required' translate='input_required'
+
+        .form-group(has-error-for="payment_details.bank_account_name")
+          label for="bank_account_name" translate="bank_account_name"
+          input.form-control#bank_account_name(type="text" ng-model="vm.appendix.bank_account_name" readonly="true"
+            required="" name="payment_details.bank_account_name")
+          span.help-block show-error-for='payment_details.bank_account_name' error='required' translate='input_required'
+
+      div(ng-switch-default)
+        .form-group has-error-for="{{field}}" ng-repeat="field in vm.requiredAppendixFields"
+          label for="{{field}}" translate="{{field}}"
+          input.form-control id="{{field}}" type="text" ng-model="vm.appendix[field]" required="" ng-pattern="vm.appendixRegexes[field]" name="{{field}}"
+          span.help-block show-error-for='{{field}}' error='pattern' translate='input_invalid_format'
+          ng-include src="vm.getExpTemplatePath(field)" ng-if="vm.isExpTemplateExist(field)"
+
+  .modal-footer
+    button.btn.btn-primary type="submit" translate-once="button_submit" ng-disabled="vm.submitting"
+    button.btn.btn-default ng-click="vm.close()" translate-once="DIALOGS_CLOSE" ng-disabled="vm.submitting"

@@ -1,0 +1,13 @@
+react-about-subnav( currentActive="vm.currentPage", country="vm.country")
+/ .about-subnav
+/   ul.nav
+/     li(ng-class="{'active': vm.currentPage == 'about'}")
+/       a> ui-sref="root.about" translate-once="cano_title_root_about"
+/     li(ng-class="{'active': vm.currentPage == 'careers'}" ng-if="vm.country == 'vn'")
+/       a> ui-sref="root.careers" translate-once="cano_title_root_careers"
+/     li(ng-class="{'active': vm.currentPage == 'escrowService'}")
+/       a> ui-sref="root.escrowService" translate-once="landing_escrowed_trade"
+/     li(ng-class="{'active': vm.currentPage == 'team'}")
+/       a> ui-sref="root.team" translate-once="cano_title_root_team"
+/     li(ng-class="{'active': vm.currentPage == 'press'}")
+/       a> ui-sref="root.press" translate-once="cano_title_root_press"

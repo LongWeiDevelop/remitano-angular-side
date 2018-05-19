@@ -1,0 +1,16 @@
+.fiat-transaction-item data-fiat-transaction-id="{{vm.fiatTransaction.id}}" class="{{vm.fiatTransaction.animateClass}}"
+  .row.text-right
+    .col-xs-3.col-sm-2
+      strong(ng-bind="vm.fiatTransaction.amount | currencyFormatter:vm.currency"
+        ng-class="{ 'text-success': vm.fiatTransaction.amount > 0, 'text-danger': vm.fiatTransaction.amount < 0 }")
+    .col-xs-8.col-sm-5
+      span ng-bind="vm.fiatTransaction.created_at | dateTimeFromTimestamp"
+    .col-xs-1.col-sm-1.currency-amount
+      span.badge ng-class="vm.fiatTransaction.coin_currency" ng-bind="vm.fiatTransaction.coin_currency | uppercase"
+    .col-xs-12.col-sm-4
+      em
+        span> translate="{{vm.fiatTransaction.details_key}}" translate-values="vm.fiatTransaction.operation"
+        a (ng-href="{{vm.tradeLink()}}" ng-bind="' #' + vm.fiatTransaction.trade_ref"
+          target="{{vm.MobileApp.exists() ? '' : '_blank'}}" ng-if="vm.fiatTransaction.trade_ref")
+        i(ng-if="vm.fiatTransaction.notes")
+          ' ({{ vm.fiatTransaction.notes | translate }})

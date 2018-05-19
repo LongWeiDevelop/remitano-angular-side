@@ -1,0 +1,28 @@
+section.container.partners-container
+  .row
+    .col-xs-6
+      .row
+        .col-sm-8.col-sm-offset-2.text-center
+          a.link.appstore href="https://itunes.apple.com/us/app/remitano/id1116327021?ls=1&mt=8" target="_blank"
+            img.img-responsive alt="{{'available_on_appstore' | translate}}" cdn-src="" ng-src="/appstore.png"
+          br
+          a.btn.btn-primary ng-show='vm.MobileApp.shouldDownloadIos()' target="_blank" href="{{vm.RAILS_ENV.ios_download_url}}"
+            i.icon-apple
+            span Install iOS Beta App
+          .ios_beta_instruction ng-show='vm.MobileApp.shouldDownloadIos()'
+            p.text-left
+              br
+              span translate-once='mobile_ios_beta_instruction'
+              br
+              strong.text-primary translate-once='mobile_ios_beta_instruction_steps'
+              br
+            img.img-responsive alt="{{'available_on_appstore' | translate}}" cdn-src="" ng-src="/screenshots/ios_trust_remitano_dev.jpg"
+    .col-xs-6
+      .row
+        .col-sm-8.col-sm-offset-2.text-center
+          a.link.playstore href="https://play.google.com/store/apps/details?id=com.remitano.remitano&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" target="_blank"
+            img.img-responsive alt="{{'get_it_on_google_play' | translate}}" cdn-src="" ng-src="/playstore.png"
+          br
+          a.btn.btn-primary ng-show='vm.MobileApp.shouldDownloadAndroid()' target="_blank" href="{{vm.RAILS_ENV.android_download_url}}"
+            i.icon-android>
+            span Install from APK

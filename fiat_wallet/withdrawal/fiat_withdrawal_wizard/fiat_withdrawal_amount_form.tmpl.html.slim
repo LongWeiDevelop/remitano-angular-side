@@ -1,0 +1,23 @@
+.row.fiat-withdrawal-amount
+  .col-lg-offset-2.col-lg-8
+    form.form-horizontal.fiat-withdrawal-amount-form(name='form' ng-submit='vm.submitFiatAmount(form)' novalidate='')
+      .form-group(has-error-for="fiat_amount")
+        label.col-xs-4.control-label for='fiat_amount' translate-once='fiat_amount' translate-values="{currency: vm.currency}"
+        .col-xs-7
+          input.form-control(ng-model='vm.fiat_amount' type='text' name='fiat_amount' awnum='' num-thousand='true' num-int='9' num-fract='{{vm.maxDecimals}}' required=''
+          lower-or-equal-to="{{vm.fiatBalance()}}" greater-or-equal-to="{{vm.minFiatAmount}}")
+          .in-help
+            span translate-once="withdrawal_maximum_fiat_withdrawal_amount" translate-values="{currency: vm.currency}"
+            b.fiat_amount ng-bind="vm.fiatBalance() | currencyFormatter:vm.currency:'full'"
+          p.help-block(show-error-for="fiat_amount" error="greaterOrEqualTo"
+            translate-once="fiat_amount_greater_than_minimum_amount" translate-values='{minimum: (vm.minFiatAmount | currencyFormatter:vm.currency:"full")}')
+          p.help-block(show-error-for="fiat_amount" error="lowerOrEqualTo"
+            translate-once="fiat_amount_lower_than_maximum_amount" translate-values='{maximum: (vm.fiatBalance() | currencyFormatter:vm.currency:"full")}')
+          p.help-block.small(ng-show="vm.fee && vm.fee !== 0" translate="fiat_withdrawal_fee"
+            translate-values='{fee: "{{(vm.fee * 100|number:2)}}%", min_fee: (vm.min_fee | currencyFormatter:vm.currency:"full")}')
+
+      .form-group
+        .col-xs-offset-4.col-xs-10.button-container.text-left
+          button.btn.btn-primary(type="submit" ng-disabled="vm.submitting")
+            em.icon-spin4.animate-spin(ng-if="vm.submitting")
+            span translate-once="button_confirm"

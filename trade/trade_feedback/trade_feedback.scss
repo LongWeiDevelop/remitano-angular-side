@@ -1,0 +1,73 @@
+.trade-feedback {
+  input[type="radio"] {
+    display: none;
+  }
+  .icon {
+    :before {
+      color: black;
+    }
+    &.positive:before{
+      background-color: $brand-success;
+    }
+    &.neutral:before{
+      background-color: $brand-warning;
+    }
+    &.negative:before{
+      background-color: $brand-danger;
+    }
+  }
+  label {
+    .icon:after {
+      border: none;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+    .icon {
+      opacity: 0.3;
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+    &.selected {
+      .icon {
+        opacity: 1;
+        &:before {
+          -webkit-transform: scale(0.9, 0.9);
+          -ms-transform: scale(0.9, 0.9);
+          transform: scale(0.9, 0.9);
+        }
+        &:after {
+          border-radius: 50%;
+          background-color: black;
+        }
+        i {
+          color: black;
+        }
+      }
+    }
+    &.positive .icon:before{
+      background-color: $brand-success;
+    }
+    &.neutral .icon:before{
+      background-color: $brand-warning;
+    }
+    &.negative .icon:before{
+      background-color: $brand-danger;
+    }
+
+    &:hover {
+      .icon {
+        color: black;
+        &:before {
+          -webkit-transform: scale(0.9, 0.9);
+          -ms-transform: scale(0.9, 0.9);
+          transform: scale(0.9, 0.9);
+        }
+      }
+    }
+  }
+}
+.trade-feedback-content {
+  margin-top: 20px;
+}

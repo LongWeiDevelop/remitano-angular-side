@@ -1,0 +1,14 @@
+.sidebar-container
+  .nav-button
+    .navbar-default
+      button.navbar-toggle(data-target="#sidebar_nav" data-toggle="collapse"
+        type="button" ng-click="vm.isCollapsed = !vm.isCollapsed")
+        i.icon-menu
+    .clearfix
+  #sidebar_nav.list-group.navbar-collapse.collapse uib-collapse="vm.isCollapsed"
+    a.list-group-item> ui-sref="root.policy({page: 'terms_of_service'})" ng-class="{'active': vm.currentPage == 'terms_of_service'}"
+      span translate="cano_title_root_terms_of_service"
+    a.list-group-item> ui-sref="root.policy({page: 'privacy_policy'})" ng-class="{'active': vm.currentPage == 'privacy_policy'}"
+      span translate="cano_title_root_privacy_policy"
+    a.list-group-item> ui-sref="root.policy({page: 'trading_policy'})" ng-class="{'active': vm.currentPage == 'trading_policy'}"
+      span translate="cano_title_root_trading_policy"

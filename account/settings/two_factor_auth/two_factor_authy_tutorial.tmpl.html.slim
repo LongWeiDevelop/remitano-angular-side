@@ -1,0 +1,36 @@
+.two-factor-authy-tutorials-dialog
+  .modal-header.dialog-header-confirm
+    h4.modal-title translate-once="two_factor_authy_instruction_title"
+  .modal-body
+    .step1
+      h4
+        strong> translate="settings_step" translate-values='{ step: 1 }'
+        span translate-once="two_factor_register_with_phone"
+      .row.text-center.col-sm-12
+        .col-sm-4
+          img.pad-b-20 alt=("registration step one") cdn-src="" ng-src="/authy/tutorial-1.png"
+          p translate-once="two_factor_enter_phone_number"
+        .col-sm-4
+          img.pad-b-20 alt=("registration step two") cdn-src="" ng-src="/authy/tutorial-2.png"
+          p translate-once="two_factor_ask_email"
+        .col-sm-4
+          img.pad-b-20 alt=("registration step three") cdn-src="" ng-src="/authy/tutorial-3.png"
+          p translate-once="two_factor_confirm_registration_pin"
+
+    .step2
+      h4
+        strong> translate="settings_step" translate-values='{ step: 2 }'
+        span translate-once="two_factor_add_app"
+      .row.text-center.col-sm-12
+        .col-sm-6
+          img.pad-b-20 alt=("registration step one") cdn-src="" ng-src="/authy/tutorial-4.png"
+          p translate-once="two_factor_scan_qr"
+        .col-sm-6
+          img.pad-b-20 alt=("registration step two") cdn-src="" ng-src="/authy/tutorial-5.png"
+          p translate-once="two_factor_open_get_otp"
+
+    .clearfix
+
+  .modal-footer
+    button.btn.btn-default ng-click="vm.close()" translate-once="DIALOGS_CLOSE"
+

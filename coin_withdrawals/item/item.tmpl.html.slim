@@ -1,0 +1,33 @@
+.list-group-item.coin-withdrawal-item data-coin-withdrawal-id="{{vm.coinWithdrawal.id}}"
+  .list-group-item-heading
+    strong> ng-bind="vm.coinWithdrawal.coin_address"
+    span.badge(ng-class="vm.withdrawalStatusClass(vm.coinWithdrawal.status)")
+      | {{ 'status_' + vm.coinWithdrawal.status | translate }}
+  .list-group-item-text
+    span> translate-once="amount"
+    strong> ng-bind="vm.coinWithdrawal.coin_amount | currencyFormatter:$root.COIN_CURRENCY:'':true"
+    ' -
+    span> translate-once="requested_at"
+    span ng-bind="vm.coinWithdrawal.created_at | dateTimeFromTimestamp"
+  .list-group-item-text animate-on-change="vm.coinWithdrawal.status"
+    span< ng-switch="vm.coinWithdrawal.status"
+      span ng-switch-when="scheduled"
+        span> translate-once="sent_in"
+        timer interval="17" seconds-to-deadline="vm.coinWithdrawal.seconds_to_scheduled"
+          | {{mminutes}}:{{sseconds}}.{{mmillis}}
+
+      span ng-switch-when="unconfirmed" ng-switch-when-separator="|"
+        a href="" ng-click="vm.cancelCoinWithdrawal($event)" translate-once="button_cancel"
+        '  |
+        a href="" ng-click="vm.confirmCoinWithdrawal($event)" translate-once="button_confirm"
+
+      span ng-switch-when="processed"
+        span translate-once="transaction_details"
+        ' :
+        strong ng-if="vm.coinWithdrawal.tx_hash"
+          a.hidden-sm.hidden-md.hidden-lg> (ng-href="{{vm.transactionLink()}}" ng-bind="vm.coinWithdrawal.tx_hash | shortTxId"
+            target="{{vm.MobileApp.exists() ? '' : '_blank'}}")
+          a.hidden-xs> (ng-href="{{vm.transactionLink()}}" ng-bind="vm.coinWithdrawal.tx_hash"
+            target="{{vm.MobileApp.exists() ? '' : '_blank'}}")
+        strong.text-primary> ng-if="vm.coinWithdrawal.internal"
+          | {{ "internal" | translate }}

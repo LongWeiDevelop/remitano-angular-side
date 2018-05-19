@@ -1,0 +1,67 @@
+.appendix-functional-button.tab-pane
+  .panel.panel-primary
+    .panel-heading: .panel-title translate-once="your_payment_proof"
+    .panel-body.text-center
+      .submitted-appendix ng-if="vm.isAppendixSubmitted()"
+        div ng-if="vm.hasAppendixFeedback()"
+          ul.text-left
+            li
+              strong translate="status"
+              strong>
+                | :
+              span ng-switch="vm.fiatDeposit.appendix_feedback.status"
+                span.text-warning ng-switch-when="appendix_pending"
+                  i.icon-spin4.animate-spin
+                  span translate="appendix_pending"
+                span.text-danger ng-switch-when="appendix_error"
+                  i.icon-cancel
+                  span translate="appendix_error"
+                span.text-success ng-switch-when="appendix_completed"
+                  i.icon-ok
+                  span translate="appendix_completed"
+            li(ng-if="vm.fiatDeposit.appendix_feedback.explanation")
+              strong translate="explanation"
+              strong>
+                | :
+              span translate="{{vm.fiatDeposit.appendix_feedback.explanation}}" translate-values="{}"
+
+        div ng-switch="vm.fiatDeposit.country_code"
+          ul.text-left ng-switch-when="vn" ng-switch="vm.fiatDeposit.appendix.pay_via"
+            li
+              strong translate="pay_via"
+              strong>
+                | :
+              span vcb-method-translate="{{vm.fiatDeposit.appendix.pay_via}}"
+
+            li ng-switch-when="mobile_banking"
+              strong translate="sending_account_number"
+              strong>
+                | :
+              span
+                | {{vm.fiatDeposit.appendix.bank_account_number}} - {{vm.fiatDeposit.appendix.bank_account_name}}
+
+            li ng-switch-when="bank_plus"
+              strong translate="sending_phone_number"
+              strong>
+                | :
+              span ng-bind="vm.fiatDeposit.appendix.sending_phone_number"
+
+            li ng-switch-when="ibanking|cash_deposit" ng-switch-when-separator="|"
+              strong translate="payment_receipt"
+              img.img-responsive cdn-src="" ng-src="{{vm.fiatDeposit.appendix.payment_receipt}}"
+
+          ul.text-left(ng-switch-default)
+            li ng-repeat="field in vm.fiatDeposit.required_appendix_fields"
+              strong translate="{{field}}"
+              strong>
+                | :
+              span ng-bind="vm.fiatDeposit.appendix[field]"
+
+      .alert-warning(uib-alert ng-if="!vm.fiatDeposit.can_edit_appendix")
+        div.text-center
+          strong.text-warning translate-once="maximum_appendix_attempts_reached"
+      div ng-if="vm.fiatDeposit.can_edit_appendix"
+        button#edit_appendix.btn.btn-success(ng-click="vm.openAppendixForm()" ng-if="vm.isAppendixSubmitted()"
+          translate-once="trade_edit_appendix")
+        button#submit_appendix.btn.btn-success(ng-click="vm.openAppendixForm()" ng-if="!vm.isAppendixSubmitted()"
+          translate-once="trade_submit_appendix")

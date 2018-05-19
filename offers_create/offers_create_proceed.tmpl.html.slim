@@ -1,0 +1,10 @@
+section.page-content
+  .container#offer-create
+    .row
+      .col-lg-offset-1.col-lg-10.col-md-offset-1.col-md-10(ng-switch="vm.step")
+        react-phone-verify-wizard(ng-switch-when="verify_phone"
+          on-phone-number-updated="vm.onPhoneNumberUpdated")
+        fiat-wallet-pre-use(ng-switch-when="create_fiat_wallet"
+          on-fiat-wallet-ready="vm.onFiatWalletReady()")
+        .loading-container.text-center ng-switch-when="submitting"
+          .loading-bar

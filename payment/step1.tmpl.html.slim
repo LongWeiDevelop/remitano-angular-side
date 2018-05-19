@@ -1,0 +1,34 @@
+form.form.form-horizontal novalidate="" name="paymentForm"
+  .form-group
+    label.col-sm-3.control-label for="receiver_username" Payment to:
+    .col-sm-8
+      span.form-control type="text" name="receiver_username" disabled='disabled' ng-bind="::vm.payment.receiver_username"
+  .form-group
+    label.col-sm-3.control-label for="amount" Payment amount:
+    .col-sm-8
+      .input-group
+        span.form-control type="text" name="amount" disabled='disabled' ng-bind="::vm.payment.amount"
+        span.input-group-addon REMI
+  .form-group
+    label.col-sm-3.control-label for="memo" Memo:
+    .col-sm-8
+      input#memo.form-control type="text" name="memo" ng-model="::vm.payment.memo" ng-disabled="vm.submitting"
+  .form-group ng-show="vm.isReady()"
+    label#username.col-sm-3.control-label for="username" Your username:
+    .col-sm-8
+      span.form-control type="text" name="username" ng-bind="vm.Auth.currentUser().username" disabled="disabled"
+  .form-group ng-show="vm.isReady()"
+    label.col-sm-3.control-label for="available_balance" Available balance:
+    .col-sm-8
+      .input-group
+        input#available_balance.form-control type="text" name="available_balance" ng-model="vm.AccountManager.currentCoinAccount().available_balance" disabled="disabled"
+        span.input-group-addon REMI
+
+  .form-group
+    .col-sm-offset-3.col-sm-9
+      button.btn.btn-primary[type='submit' ng-click="vm.submitPayment()"
+        ng-disabled="vm.submitting" ng-show="vm.isReady()"] Submit Payment
+      button.btn.btn-primary ng-click="vm.loginToPay()" ng-hide="vm.isReady()" Login and Pay
+      = ' '
+      a.btn.btn-default ng-href="{{vm.payment.merchant_payment_url}}"
+        | Cancel and return to merchant's site

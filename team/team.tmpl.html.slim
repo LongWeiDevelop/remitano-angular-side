@@ -1,0 +1,22 @@
+div
+  div(ng-include="'about/subnav.tmpl.html'")
+  react-team
+  / section.page-content.team-page
+  /   .container#team
+  /     .row
+  /       .col-xs-12
+  /         .title-centered.title-decorated
+  /           h1 translate-once="main_title_team"
+
+  /     .row.clearfix(ng-repeat="(team, teamMembers) in vm.teamMembersByTeam")
+  /       .item-box.col-md-2.col-sm-4.col-xs-6.col-no-padding.group-title-box
+  /         div
+  /           h4 ng-bind="team"
+
+  /       .item-box.col-md-2.col-sm-4.col-xs-6.col-no-padding.has-box-hover(ng-repeat="teamMember in teamMembers")
+  /         img.img-responsive alt="" cdn-src="" ng-src="{{teamMember.attachment_thumb_url}}"
+  /         .box-hover
+  /           .wrap
+  /             h5.name ng-bind="teamMember.name"
+  /             p.title ng-bind="teamMember.title"
+

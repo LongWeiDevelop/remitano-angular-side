@@ -1,0 +1,23 @@
+span ng-if="vm.coinWithdrawal.external"
+  span ng-switch="vm.coinWithdrawal.status"
+    span ng-switch-when="scheduled"
+      span
+        span> translate-once="coin_withdrawal_will_be_sent_to"
+        strong(ng-bind="vm.coinWithdrawal.coin_address")
+      br
+
+      span
+        span> translate-once="btc_will_be_sent_in"
+        timer interval="17" seconds-to-deadline="vm.coinWithdrawal.seconds_to_scheduled"
+          strong
+            | {{mminutes}}:{{sseconds}}.{{mmillis}}
+
+    span< ng-switch-when="processed"
+      span> translate-once="trade_btc_withdrew_to"
+      blockchain-address(address="vm.coinWithdrawal.coin_address")
+
+span ng-if="vm.coinWithdrawal.internal"
+  span translate-once="btc_sent_internally"
+span ng-if="!vm.coinWithdrawal || !vm.coinWithdrawal.has_operation"
+  span> translate-once="btc_credited"
+  a.btn.btn-primary.btn-view-balance ui-sref="root.coinWallet.withdrawal" translate-once="view_your_balance"

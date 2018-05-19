@@ -1,0 +1,41 @@
+section.container.page-content(ng-class="{ loading: vm.gettingAction }")
+  .row
+    .col-lg-10.col-lg-offset-1
+      .loading-container.text-center
+        .loading-bar
+
+      .panel.panel-default(ng-if="vm.actionConfirmation")
+        .panel-heading(translate-once="confirm_action_title")
+        .panel-body
+          form.form-horizontal.confirm-action-form(name='form' ng-submit='vm.submitConfirm(vm.otp)' novalidate='' ng-disabled="vm.submitting")
+            .form-group
+              .col-sm-8.col-sm-offset-2
+                action-explanation(action-confirmation="vm.actionConfirmation")
+            div(ng-switch="vm.actionConfirmation.via")
+              div(ng-switch-when="authenticator")
+
+                .form-group ng-show='!(vm.touchIdAvailable && vm.touchIdEnabled)'
+                  label.col-sm-3.control-label for='otp' translate-once='account_otp'
+                  .col-sm-7
+                    input.form-control(ng-model='vm.otp' type='text' name='otp' required='')
+
+                .form-group
+                  label.col-sm-3.control-label for='trust_this_device' translate-once='trust_this_device'
+                  .col-sm-7
+                    switch.trust-this-device(ng-model='vm.trustThisDevice')
+                div ng-show='vm.touchIdAvailable && vm.touchIdEnabled'
+                  br
+                  a.btn.btn-primary.btn-confirm(type='submit' translate-once="button_confirm_with_touch_id"
+                   ng-click='vm.confirmWithTouchId()')
+                  p ng-show='vm.touchIdFailedCount > 1'
+                    br
+                    a.btn.btn-warning ui-sref='root.settings2({section: "touch_id"})' translate-once='settings_profile_touch_id_disable_button'
+
+                div ng-show='!(vm.touchIdAvailable && vm.touchIdEnabled)'
+                  .form-group
+                    .col-sm-8.col-sm-offset-3
+                      button.btn.btn-primary.btn-confirm type='submit'
+                        i.fa.fa-spinner.fa-spin(ng-if="vm.submitting")
+                        span translate-once="button_confirm"
+                      span>
+                      a.btn.btn-success ng-show='vm.touchIdAvailable' ui-sref='root.settings2({section: "touch_id"})' translate-once='settings_profile_touch_id_enable'

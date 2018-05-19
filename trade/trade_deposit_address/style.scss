@@ -1,0 +1,17 @@
+.trade-deposit-address {
+  .address-text-line {
+    margin: 0 auto 15px auto;
+  }
+  .input-group-address {
+    max-width: 360px;
+  }
+  .input-group-address-wrapper {
+    display: inline-block;
+    margin-right: 3px;
+  }
+  .btn-copy-clipboard {
+    vertical-align: top;
+    height: 40px;
+    padding: 0 10px;
+  }
+}

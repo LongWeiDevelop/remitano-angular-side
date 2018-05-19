@@ -1,0 +1,19 @@
+.modal-executions
+  .modal-header
+    h3.modal-title translate-once="executions_list"
+  .modal-body
+    table.table.table-bordered.executions-container
+      thead
+        tr
+          th translate-once="id"
+          th translate-once="price"
+          th translate-once="coin_amount"
+          th translate-once="remi_amount"
+      tbody
+        tr.execution-item ng-repeat="execution in executions"
+          td ng-bind="::execution.id"
+          td ng-bind="::execution.price"
+          td ng-bind="::execution.coin_amount"
+          td ng-bind="::execution.remi_amount"
+  .modal-footer
+    button.btn.btn-warning[ng-click="close()" translate-once="DIALOGS_CLOSE"]

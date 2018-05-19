@@ -1,0 +1,19 @@
+.site-wrapper ng-class="{'padding-sticky-header': !rvm.MobileApp.exists(), 'test-mode': rvm.RAILS_ENV.env=='test'}"
+  .container.site-announcement(ng-if="rvm.RAILS_ENV.notice_msg")
+    .row : .col-md-12
+      .alert(class="alert-{{rvm.RAILS_ENV.notice_bootstrap_class}}")
+        p ng-bind-html="rvm.RAILS_ENV.notice_msg"
+  .container(ng-if="rvm.RAILS_ENV.flashes")
+    .row(ng-repeat="(name, messages) in rvm.RAILS_ENV.flashes" ng-if="messages.length > 0")
+      .col-md-12
+        .alert(class="{{rvm.bootstrapClasses[name]}}")
+          p ng-bind-html="messages" ng-if="messages.length == 1"
+          ul ng-if="messages.length > 1"
+            li ng-repeat="message in messages" ng-bind="message"
+
+  header.header.header-default ng-include="'components/navbar/navbar.tmpl.html'" ng-controller='NavbarController as vm'
+  main-title
+  flash-container ng-hide="rvm.$state.$current.data.noFlash"
+  .main ui-view='' role='main'
+  .push-footer.mobile-app-hidden
+footer#footer.footer.mobile-app-hidden

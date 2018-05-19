@@ -1,0 +1,14 @@
+.box-wrapper.create-order-box.fiat-transactions-list
+  .box-head
+    .title translate-once="transactions_history"
+  .box-body ng-class="{loading: vm.fetching}"
+    .loading-container.text-center
+      .loading-bar
+    .alert.alert-danger ng-show="vm.errorFetching"
+      span translate-once="fetching_data_error"
+    .main-container ng-cloak="" ng-hide="vm.errorFetching"
+      .no-order-message.text-center ng-if="vm.fiatTransactions.length==0" translate-once="no_transactions"
+      #table_fiat_transactions.table-responsive ng-if="vm.fiatTransactions.length>0"
+        fiat-transactions-item ng-repeat="fiatTransaction in vm.fiatTransactions" fiat-transaction="fiatTransaction"
+
+        remi-pagination(meta="vm.paginationMeta" on-page-changed="vm.pageChanged($page)")

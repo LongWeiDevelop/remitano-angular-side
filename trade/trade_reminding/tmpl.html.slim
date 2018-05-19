@@ -1,0 +1,3 @@
+delayed-button.btn.btn-remind.btn-primary(on-click="vm.remindTrader()"
+  processing="vm.reminding" enabled-at="vm.trade.remind_enabled_at_unix_time"
+  caption="{{ 'trade_remind_username' | translate: {username: vm.remindee} }}")

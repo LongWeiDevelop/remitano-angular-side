@@ -1,0 +1,22 @@
+.fiat-wallet-pre-use(ng-switch="prevm.mode")
+  div ng-switch-when="verify_to_use"
+    .row: .col-sm-12
+      div.alert-warning.fade-and-collapsen(uib-alert)
+        span translate="account_verification_is_required_to_use_fiat" translate-values="{ currency: prevm.currency }"
+    .row: .col-lg-offset-1.col-lg-10
+      react-account-verify-document-wizard onAccountVerified="prevm.recalculateMode"
+  .row ng-switch-when="requesting"
+    .col-sm-12
+      .loading
+        .loading-container.text-center
+          .loading-bar
+
+  .row ng-switch-when="unsupported"
+    .col-sm-12
+      div.alert-danger.fade-and-collapsen(uib-alert)
+        div: span translate="fiat_account_unsupported" translate-values="{ country: prevm.countryName, currency: prevm.currency }"
+
+  .row ng-switch-when="cant_use"
+    .col-sm-12
+      div.alert-danger.fade-and-collapsen(uib-alert)
+        div: span translate="fiat_account_cant_open" translate-values="{ country: prevm.countryName, currency: prevm.currency }"

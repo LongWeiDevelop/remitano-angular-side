@@ -1,0 +1,14 @@
+.form-group.btc-address-input ng-class="{'has-error': form.coin_address.$invalid && form.$submitted, 'has-feedback': vm.loading}"
+  label
+    span translate-once="trade_coin_withdrawal_address"
+  input.form-control#btc-address-input(required="" type="text" name="coin_address" ng-model="vm.btcAddress"
+    autocomplete="off"
+    uib-typeahead="address.address for address in vm.loadRecentAddresses($viewValue)"
+    typeahead-loading="vm.loading"
+    typeahead-template-url="directives/btc_address_input/recent_address.tmpl.html"
+    typeahead-min-length="0" typeahead-show-hint="true"
+    ng-model-options="{ allowInvalid: true }"
+    ui-validate='{ coin_address: "vm.isValidCoinAddress($value)" }')
+  span.form-control-feedback.icon-spin4.animate-spin.ng-animate-disabled(ng-show="vm.loading")
+  span.help-block ng-show='form.coin_address.$invalid && form.$submitted' translate-once='trade_invalid_coin_address'
+

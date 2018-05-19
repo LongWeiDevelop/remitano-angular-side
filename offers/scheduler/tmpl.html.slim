@@ -1,0 +1,24 @@
+.offer-scheduler-dialog
+  .modal-header.dialog-header-confirm
+    h4.modal-title translate-once="offer_schedule"
+  .modal-body
+    .alert-info.alert-sm(uib-alert)
+      .text-center translate="schedule_time_zone" translate-values="{ zone: vm.timeZone }"
+    form.form-horizontal.notifications-form(name='form' novalidate='')
+      .form-group
+        label.col-xs-6.col-sm-4.col-md-3.control-label for='scheduled' translate-once='scheduled'
+        .col-xs-6.col-sm-2.col-md-6.switch-container
+          switch#scheduled>(
+            name="scheduled" ng-model="vm.offer.scheduled" on="{{'on'|translate}}" off="{{'off'|translate}}"
+            ng-change="vm.update()"
+          )
+
+      .form-group(ng-repeat="moment in vm.moments")
+        label.col-xs-6.col-sm-4.col-md-3.control-label for='{{moment}}' translate='{{moment}}'
+        .col-xs-6.col-sm-6.col-md-6
+          time-picker(name="{{moment}}" ng-model="vm.offer[moment]" ng-change="vm.update()")
+
+  .modal-footer
+    i.icon-spin4.animate-spin.ng-animate-disabled>(ng-if="vm.updating > 0")
+    i.icon-exclamation.text-danger>(ng-if="vm.updateFailed")
+    button.btn.btn-default ng-click="vm.close()" translate-once="DIALOGS_CLOSE"

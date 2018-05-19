@@ -1,0 +1,22 @@
+div
+  / react-trades-list(tradesWithRoles="vm.fetchingTrades")
+  div.trades-list-container
+    .row
+      .col-sm-8
+        .title-accent
+          h3
+            span translate="dashboard_escrow_{{vm.tradeStatus}}_trades"
+      /.col-sm-4
+        /currency-switch
+    .row ng-show="vm.tradesWithRoles.length == 0 && !vm.fetchingTrades"
+      .col-xs-12
+        i translate-once="trades_not_found"
+    .content-wrapper ng-class="{loading: vm.fetchingTrades}" ng-hide="vm.trades.length < 1"
+      .loading-container.text-center
+        .loading-bar
+      .alert.alert-danger ng-show="vm.errorFetchingTrades"
+        span translate-once="fetching_data_error"
+      .table-responsive.main-container ng-hide="vm.errorFetchingTrades"
+        ol.trades-list
+          trade-item trade-with-role="tradeWithRole" index="$index" ng-repeat="tradeWithRole in vm.tradesWithRoles"
+        remi-pagination(meta="vm.paginationMeta" max-size="5" on-page-changed="vm.pageChanged($page)")

@@ -1,0 +1,84 @@
+.fiat-withdraw-wizard {
+ ul {
+   display: inline-block;
+ }
+}
+
+.fiat-withdrawal-account-list {
+  .fiat-withdrawal-account-new-item {
+    &:hover {
+      .icon-box {
+        h3 {
+          color: #000;
+        }
+        .icon {
+          color: #000;
+        }
+      }
+    }
+
+    .icon-box {
+      margin-top: 2em;
+
+      h3 {
+        color: #808080;
+        padding-top: 65px;
+      }
+      .icon {
+        color: #808080;
+        margin-top: -18px;
+        margin-left: auto;
+        margin-right: auto;
+        i.fa {
+          font-size: 50px;
+        }
+      }
+    }
+  }
+
+  .panel {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    overflow: auto;
+    .detail-row {
+      .key {
+        margin-bottom: -6px;
+      }
+      .value {
+        margin-bottom: 12px;
+      }
+    }
+    &:hover {
+      background-color: #ddd;
+    }
+    .icon-box {
+      .icon:before {
+        background: transparent;
+      }
+      &.centered {
+        text-align: center;
+        .icon {
+          width: 70px;
+          float: none;
+        }
+      }
+    }
+    border: 1px solid #ddd;
+
+    .panel-body {
+      padding: 5px 14px;
+      min-height: 150px;
+    }
+
+    .panel-heading {
+      .btn-group {
+        margin-top: -5px;
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+.row
+  .col-md-12
+    .remittance-details-container(ng-class="{ loading: vm.fetching }")
+      .loading-container.text-center
+        .loading-bar
+      .alert.alert-danger ng-show="vm.fetchError"
+        span translate='fetching_data_error'
+        = ' '
+        a ng-click="vm.fetchRemittances()" translate-once="try_again"
+      .main-container ng-cloak="" ng-if="vm.remittances"
+        .row
+          .col-lg-12
+            ol.remittance-list
+              remittance-item remittance="remittance" ng-repeat="remittance in vm.remittances"
+            remi-pagination(meta="vm.paginationMeta" on-page-changed="vm.pageChanged($page)")

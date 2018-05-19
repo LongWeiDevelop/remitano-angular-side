@@ -1,0 +1,34 @@
+section.page-content.section-feature
+  section.section-feature.referral-program
+    .container: .row : .col-sm-8.col-md-6.col-sm-push-2.col-md-push-3
+      .title-centered.title-decorated
+        h1 translate-once="referral_program"
+      p: span> translate="referral_reward_{{vm.referralTranslation}}" translate-values="{ amount: vm.referralReward, maxTimes: vm.referralMaxTimes }"
+      p
+        strong> translate="referral_requirement"
+        span> translate="referral_terms_{{vm.referralTranslation}}" translate-values="{ referralGoal: (vm.referralGoal|currencyFormatter:$root.coin_currency:false:false:false:true), maxAmount: vm.referralMaxReward, maxTimes: vm.referralMaxTimes }"
+      p: span translate="referral_direct_credit"
+      hr
+      .text-center ng-show="vm.Auth.isLoggedIn()"
+        h5 translate="referral_link"
+        p
+          referral-link
+      .text-center ng-show="vm.Auth.isLoggedIn()"
+        p: a.btn.btn-primary ui-sref="root.dashboard.referrals" translate="referral_click_to_view_list"
+      .text-center ng-hide="vm.Auth.isLoggedIn()"
+        p: a.btn.btn-primary ui-sref="root.login" translate="referral_join_now"
+      hr
+    .container.text-center.hidden-xs ng-if="vm.banners"
+      h5 translate="main_banners"
+      table.table.table-striped.table-bordered
+        tr.banner-item(ng-repeat="(key, value) in vm.banners track by key")
+          td.banner-col
+            a ng-href="{{value.path}}" target="_blank"
+              img.banner-img cdn-src="" ng-src="{{value.path}}"
+            .caption
+              strong ng-bind="key"
+          td.code-col
+            textarea.form-control.code(rows="5")
+              a href="{{vm.referral_url}}"
+                img src="https://{{vm.Auth.domain()}}{{value.path}}" title=("{{'main_title_landing' | translate}}")
+

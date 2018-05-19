@@ -1,0 +1,16 @@
+/ div
+react-pending-deposit-list
+  / .panel.panel-default.list-pending-coin-deposit ng-hide="vm.pendingDeposit | isEmpty"
+  /   .panel-heading
+  /     i.pending-deposit-info.icon-info-circled uib-tooltip="{{'pending_deposit_explanation' | translate}}"
+  /     h4.panel-title
+  /       span translate-once="pending_deposit_title"
+  /   .panel-body
+  /     .content-wrapper ng-class="{loading: vm.fetching}"
+  /       .loading-container.text-center
+  /         .loading-bar
+  /       .alert.alert-danger ng-show="vm.errorFetching"
+  /         span translate-once="fetching_data_error"
+  /       div ng-cloak="" ng-hide="vm.errorFetching"
+  /         .list-group ng-hide="vm.pendingDeposit | isEmpty"
+  /           pending-coin-deposit-item ng-repeat="(txHash, amount) in vm.pendingDeposit" tx-hash="txHash" amount="amount")

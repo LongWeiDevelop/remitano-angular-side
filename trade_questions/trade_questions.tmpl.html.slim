@@ -1,0 +1,19 @@
+.trade-questions ng-switch="offerType"
+  div ng-switch-when="sell"
+    uib-accordion close-others='false'
+      div(uib-accordion-group heading="{{'trade_is_it_safe_to_buy' | translate}}"
+        is-open="vm.isItSafeOpen" ng-class="{'collapsed': !vm.isItSafeOpen, 'btc-background': vm.isItSafeOpen }")
+        p translate-once='trade_is_it_safe_to_buy_explain'
+        strong
+          a ui-sref="root.escrowService" translate-once="trade_read_more_escrow" target="_blank"
+      div(uib-accordion-group heading="{{'trade_when_receive' | translate}}"
+        is-open="vm.whenReceiveOpen" ng-class="{'collapsed': !vm.whenReceiveOpen, 'btc-background': vm.whenReceiveOpen }")
+        p translate-once='trade_when_receive_explain'
+
+  div ng-switch-when="buy"
+    uib-accordion close-others='false'
+      div(uib-accordion-group heading="{{'trade_is_it_safe_to_sell' | translate}}"
+        is-open="vm.isItSafeOpen" ng-class="{'collapsed': !vm.isItSafeOpen, 'btc-background': vm.isItSafeOpen }")
+        p translate-once='trade_is_it_safe_to_sell_explain'
+        strong
+          a ui-sref="root.escrowService" translate-once="trade_read_more_escrow" target="_blank"

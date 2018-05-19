@@ -1,0 +1,28 @@
+div ng-include='' src="'how_it_works/_introduction.tmpl.html'"
+section.page-content.landing
+  flash-container
+  .container#landing
+    .main-container
+      div.alert-info(uib-alert)
+        .user-referral-program.referral-landing
+          .text-center.prelude
+            span> translate="referral_reward_{{vm.referralTranslation}}" translate-values="{ amount: vm.referralReward, maxTimes: vm.referralMaxTimes }"
+            span translate-once="referral_use_link"
+          .text-center ng-if="vm.Auth.isLoggedIn()"
+            referral-link
+          .text-center ng-if="!vm.Auth.isLoggedIn()"
+            a.btn.btn-primary.btn-sm ui-sref="root.login" translate="referral_login_to_get_link"
+        p.text-center
+          a ui-sref="root.referral_program" translate="referral_find_out_more"
+
+      br
+      #offer-list
+        react-offers-list offer-type="'sell'" filters="{offerType: 'sell', countryCode: $root.country_code, coinCurrency: $root.coin_currency}"
+        hr
+        react-offers-list offer-type="'buy'" filters="{offerType: 'buy', countryCode: $root.country_code, coinCurrency: $root.coin_currency}"
+      hr
+      span translate-once="want_better_price"
+      '
+      a.btn.btn-primary.btn-create-offer ui-sref='root.offerCreate' translate-once='escrow_create_offer'
+      press-section
+      featured-trade-feedbacks

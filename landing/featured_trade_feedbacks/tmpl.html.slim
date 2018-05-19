@@ -1,0 +1,21 @@
+.featured-trade-feedbacks(ng-if="vm.feedbacks.length > 0 || vm.fetching" ng-class="{'loading': vm.fetching}")
+  .loading-container.text-center
+    .loading-bar
+  .title-section.text-center
+    hr.hr-over
+    span.title-text translate="our_users_said"
+  .row.row-eq-height(ng-repeat="chunk in vm.chunkedFeedbacks")
+    .feedback.col-lg-3.col-md-4.col-sm-6.col-xs-12(ng-repeat="feedback in chunk")
+      .icon-box.circled.received-feedback(data-trade-feed-back-id="{{feedback.id}}")
+        .icon ng-class="feedback.score"
+          i.fa ng-class="vm.emoFromScore(feedback.score)"
+        .icon-box-body
+          strong
+          a>(ui-sref="root.profile({ username: feedback.author })" ng-bind="feedback.author")
+          ' >
+          a(ui-sref="root.profile({ username: feedback.receiver })" ng-bind="feedback.receiver")
+          br
+          span ng-bind="vm.feedbackContent(feedback)"
+
+  .text-center
+    remi-pagination(meta="vm.paginationMeta" on-page-changed="vm.fetchPage($page)")

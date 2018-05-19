@@ -1,0 +1,27 @@
+/ react-trade-item odd="vm.odd" role="vm.role" partner="vm.partner" trade="vm.trade" coinAmount="vm.coin_amount" 
+li.trade-item(ng-class="{ odd: vm.odd }")
+  .trade-wrapper(class="as-{{vm.role}}")
+    .row
+      .col-xs-4.col-sm-3.col-md-2.text-center
+        div
+          a.btn.btn-default.btn-sm ui-sref="root.trade({ref: vm.trade.ref})" ng-bind="vm.trade.ref"
+        div.trade-status translate="trade_{{vm.trade.status}}"
+      .col-xs-8.col-sm-9.col-md-7
+        div
+          span.trade-prefix() {{ 'trade_prefix_' + vm.role | translate }}
+          '
+          react-currency-amount amount="vm.coin_amount" coin-currency="vm.trade.coin_currency"
+          /span ng-bind="vm.trade.remi_amount|currencyFormatter"
+          '
+          span translate-once='trade_via'
+          '
+          span pm-translate="{{vm.trade.offer_data.payment_method}}"
+          span translate-once='trade_from' ng-if="vm.role == 'buyer'"
+          span translate-once='trade_to' ng-if="vm.role != 'buyer'"
+          a ui-sref="root.profile({username: vm.partner})"
+            strong
+              u ng-bind="vm.partner"
+        div
+          span translate-once='trade_value'
+          ' :
+          strong.trade-prefix ng-bind="(vm.trade.fiat_amount|currencyFormatter:'VND') + ' ' + vm.trade.offer_data.currency"

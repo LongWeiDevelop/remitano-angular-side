@@ -1,0 +1,17 @@
+.auto-bank-account-input
+  input.form-control#bank_account_number(
+    ng-model='vm.paymentDetails.bank_account_number' required=""
+    ng-model-options='{ allowInvalid: true }'
+    ng-pattern="vm.pattern"
+    ng-change="vm.fetchAccountName()"
+    type="text" name="payment_details.bank_account_number"
+  )
+  span.invalid-indicator.help-block(show-error-for='payment_details.bank_account_number' error='pattern' always="true"
+    translate='invalid_bank_account_number')
+  span.help-block(show-error-for='payment_details.bank_account_number' error='transferable' always="true"
+    translate='this_account_cant_receive_payment')
+  span(ng-show="vm.fetchingAccountCount > 0")
+    span.form-control-feedback.icon-spin4.animate-spin
+  span.form-control-feedback.icon-ok(ng-show="(vm.fetchingAccountCount == 0) && vm.outcomeSuccess")
+  span.form-control-feedback.icon-cancel(ng-show="(vm.fetchingAccountCount == 0) && vm.outcomeError")
+  a.btn-refetch(href="" ng-click="vm.fetchAccountName(true)" translate="offers_input_retry" ng-show="vm.outcomeError")

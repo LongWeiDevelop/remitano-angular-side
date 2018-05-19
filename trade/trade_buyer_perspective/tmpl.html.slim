@@ -1,0 +1,74 @@
+.buyer-perspective
+  .trade-guide
+    .icon-box.circled.icon-box-animated.animation.fadeInLeft.animation-visible
+      .icon ng-class="vm.trade.status"
+        i.fa ng-class="vm.tradeIcon()"
+      .icon-box-body
+        .step-row
+          ul.nav.nav-wizard.nav-justified(remi-wizard)
+            li.step-wait-for-seller(remi-wizard-step ng-model="vm.trade.step" warning="0" active="0")
+              a
+                span.number 1
+                span.text translate-once="trade_initialize"
+            li.step-wait-for-seller(remi-wizard-step ng-model="vm.trade.step" warning="0" active="9")
+              a
+                span.number 2
+                span.text translate-once="trade_buyer_wait_for_seller"
+            li.step-pay-seller(remi-wizard-step ng-model="vm.trade.step" warning="10" active="20")
+              a
+                span.number 3
+                span.text translate-once="trade_buyer_pay"
+            li.step-wait-for-release(remi-wizard-step ng-model="vm.trade.step" warning="20" danger="25" active="30")
+              a
+                span.number 4
+                span.text translate="trade_buyer_receive_bitcoin"
+        div ng-switch="vm.tradePhase()"
+          div ng-switch-when="awaiting"
+            h3.text-warning translate-once="trade_wait_for_seller"
+            div: span translate-once="trade_buyer_wait_for_seller_to_deposit"
+          div ng-switch-when="cancelled"
+            h3 translate-once="trade_cancelled_title"
+            div: span
+              span> translate-once="trade_your_trade_of"
+              react-currency-amount amount="vm.trade.buyer_receiving_coin_amount" coin-currency="vm.trade.coin_currency"
+
+              span<> translate-once="trade_with"
+              a> ui-sref="root.profile({username: vm.trade.seller_username})"
+                strong
+                  u ng-bind="vm.trade.seller_username"
+              span translate-once="trade_is_cancelled"
+
+          div ng-switch-when="locked"
+            h3(ng-switch="vm.trade.status")
+              strong.text-success translate-once="trade_buyer_paid" ng-switch-when="paid"
+              strong.text-success translate-once="trade_buyer_unpaid" ng-switch-when="unpaid"
+              strong.text-danger translate-once="trade_disputed_title" ng-switch-when="disputed"
+            div: span
+              span> translate-once="trade_you_are_buying"
+              react-currency-amount amount="vm.trade.buyer_receiving_coin_amount" coin-currency="vm.trade.coin_currency"
+              span<> translate-once="trade_from"
+              a ui-sref="root.profile({username: vm.trade.seller_username})"
+                strong
+                  u ng-bind="vm.trade.seller_username"
+              '.
+              span> ng-bind="$root.coin_currency_name"
+              span translate-once="trade_amount_is_locked"
+              '
+              span translate-once="trade_please_pay" ng-if="vm.trade.status == 'unpaid' && !vm.tradeWithRole.use_fiat_deposit"
+              span translate-once="trade_please_deposit" ng-if="vm.trade.status == 'unpaid' && vm.tradeWithRole.use_fiat_deposit"
+              span translate-once="trade_please_wait_for_seller_to_release" ng-if="vm.trade.status == 'paid'"
+            div ng-if="vm.tradeWithRole.coin_withdrawal_address"
+              span translate-once="trade_btc_will_be_withdrawn_to" translate-values="{ address: vm.tradeWithRole.coin_withdrawal_address }"
+          div ng-switch-when="released"
+            h3
+              strong.text-success translate-once="trade_completed"
+            div: span
+              span> translate-once="trade_you_received"
+              react-currency-amount amount="vm.trade.buyer_receiving_coin_amount" coin-currency="vm.trade.coin_currency"
+              span<> translate-once="trade_from"
+              a ui-sref="root.profile({username: vm.trade.seller_username})"
+                strong
+                  u ng-bind="vm.trade.seller_username"
+
+            .trade-coin-withdrawal ng-show="vm.trade.status == 'released'"
+              trade-coin-withdrawal-status coin-withdrawal="vm.tradeWithRole.coin_withdrawal"

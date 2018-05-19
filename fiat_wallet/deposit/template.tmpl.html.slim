@@ -1,0 +1,84 @@
+react-fiat-wallet-deposit
+/ .content-wrapper ng-class="{loading: vm.loading}"
+/   .loading-container.text-center
+/     .loading-bar
+/   .alert.alert-danger ng-show="vm.errorFetchingCurrentFiatDeposit"
+/     span translate-once="fetching_data_error"
+/   .main-container ng-cloak="" ng-hide="vm.errorFetchingCurrentFiatDeposit"
+/     .row
+/       .col-lg-12 ng-if="vm.currentFiatDeposit && vm.currentFiatDeposit.status != 'pending'"
+/         .fiat-deposit-details
+/           .row
+/             .col-lg-8.col-lg-offset-2
+/               .panel.black-panel
+/                 .panel-heading: .panel-title translate-once="fiat_deposit_details"
+/                 table.table.table-bordered.table-striped
+/                   tbody
+/                     tr
+/                       td.col-xs-4
+/                         span translate-once="fiat_deposit_amount"
+/                         ':
+/                       td.col-xs-8.text-success
+/                         strong
+/                           span ng-bind-html="vm.currentFiatDeposit.fiat_amount|safeCopyCurrencyFormatter:vm.currency"
+/                           span ng-class=":: 'currency-' + vm.currency"
+/                     tr
+/                       td.col-xs-4
+/                         span translate-once="fiat_deposit_ref"
+/                         ':
+/                       td.col-xs-8
+/                         strong ng-bind="vm.currentFiatDeposit.memo"
+
+/                     tr ng-repeat="(key, value) in vm.currentFiatDeposit.fiat_deposit_details | removeAppendix"
+/                       td.col-xs-4
+/                         span translate="{{key}}"
+/                         ':
+/                       td.col-xs-8 ng-bind="value"
+
+/                     tr.payment-recommendation
+/                   td(colspan=2)
+/                     strong.text-danger
+/                       span translate-once="important"
+/                       ':
+/                     em> translate-once="fiat_deposit_recommendation"
+/                     em translate-once="fiat_deposit_update_appendix" ng-if="vm.hasAppendix()"
+/                     .alert.alert-warning ng-if="vm.showDelayMessage()"
+/                       span translate-once="fiat_deposit_delay"
+
+/               appendix-functional-button fiat-deposit="vm.currentFiatDeposit" ng-if="vm.hasAppendix()"
+
+/               .line
+/                 i.icon-ok
+/                 span> translate-once="fiat_deposit_want_to_cancel"
+/                 a ng-click="vm.cancelFiatDeposit()" translate-once="fiat_deposit_cancel_now"
+/               .line
+/                 i.icon-ok
+/                 span> translate-once="fiat_deposit_wait"
+
+/       .col-lg-12 ng-if="!vm.currentFiatDeposit"
+/         .project-item.fiat-deposit-container
+/           .project-item-inner
+/             .project-desc
+/               h2(translate-once="deposit_fiat_title" translate-values="{currency: vm.currency}")
+/               form.form-horizontal.generate-fiat-deposit-form(name='form' ng-submit='vm.generateFiatDeposit(form)' novalidate='')
+/                 .form-group(ng-class='{ "has-success": form.fiat_amount.$valid && form.$submitted,\
+/                 "has-error": form.fiat_amount.$invalid && form.$submitted }')
+/                   label.col-xs-4.control-label for='fiat_amount' translate-once='fiat_amount' translate-values="{currency: vm.currency}"
+/                   .col-xs-7
+/                     input.form-control(ng-model='vm.fiatDeposit.fiat_amount' type='text' awnum='' num-thousand='true' num-int='9' num-fract='{{vm.maxDecimals}}' name='fiat_amount' required=''
+/                     lower-or-equal-to="{{vm.maxFiatAmount}}" greater-or-equal-to="{{vm.minFiatAmount}}")
+/                     p.help-block(ng-show='form.fiat_amount.$error.greaterOrEqualTo && form.$submitted'
+/                       translate-once="fiat_amount_greater_than_minimum_amount" translate-values='{minimum: (vm.minFiatAmount | currencyFormatter:vm.currency)}')
+/                     p.help-block(ng-show='form.fiat_amount.$error.lowerOrEqualTo && form.$submitted'
+/                       translate-once="fiat_amount_lower_than_maximum_amount" translate-values='{maximum: (vm.maxFiatAmount | currencyFormatter:vm.currency)}')
+
+/                 .form-group
+/                   .col-xs-offset-4.col-xs-10.button-container.text-left
+/                     button.btn-generate-fiat-deposit.btn.btn-primary(type="submit" ng-disabled="vm.generating")
+/                       em.icon-spin4.animate-spin(ng-if="vm.generating")
+/                       span translate="deposit"
+
+/         .project-item ng-if="vm.showFiatDepositList"
+/           .project-item-inner
+/             .project-desc
+/               fiat-deposit-list

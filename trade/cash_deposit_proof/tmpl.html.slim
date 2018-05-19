@@ -1,0 +1,17 @@
+form.cash-deposit-proof-dialog(novalidate name="proof_form" ng-submit="proof_form.$valid && vm.confirm()")
+  .modal-header.dialog-header-confirm
+    h4.modal-title translate-once="upload_payment_proof"
+  .modal-body
+    .alert-info(uib-alert)
+      span.explanation translate-once="cash_deposit_submission_instruction" translate-values="{ ref: vm.trade.ref, seller: vm.trade.seller_username}"
+    .form-group(has-error-for="proof")
+      file-upload(path="/api/v1/images/"
+        name="proof_url"
+        ng-model="vm.proof_url"
+        ng-required="true"
+        ng-preview-url="vm.proof_thumb_url"
+      )
+      span.help-block show-error-for='proof_url' error='required' translate-once='input_required'
+
+  .modal-footer
+    button.btn.btn-default type="submit" translate-once="button_confirm"

@@ -1,0 +1,44 @@
+#two-factor-disabled.container.two-factor-disabled.call-to-action.centered ng-show='!vm.user.two_factor_enabled && !vm.enabling'
+  .cta-txt
+    p
+      span translate-once='two_factor_disabled_text'
+      br
+      span translate-once='settings_two_factor_required_for_touch_id'
+  .cta-btn
+    button.btn.btn-primary.btn-show-enable-two-factor-form ng-click='vm.showEnableTwoFactorForm()'
+      | {{'settings_enable_two_factor_btn' | translate }}
+
+#two-factor-enabled.container.two-factor-disabled.call-to-action.centered ng-show='vm.user.two_factor_enabled && !vm.touch_id_enabling'
+  #touchid-not-available ng-show='!vm.touchIdAvailable && !vm.user.touch_id_enabled'
+    p translate-once='two_factor_touch_id_not_available'
+
+  #touchid-enabled ng-show="vm.user.touch_id_enabled"
+    p translate-once='two_factor_touch_id_enabled_text'
+    p
+      button.btn.btn-primary ng-click='vm.showDisableTouchIdDialog()'
+        | {{'settings_profile_touch_id_disable_button' | translate }}
+  #touchid-disabled ng-show="vm.touchIdAvailable && !vm.user.touch_id_enabled"
+    p translate-once='two_factor_touch_id_disabled_text'
+    p
+      button.btn.btn-primary ng-disabled="vm.touch_id_confirming" ng-click='vm.showEnableTouchIdForm()'
+        | {{'settings_profile_touch_id_enable' | translate }}
+        i.icon-spinner.animate-spin(ng-if="vm.touch_id_confirming")
+
+
+#touch-id-enabling ng-show='vm.touch_id_enabling'
+  form.form-horizontal name='touchIdEnablingForm' ng-submit='vm.submitEnablingTouchId(touchIdEnablingForm)'
+    .form-group(ng-class='{ "has-success": touchIdEnablingForm.two_factor_code.$valid && touchIdEnablingForm.$submitted,\
+  "has-error": touchIdEnablingForm.two_factor_code.$invalid && touchIdEnablingForm.$submitted }')
+      label.col-sm-2.control-label for='two-factor-code' translate-once='two_factor_code_placeholder'
+      .col-sm-6
+        input#two-factor-code.form-control(ng-model='vm.twoFactorCode' type='text' name='two_factor_code'
+          ng-minlength='6' required='')
+        p.help-block(ng-show='(touchIdEnablingForm.two_factor_code.$error.minlength || touchIdEnablingForm.two_factor_code.$error.required) && touchIdEnablingForm.$submitted'
+          translate-once="two_factor_code_invalid")
+
+    .form-group
+      .col-sm-offset-2.col-sm-10
+        button.btn.btn-primary.btn-enabling-touch-id type='submit' translate-once="settings_enable_touch_id_btn" ng-disabled='!touchIdEnablingForm.$valid || touchIdEnablingForm.submitting'
+        = ' '
+        a translate-once="cancel" ng-click="vm.touch_id_enabling = false"
+

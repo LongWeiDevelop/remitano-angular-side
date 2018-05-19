@@ -1,0 +1,71 @@
+.row
+  .col-lg-12
+    form.new-remitance-request.form name='form' novalidate="" ng-submit="vm.requestRemittance(form)"
+      .row
+        .col-sm-6
+          .form-group
+            label translate-once="from_country"
+            span.form-control(disabled="true")
+              country-label country="{{vm.remittance.from_country_code}}"
+        .col-sm-6
+          .form-group(ng-class="{ 'has-error': form.$submitted && form.to_country_code.$invalid }")
+            label translate-once="to_country"
+            ui-select(ng-model='vm.remittance.to_country_code' id="to_country_code" name="to_country_code" ng-required="true")
+              ui-select-match(placeholder="{{'to_country' | translate}}")
+                country-label country="{{$select.selected.code}}"
+              ui-select-choices repeat="country.code as country in (vm.remittableCountries|filter: $select.search) track by $index"
+                country-label country="{{country.code}}"
+
+            span.help-block ng-show='form.to_country_code.$error.required && form.$submitted' translate-once='input_required'
+
+      .row
+        .col-sm-6
+          .form-group ng-class="{'has-error': (form.sending_amount.$error.required && form.$submitted)}"
+            label
+              span translate="sending_amount" translate-values="{ currency: vm.sendingCurrency }"
+            .form-group
+              input.form-control#sending_amount(ng-required="true"
+                ng-model="vm.remittance.sending_amount" ng-model-options="{ debounce: 300 }"
+                name="sending_amount" autocomplete='off' numeric-input step="1")
+            span.help-block ng-show='form.sending_amount.$error.required && form.$submitted' translate-once="input_required"
+        .col-sm-6
+          label
+            span
+              span translate="estimated_receiving_amount" translate-values="{ currency: vm.receivingCurrency }"
+          .input-group.ng-animate-disabled
+            input.form-control#estimated_receiving_amount disabled='' ng-value='vm.estimation.receiving_amount | currencyFormatter : vm.receivingCurrency'
+            span.input-group-addon
+              i.icon-spin4.animate-spin.ng-animate-disabled(ng-if="vm.estimating > 0")
+              span(ng-if="vm.receivingRate")
+                span>(translate-once="rate")
+                strong ng-bind="vm.receivingRate"
+
+      .row
+        .col-sm-6
+          .remittance-estimation.alert-info(uib-alert ng-if="form.$valid && !vm.remittanceImpossible")
+            div ng-if="vm.estimation.deposit_methods"
+              span translate-once="deposit_methods"
+              ul
+                li(ng-repeat="method in vm.estimation.deposit_methods track by $index"): payment-method-label(method="method")
+
+            div ng-if="vm.estimation.withdraw_methods"
+              span translate-once="withdrawal_methods"
+              ul
+                li(ng-repeat="method in vm.estimation.withdraw_methods track by $index"): payment-method-label(method="method")
+            div
+              span translate-once="estimated_receiving_time"
+              ' :
+              strong
+                ' {{30 | amDurationFormat : 'minute' }}
+
+          .alert-danger(uib-alert ng-if="form.$valid && vm.remittanceImpossible")
+            span translate="remittance_impossible" translate-values="{ amount: vm.remittance.sending_amount + ' ' + vm.sendingCurrency }"
+
+          .alert-danger(uib-alert ng-if="form.$valid && vm.estimatingFailed")
+            span> translate-once="fetching_data_error"
+            a ng-click="vm.estimateRemittanceAgain()" translate-once="try_again"
+
+        .col-sm-6
+          button.btn.btn-lg.btn-block.btn-request-remittance.btn-primary(ng-disabled="vm.submitting || vm.remittanceImpossible || vm.estimating")
+            i.icon-spin4.animate-spin(ng-if="vm.submitting")
+            span translate-once='start'

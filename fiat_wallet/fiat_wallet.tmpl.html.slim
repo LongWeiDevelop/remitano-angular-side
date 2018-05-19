@@ -1,0 +1,22 @@
+section.page-content.fiat-wallet-page
+  .container#fiat_wallet(ng-switch="fiatvm.mode")
+    fiat-wallet-pre-use ng-switch-when="pre_use" on-fiat-wallet-ready="fiatvm.recalculateMode()"
+
+    .row ng-switch-when="use"
+      .col-lg-12
+        .tabs
+          ul.nav.nav-tabs
+            li ui-sref-active="active"
+              a ui-sref="root.fiatWallet.deposit"
+                i.icon-download
+                span.hidden-xs translate-once="fiat_wallet_deposit"
+            li ui-sref-active="active"
+              a ui-sref="root.fiatWallet.withdrawal"
+                i.icon-paper-plane-empty
+                span.hidden-xs translate-once="fiat_wallet_withdrawal"
+            li ui-sref-active="active"
+              a ui-sref="root.fiatWallet.transactions"
+                i.icon-docs
+                span.hidden-xs translate-once="history"
+          .tab-content
+            .tab-pane.active(ui-view="")

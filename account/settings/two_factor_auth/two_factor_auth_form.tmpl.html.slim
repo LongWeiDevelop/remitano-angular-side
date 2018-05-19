@@ -1,0 +1,68 @@
+#two-factor-disabled.container.two-factor-disabled.call-to-action.centered ng-show='!vm.user.two_factor_enabled && !vm.enabling'
+  .cta-txt
+    h2 translate-once='settings_section_two_factor_auth'
+    p
+      span translate-once='low_account_security'
+      span= ": "
+      span translate-once='two_factor_disabled_text'
+  .cta-btn
+    button.btn.btn-primary.btn-show-enable-two-factor-form ng-click='vm.showEnableTwoFactorForm()'
+      | {{'other_enable' | translate }}
+#two-factor-enabling ng-show='!vm.user.two_factor_enabled && vm.enabling'
+  form.form-horizontal name='enablingForm' ng-submit='vm.submitEnablingTwoFactor(enablingForm)' novalidate=''
+    .form-group
+      .col-sm-offset-3.col-sm-9
+        remi-qr text="{{vm.twoFactor.two_factor_uri}}"
+    .form-group
+      .col-sm-offset-3.col-sm-9
+        span> translate-once='two_factor_enabling_text'
+        br
+        a ng-click="vm.openAuthyUsageHelp()" translate-once='two_factor_authy_instruction_title'
+
+    .form-group
+      label.col-sm-3.control-label translate-once='two_factor_key_placeholder'
+      .col-sm-7
+        input#two-factor-key.form-control(ng-model='vm.twoFactor.two_factor_key' type='text' name='two_factor_key' disabled='')
+    .form-group
+      label.col-sm-3.control-label for='two-factor-code' translate-once='two_factor_code_placeholder'
+      .col-sm-7
+        input#two-factor-code.form-control(ng-model='vm.twoFactorCode' type='text' name='two_factor_code'
+          ng-minlength='6' required='')
+    .form-group
+      .col-sm-offset-3.col-sm-10
+        button.btn.btn-primary.btn-enable-two-factor type='submit' translate-once='settings_enable_two_factor_btn' ng-disabled='!enablingForm.$valid || form.submitting'
+        = " "
+        a.btn translate-once="cancel" ng-click="vm.enabling = false"
+
+#two-factor-enabled.container.two-factor-disabled.call-to-action.centered ng-show='vm.user.two_factor_enabled && !vm.disabling'
+  .cta-txt
+    h2 translate-once='settings_section_two_factor_auth'
+    p translate-once='two_factor_enabled_text'
+  .cta-btn
+    button.btn.btn-primary.btn-show-disable-two-factor-form ng-click='vm.showDisableTwoFactorForm()'
+      | {{'other_disable' | translate }}
+
+
+#two-factor-disabling ng-show='vm.user.two_factor_enabled && vm.disabling'
+  form.form-horizontal name='disablingForm' ng-submit='vm.submitDisablingTwoFactor(disablingForm)' ng-if="vm.lostingAuthy == false"
+    .form-group(ng-class='{ "has-success": disablingForm.two_factor_code.$valid && disablingForm.$submitted,\
+  "has-error": disablingForm.two_factor_code.$invalid && disablingForm.$submitted }')
+      label.col-sm-3.control-label for='two-factor-code' translate-once='two_factor_code_placeholder'
+      .col-sm-8
+        input#two-factor-code.form-control(ng-model='vm.twoFactorCode' type='text' name='two_factor_code'
+          ng-minlength='6' required='')
+        p.help-block(ng-show='(disablingForm.two_factor_code.$error.minlength || disablingForm.two_factor_code.$error.required) && disablingForm.$submitted'
+          translate-once="two_factor_code_invalid")
+
+    .form-group
+      label.col-sm-offset-3.col-sm-9
+        .button
+          button.btn.btn-primary.btn-disable-two-factor> type='submit' translate-once="settings_disable_two_factor_btn" ng-disabled='!disablingForm.$valid'
+          a.btn.btn-default> translate-once="cancel" ng-click="vm.disabling = false"
+          a.btn.btn-danger.btn-lost-authy type='button' translate-once="lost_your_authy" ng-click="vm.lostAuthy()"
+  .lost-authy-section ng-if="vm.lostingAuthy"
+    lost-authy-verification-wizard action-verification="vm.actionVerificationDisableTwoFactor" losting-authy="vm.lostingAuthy"
+    .text-center
+      a> href="#" translate-once="settings_disable_two_factor_after_time" ng-click="vm.disableAuthyAfterTime()"
+      ' |
+      a translate-once="back" ng-click="vm.lostingAuthy = false"

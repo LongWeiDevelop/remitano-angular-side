@@ -1,0 +1,24 @@
+.poli-payment-details
+  .form-group(has-error-for="poli_merchant_code")
+    label translate-once='offer_poli_merchant_code'
+    .row
+      .col-sm-7
+        input.form-control#poli_merchant_code(
+          ng-model='vm.paymentDetails.poli_merchant_code'
+          type="text" name="poli_merchant_code" required=""
+        )
+        span.help-block show-error-for='poli_merchant_code' error="required" translate-once='input_required'
+      .col-sm-5
+        span.explanation translate-once="offer_poli_merchant_code_explain"
+
+  .form-group(has-error-for="poli_authentication_code")
+    label translate-once='offer_poli_authentication_code'
+    .row
+      .col-sm-7
+        input.form-control#poli_authentication_code(
+          ng-model='vm.paymentDetails.poli_authentication_code'
+          type="text" name="poli_authentication_code" required=""
+        )
+        span.help-block show-error-for='poli_authentication_code' error="required" translate-once='input_required'
+      .col-sm-5
+        span.explanation translate-once="offer_poli_authentication_code_explain"

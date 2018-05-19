@@ -1,0 +1,29 @@
+'use strict'
+
+angular.module 'remitano'
+.directive "offersOtherInformationsForm", ->
+  restrict: "E"
+  scope: false
+  templateUrl: "offers/form/other_informations_form.tmpl.html"
+  controllerAs: 'inforvm'
+  controller: ($scope, RAILS_ENV, $rootScope) ->
+    inforvm = @
+    init = ->
+      inforvm.show_payment_time_form = false
+      inforvm.show_location_form = false
+      inforvm.allCountries = for code in RAILS_ENV.countries
+        code: code
+        name: RAILS_ENV.country_names[code]
+      inforvm.countryName = (code) ->
+        return unless code?
+        RAILS_ENV.country_names[code.toLowerCase()]
+      inforvm.booleanKey = (bool) ->
+        if bool then "boolean_yes" else "boolean_no"
+      inforvm.skip_verification = ->
+        _.includes(RAILS_ENV.skip_verification_countries, $rootScope.country_code)
+      $scope.$watch "vm.offer.country_code", (countryCode) ->
+        inforvm.change_verification_requirement_disabled = RAILS_ENV.country_verify_all_buyers[countryCode]
+        if inforvm.change_verification_requirement_disabled
+          $scope.vm.offer.require_verified_buyer = true
+    init()
+    return

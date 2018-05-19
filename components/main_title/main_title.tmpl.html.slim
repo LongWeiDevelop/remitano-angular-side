@@ -1,0 +1,8 @@
+section.page-heading(ng-show="vm.$state.$current.data.title || vm.$state.$current.data.dynamic_title")
+  .container
+    .row
+      .col-md-12
+        h1 ng-hide='vm.$state.$current.data.dynamic_title'
+          | {{ vm.$state.$current.data.title | translate }}
+        h1 ng-show='vm.$state.$current.data.dynamic_title'
+          | {{ vm.$state.$current.data.dynamic_title }}

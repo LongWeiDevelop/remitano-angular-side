@@ -1,0 +1,8 @@
+.fiat-transaction-item {
+  padding: 5px;
+  &:nth-child(odd) { background: $table-bg-accent; }
+
+  &+.fiat-transaction-item {
+    border-top: solid 1px $table-border-color;
+  }
+}

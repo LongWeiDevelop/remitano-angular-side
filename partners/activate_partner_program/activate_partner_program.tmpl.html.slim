@@ -1,0 +1,36 @@
+section.container.activate-partner-program-container
+  .content-activatable ng-if="vm.activatable()"
+    .row
+      .col-lg-offset-2.col-lg-8
+        .title-accent
+          h3
+            span translate-once="partner_program_title"
+        .well.well-transparent.box-description
+          .content
+            span translate-once="partner_program_explain"
+            br
+            strong.text-danger translate-once="partner_program_verify" ng-if="!vm.userVerified()"
+            strong.text-warning translate-once="partner_program_activating" ng-if="vm.userVerified() && !vm.activated"
+            strong.text-success translate-once="partner_program_activated" ng-if="vm.userVerified() && vm.activated"
+
+    .row ng-if="!vm.userVerified()"
+      .col-lg-offset-2.col-lg-8
+        react-account-verify-document-wizard onAccountVerified="vm.activatePartnerProgram" hideInstantMessage="true"
+
+    .row
+      .col-sm-12.text-center
+        a.btn.btn-primary(translate-once="partner_program_view" ui-sref="root.referral_program"
+          ng-if="vm.userVerified() && vm.activated")
+        button.btn.btn-primary(translate-once="partner_program_activate"
+          ng-if="vm.userVerified() && !vm.activated" ng-click="vm.activatePartnerProgram()"
+          ng-disabled="vm.activating")
+
+  .content-unactivatable ng-if="!vm.activatable()"
+    .row
+      .col-lg-offset-2.col-lg-8
+        .title-accent
+          h3
+            span translate-once="partner_program_title"
+        .well.well-transparent.box-description
+          .content
+            span translate-once="partner_program_ineligible"

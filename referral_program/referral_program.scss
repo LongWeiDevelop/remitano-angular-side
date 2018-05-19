@@ -1,0 +1,19 @@
+section.referral-program {
+  margin-top: 30px;
+}
+table tr.banner-item {
+  > td.banner-col {
+    vertical-align: middle;
+    .banner-img {
+      max-height: 300px;
+      max-width: 600px;
+    }
+    .caption {
+      font-size: 0.8em;
+    }
+  }
+  textarea.code {
+    font-family: "courier new";
+    font-size: 12px;
+  }
+}

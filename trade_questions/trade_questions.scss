@@ -1,0 +1,11 @@
+.trade-questions {
+  .panel-group .btc-background .panel-title > a {
+    display: block;
+    padding: 14px 20px 14px 40px;
+    color: #fff;
+    background-color: $bitcoin-color;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    position: relative;
+  }
+}

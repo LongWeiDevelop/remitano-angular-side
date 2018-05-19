@@ -1,0 +1,45 @@
+section.page-content.trade-page
+  .container#trade ng-class="{loading: vm.fetching}"
+    .loading-container.text-center
+      .loading-bar
+    .alert.alert-danger ng-show="vm.fetchError"
+      span> translate-once="fetching_data_error"
+      a ng-click="vm.reloadTrade()" translate-once="try_again"
+    .main-container ng-if="vm.trade"
+      .row
+        .col-lg-offset-1.col-lg-10
+          trade-live-updater(trade-with-role="vm.trade")
+          trade-buyer-perspective(ng-if="vm.trade.role == 'buyer'" trade-with-role="vm.trade")
+          trade-seller-perspective(ng-if="vm.trade.role == 'seller'" trade-with-role="vm.trade")
+          trade-buyer-alert(ng-if="vm.trade.role == 'buyer'" trade-with-role="vm.trade")
+          trade-deposit-address(ng-if="(vm.trade.role == 'seller') && (vm.trade.trade.status == 'awaiting')" trade-with-role="vm.trade")
+          trade-seller-alert(ng-if="vm.trade.role == 'seller'" trade-with-role="vm.trade")
+          br
+          trade-functional-buttons trade-with-role="vm.trade"
+          br
+          trade-messages trade-with-role="vm.trade" ng-if="vm.trade.trade.allow_chat || vm.trade.trade.status == 'disputed'"
+          trade-feedback trade-ref="{{vm.ref}}" ng-show="vm.trade.trade.status == 'released'" other-user="{{vm.otherUser}}"
+          br ng-show="vm.trade.trade.status == 'released'"
+          received-feedback trade="vm.trade" other-user="vm.otherUser" ng-show="vm.trade.trade.status == 'released'"
+          trade-payment-information trade-with-role="vm.trade"
+          trade-coin-withdrawal-address trade-with-role="vm.trade" ng-if="vm.trade.role == 'buyer'"
+          profile-summary profile="vm.trade.partner" ng-if="vm.showPartnerSummary()"
+            .div-table.tabular(ng-if="vm.trade.partner_phone_number")
+              .table-row
+                .table-cell(translate="phone_number")
+                .table-cell: strong(ng-bind="vm.trade.partner_phone_number")
+            div(ng-if="vm.trade.role == 'seller'")
+              .div-table.tabular(ng-if="vm.trade.buyer_real_name")
+                .table-row
+                  .table-cell(translate="buyer_real_name")
+                  .table-cell: strong(ng-bind="vm.trade.buyer_real_name")
+              .div-table.tabular(ng-if="vm.trade.trade.require_verified_buyer")
+                .table-row: .table-cell
+                  span.text-danger(translate="match_sender_name_with_buyer_before_release")
+              .div-table(ng-if="!vm.trade.use_fiat_deposit")
+                .table-row: .table-cell
+                  buyer-trust-score(trust-score="vm.trade.buyer_trust_score")
+              .div-table(ng-if="vm.trade.partner.current_country_code != vm.trade.trade.offer_data.country_code")
+                .table-row: .table-cell
+                  span.text-danger(translate="buyer_is_from_country"
+                    translate-values="{ buyer: vm.trade.partner.username, country: vm.trade.partner.current_country_name }")

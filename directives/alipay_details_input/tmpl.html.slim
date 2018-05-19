@@ -1,0 +1,28 @@
+.alipay-payment-details
+  .form-group(has-error-for="alipay_email")
+    label translate-once='offer_alipay_qr_url'
+    .row
+      .col-sm-7
+        file-upload(path="/api/v1/images/"
+          label="{{'upload_document' | translate}}"
+          ng-model="vm.paymentDetails.alipay_qr_url"
+          ng-preview-url="vm.paymentDetails.alipay_qr_thumb_url"
+        )
+        span.help-block show-error-for='alipay_email' error='provided' translate-once='alipay_invalid_details'
+      .col-sm-5
+        span.explanation translate-once="offer_alipay_qr_url_explain"
+
+  .form-group(has-error-for="alipay_email")
+    label translate-once='offer_alipay_email'
+    .row
+      .col-sm-7
+        input.form-control#alipay_email(
+          ng-model='vm.paymentDetails.alipay_email'
+          type="text" name="alipay_email"
+          ng-model-options="{ allowInvalid: true }"
+          ui-validate='{ provided: "vm.isDetailsValid()" }' ui-validate-watch="'vm.paymentDetails.alipay_qr_url'"
+        )
+        span.help-block show-error-for='alipay_email' error='provided' translate-once='alipay_invalid_details'
+      .col-sm-5
+        span.explanation translate-once="offer_alipay_email_explain"
+

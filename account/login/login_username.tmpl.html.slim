@@ -1,0 +1,17 @@
+section.page-content.login-username-page
+  .container
+    .row
+      .col-sm-4.col-sm-push-4
+        form(name='loginForm' ng-submit='vm.submitUsername(loginForm)' novalidate='')
+          .form-group
+            .help-block translate-once='account_please_enter_username'
+          .form-group.form-grop__icon(ng-class='{ "has-success": loginForm.username.$valid && loginForm.$submitted,\
+          "has-error": loginForm.username.$invalid && loginForm.$submitted }')
+            i.fa.icon-user
+            input.form-control(ng-model='vm.user.username' type='text' name='username'
+              ng-minlength='3' ng-maxlength='22' required='' placeholder="{{vm.placeholderText('account_username')}}")
+            p.help-block(ng-show='loginForm.username.$invalid && loginForm.$submitted'
+              translate-once="account_username_error")
+
+          div
+            button.btn.btn-block.btn-primary.btn-continue type='submit' translate-once="continue" ng-disabled="loginForm.submitting"

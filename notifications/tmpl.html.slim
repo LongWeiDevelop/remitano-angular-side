@@ -1,0 +1,10 @@
+section.page-content.notifications-page
+  .container#notifications-list: .row : .col-lg-5.col-md-12
+    .notifications-list
+       notification-item(ng-repeat="notification in vm.notifications" notification="notification")
+    ul.pagination-sm(uib-pagination="" ng-show="vm.meta.total_pages > 1"
+      items-per-page="{{vm.meta.per_page}}"
+      total-items="vm.meta.total_items"
+      ng-model="vm.page"
+      ng-change="vm.onPageChanged()"
+      max-size="0" ng-if="vm.meta")

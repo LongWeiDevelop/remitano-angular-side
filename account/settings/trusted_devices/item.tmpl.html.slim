@@ -1,0 +1,7 @@
+.list-group-item ng-class="vm.clazz()"
+  span(ng-bind="vm.device.displayed_name")
+  a.badge.btn-delete(class="badge-danger" ng-show="!vm.deleteAsking && !vm.deleting && !vm.deleted" ng-click="vm.deleteAsking = true") x
+  a.badge.btn-confirm(class="badge-danger" ng-show="vm.deleteAsking" translate="button_confirm" ng-click="vm.delete()")
+  a.badge(class="badge-default" ng-show="vm.deleteAsking" translate="button_cancel" ng-click="vm.deleteAsking = false")
+  a.badge(class="badge-default" ng-show="vm.deleting")
+    i.icon-spin4.animate-spin

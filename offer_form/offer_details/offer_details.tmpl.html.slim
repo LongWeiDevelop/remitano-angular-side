@@ -1,0 +1,214 @@
+.offer-details
+  .form-group.offer_type has-error-for="offer_type"
+    label translate-once="offer_offer_type"
+    .input-group
+      ui-select(ng-model="vm.offer.offer_type" id="offer_type" name="offer_type" required="" ng-disabled="vm.offer.id")
+        ui-select-match(placeholder="{{'offer_select_type' | translate}}")
+          | {{$select.selected.name}} {{$root.coin_currency_name}}
+        ui-select-choices(repeat = "type.value as type in offer_subvm.availableTypes | filter: $select.search")
+          | {{type.name}} {{$root.coin_currency_name}}
+
+  .form-group.price has-error-for="price"
+    label translate-once="offer_price" ng-show="vm.editing.price"
+    .row
+      .col-md-7
+        .row ng-hide="vm.editing.price"
+          .col-sm-5.col-xs-7
+            label
+              span> translate="offer_currency_price" translate-values="{currency: vm.priceUnit() }"
+          .col-sm-4.text-right.col-xs-5
+            strong> ng-bind="vm.offer.price | priceFormatter:vm.offer.currency:(offer_subvm.maxDecimalsForPrice)"
+            strong
+              ' / {{vm.priceUnit()}}
+          .col-sm-3.text-left.col-xs-12.text-xs-right
+            a.btn-change ng-click="vm.editing.price = true; vm.offer_price_edited = true;" translate-once='offers_change'
+        div ng-show="vm.editing.price"
+          .input-group
+            input.form-control#price(name="price" ng-model="vm.offer.price" required = "" type="text"
+              awnum='' num-thousand='true' num-int='9' num-fract='{{offer_subvm.maxDecimalsForPrice}}'
+              ng-min="vm.price_min" ng-max="vm.price_max" ng-model-options="{ allowInvalid: true }")
+            span.input-group-addon ng-bind="vm.offer.currency" ng-show="vm.offer.currency"
+          span.help-block ng-show="vm.validateInput(form, 'price', 'required')" translate-once='input_required'
+          span.help-block(ng-show="vm.validateInput(form, 'price', 'max') || vm.validateInput(form, 'price', 'min')"
+            translate='offers_input_in' translate-values="{min: (vm.price_min | priceFormatter:vm.offer.currency), max: (vm.price_max | priceFormatter:vm.offer.currency)}")
+      .col-md-5
+        span.explanation translate='offers_explain_price' translate-values="{other_currency: vm.offer.currency, price_unit: vm.priceUnit()}" ng-show="vm.offer.currency"
+
+  .form-group(ng-if="$root.coin_currency != 'usdt'")
+    .form-group.price-for-maker has-error-for="price"
+      .row
+        .col-md-7
+          .row
+            .col-sm-5.col-xs-6
+              label
+                span translate="offer_{{vm.offer.offer_type}}_maker_btc_price"  translate-values='{ exchange: vm.exchangeName(), rate: vm.exchangeRate() }'
+            .col-sm-4.text-right.col-xs-6.text-xs-right
+              strong ng-bind="vm.offer.price_per_coin_before_fee | priceFormatter : vm.offer.currency"
+              strong= ' / {{$root.COIN_CURRENCY}}'
+        .col-md-5
+          span.explanation> translate='offer_maker_btc_price_explanation' translate-values='{ rate: vm.exchangeRate(), exchange: vm.exchangeName() }'
+
+  .show-more-button.text-center ng-hide='vm.show_extra'
+    a.btn.btn-sm.btn-default translate="other_show_more" ng-click="vm.show_extra = true"
+
+  .offer-extra-fields ng-class="vm.show_extra ? '' : 'hidden'"
+    .form-group.price-for-taker has-error-for="price"
+      .row
+        .col-md-7
+          .row
+            .col-sm-5.col-xs-6
+              label
+                span translate="offer_{{vm.offer.offer_type}}_taker_btc_price" translate-values='{ rate: vm.exchangeRate() }'
+            .col-sm-4.text-right.col-xs-6.text-xs-right
+              strong ng-bind="vm.offer.price_per_coin | priceFormatter : vm.offer.currency"
+              strong= ' / {{$root.COIN_CURRENCY}}'
+        .col-md-5
+          span.explanation> translate='offer_{{vm.offer.offer_type}}_taker_btc_price_explanation' translate-values='{ rate: vm.exchangeRate() }'
+    .form-group.currency has-error-for="currency"
+      label translate-once="offer_currency" ng-show="vm.editing.offer_currency"
+      .row
+        .col-md-7
+          .row ng-hide="vm.editing.offer_currency"
+            .col-sm-5.col-xs-7
+              label translate-once="offer_currency"
+            .col-sm-4.text-right.col-xs-5
+              strong ng-bind="vm.offer.currency"
+            .col-sm-3.text-left.col-xs-12.text-xs-right
+              a ng-click="vm.editing.offer_currency = true" translate-once='offers_change'
+          div ng-show="vm.editing.offer_currency"
+            ui-select(ng-model="vm.offer.currency" id="currency" name="currency" required="")
+              ui-select-match(placeholder="{{'offer_select_currency' | translate}}")
+                | {{$select.selected}}
+              ui-select-choices(repeat = "currency in offer_subvm.availableCurrencies | filter: $select.search")
+                | {{currency}}
+            span.help-block ng-show='vm.validateInput(form, "currency")' translate-once='input_required'
+        .col-md-5
+          span.explanation translate='offers_explain_currency' translate-values='{currency: $root.COIN_CURRENCY}'
+
+    .form-group.min_amount ng-class="{'has-error': form.min_amount.$invalid}"
+      label translate-once="offer_minimum_amount" ng-show="vm.editing.min_amount"
+      .row
+        .col-md-7
+          .row ng-hide="vm.editing.min_amount"
+            .col-sm-5.col-xs-7
+              label translate-once="offer_minimum_amount"
+            .col-sm-4.text-right.col-xs-5
+              strong> ng-bind="vm.offer.min_amount|currencyFormatter:$root.COIN_CURRENCY:false:true:false:true"
+              strong ng-bind="$root.COIN_CURRENCY"
+            .col-sm-3.text-left.col-xs-12.text-xs-right
+              a.btn-change ng-click="vm.editing.min_amount = true" translate-once='offers_change'
+          div ng-show="vm.editing.min_amount"
+            .input-group ng-show="vm.editing.min_amount"
+              input.form-control#min_amount(name="min_amount" ng-model="vm.offer.min_amount" type="text"
+                awnum='' num-thousand='true' num-fract='8' ng-min='vm.minTradeAmount'
+                ng-max="offer_subvm.maxOfMinAmount()" required="" ng-model-options="{ allowInvalid: true }")
+              span.input-group-addon ng-bind="$root.COIN_CURRENCY"
+            span.help-block ng-show='form.min_amount.$error.required' translate-once='input_required'
+            span.help-block ng-show='form.min_amount.$error.number' translate-once='offers_input_number'
+            span.help-block(ng-show='form.min_amount.$error.min'
+              translate='offers_input_min_amount_at_least_amount' translate-values="{ amount: vm.minTradeAmount }")
+            span.help-block(ng-show='form.min_amount.$error.max'
+              translate='offers_input_over_max' translate-values="{ amount: offer_subvm.maxOfMinAmount() }")
+        .col-md-5
+          span.explanation translate='offers_explain_min_amount' translate-values='{currency: $root.COIN_CURRENCY, amount: vm.minTradeAmount}'
+
+    .form-group.max_amount ng-class="{'has-error': vm.validateInput(form, 'max_amount') || form.max_amount.$error.number}"
+      label translate-once="offer_maximum_amount" ng-show="vm.editing.max_amount"
+      .row
+        .col-md-7
+          .row ng-hide="vm.editing.max_amount"
+            .col-sm-5.col-xs-7
+              label translate-once="offer_maximum_amount"
+            .col-sm-4.text-right.col-xs-5
+              strong> ng-bind="vm.offer.max_amount|currencyFormatter:$root.COIN_CURRENCY:false:true:false:true"
+              strong ng-bind="$root.COIN_CURRENCY"
+            .col-sm-3.text-left.col-xs-12.text-xs-right
+              a.btn-change ng-click="vm.editing.max_amount = true" translate-once='offers_change'
+          div ng-show="vm.editing.max_amount"
+            .input-group
+              input#max_amount.form-control(name="max_amount" ng-model="vm.offer.max_amount" type="text"
+                awnum='' num-thousand='true' num-fract='8'
+                ng-min="vm.offer.min_amount" ng-model-options="{ allowInvalid: true }")
+              span.input-group-addon ng-bind="$root.COIN_CURRENCY"
+            span.help-block ng-show='form.max_amount.$error.required' translate-once='input_required'
+            span.help-block ng-show='form.max_amount.$error.number' translate-once='offers_input_number'
+            span.help-block(ng-show='form.max_amount.$error.min' translate='offers_input_below_min'
+              translate-values="{ amount: vm.offer.min_amount }"))
+        .col-md-5
+          span.explanation translate='offers_explain_max_amount' translate-values='{currency: $root.COIN_CURRENCY, amount: vm.maxTradeAmount}'
+
+    .form-group.min-coin-price(ng-if="vm.offer.offer_type == 'sell' && $root.coin_currency != 'usdt'"
+      has-error-for="min_coin_price")
+      label translate-once="offer_min_coin_price" ng-show="vm.editing.min_coin_price"
+      .row
+        .col-md-7
+          .row ng-hide="vm.editing.min_coin_price"
+            .col-sm-5.col-xs-7
+              label
+                span> translate-once="offer_min_coin_price"
+            .col-sm-4.text-right.col-xs-5
+              strong ng-bind="vm.offer.min_coin_price | priceFormatter : vm.offer.currency"
+            .col-sm-3.text-left.col-xs-12.text-xs-right
+              a ng-click="vm.editing.min_coin_price = true" translate-once='offers_change'
+          div ng-show="vm.editing.min_coin_price"
+            .input-group
+              input.form-control#min_coin_price(name="min_coin_price" ng-model="vm.offer.min_coin_price"
+                ui-validate="{ min: 'offer_subvm.isValidBtcMinPrice($value)' }"
+                type="text" ng-model-options="{ allowInvalid: true }"
+                awnum='' num-thousand='true' num-int='9' num-fract='{{offer_subvm.maxDecimals}}')
+              span.input-group-addon ng-bind="vm.offer.currency" ng-show="vm.offer.currency"
+            span.help-block(show-error-for="min_coin_price" error="min"
+              translate='offers_price_below_min' translate-values="{ price: offer_subvm.minBtcPriceStr() }")
+        .col-md-5
+          span.explanation translate='offers_explain_min_coin_price' translate-values="{other_currency: vm.offer.currency}" ng-show="vm.offer.currency"
+
+    .form-group.reference-exchange(has-error-for="reference_exchange" ng-if="$root.coin_currency != 'usdt'")
+      label translate-once="offer_reference_exchange" ng-show="vm.editing.reference_exchange"
+      .row
+        .col-md-7
+          .row ng-hide="vm.editing.reference_exchange"
+            .col-sm-5.col-xs-7
+              label
+                span> translate-once="offer_reference_exchange"
+            .col-sm-4.text-right.col-xs-5
+              strong ng-bind="vm.exchangeName()"
+            .col-sm-3.text-left.col-xs-12.text-xs-right
+              a.btn-change ng-click="vm.editing.reference_exchange = true" translate-once='offers_change'
+
+          div ng-show="vm.editing.reference_exchange"
+            .input-group
+              ui-select(ng-model="vm.offer.reference_exchange" id="reference_exchange" name="reference_exchange" required="")
+                ui-select-match
+                  | {{$select.selected.name}}
+                ui-select-choices(repeat="exchange.code as exchange in vm.allExchanges | filter: $select.search")
+                  | {{exchange.name}}
+            span.help-block ng-show='vm.validateInput(form, "reference_exchange")' translate-once='input_required'
+
+        .col-md-5
+          span.explanation translate='offers_explain_reference_exchange'
+
+    .form-group.max-coin-price(ng-if="vm.offer.offer_type == 'buy' && $root.coin_currency != 'usdt'" has-error-for="max_coin_price")
+      label translate-once="offer_max_coin_price" ng-show="vm.editing.max_coin_price"
+      .row
+        .col-md-7
+          .row ng-hide="vm.editing.max_coin_price"
+            .col-sm-5.col-xs-7
+              label
+                span> translate-once="offer_max_coin_price"
+            .col-sm-4.text-right.col-xs-5
+              strong ng-bind="vm.offer.max_coin_price | priceFormatter : vm.offer.currency"
+            .col-sm-3.text-left.col-xs-12.text-xs-right
+              a ng-click="vm.editing.max_coin_price = true" translate-once='offers_change'
+          div ng-show="vm.editing.max_coin_price"
+            .input-group
+              input.form-control#max_coin_price(name="max_coin_price" ng-model="vm.offer.max_coin_price" type="text"
+                ui-validate="{ max: 'offer_subvm.isValidBtcMaxPrice($value)' }"
+                awnum='' num-thousand='true' num-int='9' num-fract='{{offer_subvm.maxDecimals}}'
+                ng-model-options="{ allowInvalid: true }")
+              span.input-group-addon ng-bind="vm.offer.currency" ng-show="vm.offer.currency"
+            span.help-block(show-error-for='max_coin_price' error='max'
+              translate='offers_price_over_max' translate-values="{ price: offer_subvm.maxBtcPriceStr() }")
+        .col-md-5
+          span.explanation translate='offers_explain_max_coin_price' translate-values="{other_currency: vm.offer.currency}" ng-show="vm.offer.currency"
+    offers-other-informations-form
+

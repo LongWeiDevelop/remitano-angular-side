@@ -1,0 +1,13 @@
+.message-item class="{{vm.message.animateClass}}" ng-class="{'text-warning': vm.message.is_moderator}" ng-show='!vm.imageOnly || vm.message.attachment'
+  small ng-bind="::vm.message.created_at | dateTimeFromTimestamp"
+  p
+    strong ng-bind="::vm.message.sender_name"
+    span.pre-text ng-bind="::': ' + vm.message.content" ng-show="::!vm.message.attachment"
+    .project-item
+      figure.alignnone.project-img ng-show="::vm.message.attachment"
+        div afkl-lazy-image="{{::vm.message.attachment_thumb_url}}" class="afkl-lazy-wrapper"
+        .overlay
+          a.dlink ng-href="{{::vm.message.attachment_full_url}}" target="_self" download=""
+            i.fa.icon-download
+          a.zoom ng-click="::vm.zoomImg(vm.message)"
+            i.fa.icon-search

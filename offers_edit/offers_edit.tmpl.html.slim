@@ -1,0 +1,26 @@
+section.page-content.offer-edit-page
+  .container#edit_offer
+    .row
+      .col-sm-12
+        react-offer-edit(offer-id="vm.offerId")
+        /.box-wrapper
+          /.box-head
+            /span.title translate-once="offer_edit_offer_form"
+          /.box-body.text-left
+            /.content-wrapper ng-class="{'loading': vm.fetchingOffer}"
+              /.loading-container.text-center
+                /.loading-bar
+              /.alert.alert-danger ng-show="vm.errorFetchingOffer"
+                /span translate-once="fetching_data_error"
+              /.main-container ng-cloak="" ng-hide="vm.errorFetchingOffer"
+                /form.form role="form" novalidate="" name="form" ng-if="vm.offer" ng-submit="vm.submitOffer(form)"
+                  /fieldset ng-disabled="vm.submitting"
+                    /h2 translate-once="escrow_offer_informations"
+                    /offer-form-offer-details
+                    /hr
+                    /h2 translate-once="escrow_payment_informations"
+                    /offers-edit-payment-details
+                    /.form-group
+                      /button.btn-save-offer.btn.btn-primary type="submit" ng-disabled="vm.submitting"
+                        /i.icon-spin4.animate-spin(ng-if="vm.submitting")
+                        /' {{ (vm.offer.id ? 'button_update' : 'button_create') | translate }}

@@ -1,0 +1,24 @@
+div
+  div(ng-include="'about/subnav.tmpl.html'")
+  react-escrow-service(videoSrc="vm.videoSrc", videoUrl="vm.videoUrl")
+  / section.page-content.escrow-service-page
+  /   .container#escrow_service
+  /     .row
+  /       .col-xs-12
+  /         .title-centered.title-decorated
+  /           h1 translate-once="landing_escrow_btn"
+
+  /     .escrow-explain
+  /       .row
+  /         h4 translate-once='escrow_small_title'
+  /         p translate-once='escrow_explain'
+  /         ul
+  /           li translate-once='escrow_explain_details_1'
+  /           li translate-once='escrow_explain_details_2'
+  /       .row.row-video
+  /         .text-center
+  /           .embed-responsive.embed-responsive-16by9
+  /             - unless Rails.env.test?
+  /               embed ng-if="vm.videoSrc == 'youku' && vm.videoUrl" align="middle" allowfullscreen="true" allowscriptaccess="always" height="400" quality="high" src="https://players.youku.com/player.php/sid/XMTc4MjA1NDM5Ng==/v.swf" type="application/x-shockwave-flash" width="480"
+  /               iframe.embed-responsive-item ng-if="vm.videoSrc != 'youku' && vm.videoUrl" ng-src="{{vm.videoUrl}}" allowfullscreen=""
+

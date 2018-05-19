@@ -1,0 +1,26 @@
+.remittance-container(ng-class="{ loading: vm.fetching }")
+  .row
+    .col-md-12
+      .loading-container.text-center
+        .loading-bar
+      .alert.alert-danger ng-show="vm.fetchError"
+        span translate='fetching_data_error'
+        = ' '
+        a ng-click="vm.fetchRemittance()" translate-once="try_again"
+      .main-container ng-cloak="" ng-if="vm.remittance"
+        remittance-progress(remittance="vm.remittance")
+        remittance-pre-deposit(remittance="vm.remittance"
+          ng-if="vm.remittance.step == 0"
+          on-select-deposit-method="vm.requestDeposit($method)")
+
+        remittance-deposit(remittance="vm.remittance"
+          ng-if="vm.remittance.step >= 10 && vm.remittance.step < 30"
+          on-deposit-status-changed="vm.fetchRemittance()")
+
+        remittance-pre-withdraw(remittance="vm.remittance"
+          ng-if="vm.remittance.step == 30"
+          on-select-withdraw-method="vm.requestWithdraw($method, $paymentDetails)")
+
+        remittance-withdraw(remittance="vm.remittance"
+          ng-if="vm.remittance.step > 30 && vm.remittance.step < 50"
+          on-withdraw-status-changed="vm.fetchRemittance()")

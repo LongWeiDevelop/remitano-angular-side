@@ -1,0 +1,15 @@
+.trade-create-shared(ng-switch="vm.step")
+  react-phone-verify-wizard(ng-switch-when="verify_phone"
+    on-phone-number-updated="vm.onPhoneNumberUpdated")
+  trade-payment-details-form(ng-switch-when="input_payment_details"
+    payment-method="vm.offer.payment_method"
+    on-submitted="vm.onPaymentDetailsSubmitted($paymentDetails)"
+    offer-country="vm.offer.country_code"
+    payment-bank="vm.offer.payment_descriptions"
+  )
+  react-account-verify-document-wizard(ng-switch-when="need_verify" onAccountVerified="vm.handleAccountVerified")
+
+  div ng-switch-when="need_fiat_wallet"
+    fiat-wallet-pre-use on-fiat-wallet-ready="vm.calculateStep()"
+  div.text-center ng-switch-when="warning"
+    pre-trade-warnings offer="vm.offer" on-dismiss="vm.dismissWarnings()" is-remittance="vm.isRemittance"

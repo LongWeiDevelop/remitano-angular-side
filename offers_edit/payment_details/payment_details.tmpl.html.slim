@@ -1,0 +1,28 @@
+.payment-details
+  .form-group.payment_method ng-class="{'has-error': vm.validateInput(form, 'payment_method')}"
+    label translate-once="offer_payment_method" ng-show="vm.editing.payment_method"
+    .row
+      .col-sm-7 ng-hide="vm.editing.payment_method"
+        .row
+          .col-sm-4.col-xs-12
+            label translate-once="offer_payment_method"
+          .col-sm-6.text-right.col-xs-12.text-xs-left
+            strong ng-bind="payment_subvm.paymentMethodName(vm.offer.payment_method)"
+          .col-sm-2.text-left.col-xs-12.text-xs-right
+            a ng-click="vm.editing.payment_method = true" translate-once='offers_change'
+      .col-sm-7 ng-show="vm.editing.payment_method"
+        ui-select(ng-model="vm.offer.payment_method" id="payment_method" name="payment_method" required="")
+          ui-select-match(placeholder="{{'offer_select_payment_method' | translate}}")
+            | {{$select.selected.name}}
+          ui-select-choices(repeat = "method.value as method in payment_subvm.availablePaymentMethods|filter: $select.search" )
+            span ng-bind-html="method.name | highlight: $select.search"
+        span.help-block ng-show='vm.validateInput(form, "payment_method")' translate-once='input_required'
+      .col-sm-5
+        span.explanation translate-once='offers_explain_payment_method'
+
+  div ng-switch="vm.offer.payment_method"
+    local-bank-payment-details(ng-switch-when="local_bank|cash_deposit" ng-switch-when-separator="|" payment-details="vm.offer.payment_details" buying="vm.offer.offer_type == 'buy'" country-code="vm.offer.country_code")
+    alipay-details-input(ng-switch-when="alipay" payment-details="vm.offer.payment_details" ng-if="vm.offer.offer_type == 'sell'")
+    wechat-details-input(ng-switch-when="wechat" payment-details="vm.offer.payment_details" ng-if="vm.offer.offer_type == 'sell'")
+    poli-payment-details(ng-switch-when="poli_payment" payment-details="vm.offer.payment_details" ng-if="vm.offer.offer_type == 'sell'")
+    other-payment-details(ng-switch-default payment-method="vm.offer.payment_method" payment-details="vm.offer.payment_details" ng-if="vm.offer.offer_type == 'sell'")

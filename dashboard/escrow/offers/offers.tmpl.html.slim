@@ -1,0 +1,9 @@
+.row
+  .col-lg-12
+    react-offers-list offer-scope="'my'" filters="{coinCurrency: $root.coin_currency, offerType: 'buy'}"
+    hr
+    react-offers-list offer-scope="'my'" filters="{coinCurrency: $root.coin_currency, offerType: 'sell'}"
+
+.row
+  .col-lg-12.text-right
+    a.btn.btn-primary ui-sref="root.offerCreate" translate-once="escrow_create_offer"

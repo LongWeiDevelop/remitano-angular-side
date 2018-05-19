@@ -1,0 +1,48 @@
+.trade-seller-alert ng-switch="vm.trade.status"
+  div ng-switch-when="awaiting"
+    .position-stablizer
+    div.alert-warning.fade-and-collapse.text-center(uib-alert)
+      i.icon-clock
+      span translate-once="trade_deposit_time_left"
+      div
+        timer interval="17" seconds-to-deadline="vm.trade.payment_seconds_to_deadline"
+          span.timer.huge
+            span.base
+              |{{hhours}}:{{mminutes}}:{{sseconds}}
+            span.super
+              |{{mmillis}}
+      div: em translate-once="trade_awaiting_seller_warning"
+    .position-stablizer
+
+  div ng-switch-when="unpaid"
+    .position-stablizer
+    div.alert-info.fade-and-collapse.text-center(uib-alert)
+      i.icon-clock
+      span translate-once="{{vm.customPrefix}}trade_receiving_time_left"
+      div
+        timer interval="17" seconds-to-deadline="vm.trade.payment_seconds_to_deadline"
+          span.timer.huge
+            span.base
+              |{{hhours}}:{{mminutes}}:{{sseconds}}
+            span.super
+              |{{mmillis}}
+      div: em translate-once="{{vm.customPrefix}}trade_unpaid_seller_warning"
+    .position-stablizer
+
+  div ng-switch-when="paid"
+    .position-stablizer
+    div.alert-info.fade-and-collapse.text-center(uib-alert)
+      div: em translate-once="{{vm.customPrefix}}trade_paid_seller_warning"
+    .position-stablizer
+
+  div ng-switch-when="disputed"
+    .position-stablizer
+    div.alert-warning.fade-and-collapse.text-center(uib-alert)
+      div: em translate-once="{{vm.customPrefix}}trade_disputed_seller_warning"
+    .position-stablizer
+
+div.alert-danger.scam-warning(type='danger'
+  uib-alert
+  ng-if="!vm.tradeWithRole.use_fiat_deposit && vm.showVcbMobileBankingWarning()"
+  translate-once="scam_warning_vcb_sms")
+

@@ -1,0 +1,12 @@
+form.form-horizontal(name='form' ng-submit='vm.generateApi(form)' novalidate='')
+  .form-group
+    label.col-sm-2.control-label for='api-key' translate-once='settings_api_key'
+    .col-sm-6
+      input#api-key.form-control ng-model='vm.user.api_key' type='text' name='api_key' disabled='disabled'
+  .form-group
+    label.col-sm-2.control-label for='api-secret' translate-once='settings_api_secret'
+    .col-sm-6
+      textarea#api-secret.form-control ng-model='vm.user.api_secret' name='api_secret' disabled='disabled'
+  .form-group
+    .col-sm-offset-2.col-sm-10
+      button.btn.btn-primary.btn-generate-api type='submit' translate-once="settings_generate_api" ng-disabled="form.submitting"

@@ -1,0 +1,8 @@
+.trade-pending-coin-deposit
+  .panel.panel-default.list-pending-coin-deposit ng-hide="vm.pendingDeposit | isEmpty"
+    .panel-heading
+      i.pending-deposit-info.icon-info-circled uib-tooltip="{{'pending_deposit_explanation' | translate}}"
+      h4.panel-title
+        span translate-once="pending_deposit_title"
+    .panel-body
+      pending-coin-deposit-item ng-repeat="(txHash, amount) in vm.pendingDeposit" tx-hash="txHash" amount="amount")

@@ -1,0 +1,7 @@
+section.page-content
+  .container#trade-create(ng-class="{ loading: vm.creating }")
+    .row
+      .col-lg-offset-1.col-lg-10
+        .loading-container.text-center
+          .loading-bar
+        trade-create-shared(offer="vm.pendingTradeOffer" on-proceed-to-creation="vm.createTrade($paymentDetails)")

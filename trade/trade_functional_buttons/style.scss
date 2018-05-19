@@ -1,0 +1,19 @@
+@import "sass-flex-mixin/flex";
+
+.functional-buttons {
+  margin-bottom: 10px;
+
+  .buyer, .seller {
+    @include flexbox();
+  }
+
+  .button-container {
+    @include flex(1);
+    text-align: center;
+  }
+
+  button {
+    width: 95%;
+    max-width: 200px;
+  }
+}

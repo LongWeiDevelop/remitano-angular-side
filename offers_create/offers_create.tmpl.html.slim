@@ -1,0 +1,19 @@
+section.page-content.offer-create-page
+  .container#create_offer
+    .row
+      .col-sm-12
+        react-offer-edit
+        /.box-wrapper
+          /.box-head
+            /span.title translate-once="offer_create_offer_form"
+          /.box-body.text-left
+            /form.form role="form" novalidate="" name="form" ng-submit="vm.submitOffer(form)"
+              /h2 translate-once="escrow_offer_informations"
+              /offer-form-offer-details
+              /hr
+              /h2 translate-once="escrow_payment_informations" ng-if="vm.selling()"
+              /offers-edit-payment-details
+              /.form-group
+                /button.btn-save-offer.btn.btn-primary type="submit" ng-disabled="vm.submitting"
+                  /i.icon-spin4.animate-spin(ng-if="vm.submitting")
+                  /' {{ (vm.offer.id ? 'button_update' : 'button_create') | translate }}

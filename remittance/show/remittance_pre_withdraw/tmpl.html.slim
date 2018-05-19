@@ -1,0 +1,29 @@
+.remittance-pre-withdraw(ng-class="{ loading: vm.loading }")
+  .loading-container.text-center
+    .loading-bar
+  .alert.alert-danger ng-show="vm.loadFailed"
+    span> translate-once="fetching_data_error"
+    a ng-click="vm.load()" translate-once="try_again"
+  div.alert-warning(uib-alert ng-if="vm.remittance.status == 'withdraw_cancelled'")
+    span(translate="vendor_cancelled_withdrawal"
+      translate-compile translate-values=" { country: vm.remittance.to_country_code }")
+  div.alert-danger(uib-alert ng-if="vm.estimations.length == 0 && !vm.loading && !vm.loadFailed")
+    span translate="no_available_withdraw_method"
+  div(ng-if="vm.estimations.length > 0")
+    h4 translate="select_withdraw_method"
+    div
+      a.btn.btn-block.btn-danger.estimation ng-repeat="estimation in vm.estimations" href="" ng-click="vm.selectEstimation(estimation)" ng-class="estimation.fullMethodName"
+        span.estimation-block
+          strong> pm-translate="{{estimation.method.name}}"
+          strong ng-bind="estimation.method.bank_name"
+        span.estimation-block
+          span> translate="estimated_receiving_amount" translate-values="{ currency: vm.remittance.receiving_currency }"
+          span> ng-bind="estimation.receivingAmount"
+          span> ng-bind="vm.remittance.receiving_currency"
+          ' -
+          span>(translate-once="rate")
+          strong ng-bind="estimation.receivingRate"
+      br
+
+  trade-create-shared(ng-if="vm.selectedEstimation"
+    offer="vm.selectedEstimation.offer" on-proceed-to-creation="vm.withdrawWith($paymentDetails)" is-remittance="true")

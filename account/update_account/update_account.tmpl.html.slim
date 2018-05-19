@@ -1,0 +1,21 @@
+section.page-content.update-account-page
+  .container
+    .row
+      .col-md-offset-3.col-md-6.text-center
+        p translate-once="account_update_explain"
+    .row
+      .col-md-offset-3.col-md-6
+        form.update-account.form-horizontal(name='form' ng-submit='vm.update_account(form)' novalidate='')
+          .form-group(ng-class='{ "has-success": form.username.$valid && form.$submitted,\
+          "has-error": form.username.$invalid && form.$submitted }')
+            label.col-md-3.control-label for='username' translate-once='account_username'
+            .col-md-9
+              input.form-control(ng-model='vm.user.username' type='text' name='username'
+                required='' rails-error='' ng-change='vm.resetValidity(form)')
+              p.help-block ng-show='form.username.$error.required && form.$submitted' translate-once="account_username_is_required"
+              p.help-block(ng-show='form.username.$error.rails')
+                | {{ vm.errors.username }}
+
+          .form-group.text-right
+            .col-md-offset-2.col-md-10
+              button.btn.btn-primary.btn-login type='submit' translate-once="account_update" ng-disabled="form.submitting"

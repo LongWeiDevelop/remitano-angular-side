@@ -1,0 +1,49 @@
+'use strict'
+
+angular.module('remitano').controller 'NotificationsController',
+($scope, $state, $timeout, $stateParams, Auth, SocketWrapper, Notification, MobileApp, RAILS_ENV) ->
+  vm = this
+  vm.notifications = []
+  init = ->
+    subscribeNotifications()
+    fetchNotifications()
+
+  subscribeNotifications = ->
+    user_id = Auth.currentUser().id
+    for event in ["new", "new-#{RAILS_ENV.coin_currency}"]
+      SocketWrapper.subscribe $scope, "private-user_#{user_id}@user_notifications_#{user_id}", event, handleNotification
+
+  handleNotification = (event, data) ->
+    # TODO: need to check if on first page
+    vm.notifications.unshift(new Notification(data))
+
+  onPageChanged = ->
+    if vm.page != parseInt($stateParams.page, 10)
+      $state.go ".", page: vm.page
+      fetchNotifications()
+
+  fetchNotifications = ->
+    Notification.query { page: $stateParams.page }, (data) ->
+      vm.notifications = data.notifications
+      vm.meta = data.meta
+      vm.page = $stateParams.page
+      vm.onPageChanged = onPageChanged
+      markAllAsViewed()
+      # markAllAsRead()
+
+  markAllAsViewed = ->
+    if vm.notifications[0]?.status == 'pending'
+      Notification.markAllAsViewed(last_id: vm.notifications[0].id)
+      Notification.saveJstorage(0)
+
+  markAllAsRead = ->
+    unread = _.filter(vm.notifications, (n) -> n.status != "read")
+    if unread.length > 0
+      unreadIds = (n.id for n in unread)
+      Notification.markAllAsRead(ids: unreadIds.join(","))
+      Notification.saveJstorage(0)
+      for n in unread
+        n.status = "read"
+
+  init()
+  return

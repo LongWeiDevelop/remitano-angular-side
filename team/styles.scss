@@ -1,0 +1,92 @@
+.team-page {
+  .item-box {
+    padding: 5px;
+    img {
+      filter: grayscale(100%);
+    }
+  }
+
+  .group-title-box > div:first-child {
+    padding-top: 100%;
+    background: $primary-background-color;
+    color: #f5f7f8;
+    position: relative;
+    h4 {
+      line-height: 1.1;
+      letter-spacing: 1px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-weight: 200;
+      color: #fff;
+      text-transform: uppercase;
+      padding: 10px 15px;
+    }
+  }
+
+  .has-box-hover {
+    position: relative;
+
+    .box-hover {
+      position: absolute;
+      color: #000;
+      background-color: rgba(255, 255, 255, 0.85);
+      min-height: 45px;
+      opacity: 0;
+      transition: opacity .3s ease-out;
+      -webkit-transition: opacity .3s ease-out;
+      -moz-transition: opacity .3s ease-out;
+      -o-transition: opacity .3s ease-out;
+      -ms-transition: opacity .3s ease-out;
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
+      padding: 0 5px 5px 5px;
+
+      a {
+        color: #000;
+
+        &:hover {
+          color: #000;
+        }
+      }
+
+      h5, p {
+        text-align: left;
+        font-size: 13px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin: 3px 0;
+      }
+
+      h5.name {
+        text-transform: uppercase;
+        font-weight: 700;
+        padding: 5px 6px 0 6px;
+      }
+      p.title {
+        margin: 0;
+        padding: 0px 6px;
+        color: #888;
+      }
+    }
+
+    &:hover {
+      .box-hover {
+        opacity: 1;
+      }
+      img {
+        filter: none;
+      }
+    }
+  }
+}

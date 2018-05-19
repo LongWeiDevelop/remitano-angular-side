@@ -1,0 +1,7 @@
+.remittance-deposit
+  trade-live-updater(trade-with-role="vm.tradeWithRole")
+  trade-seller-alert(trade-with-role="vm.tradeWithRole" is-remittance="true")
+  trade-functional-buttons trade-with-role="vm.tradeWithRole" is-remittance="true"
+  trade-messages trade-with-role="vm.tradeWithRole" ng-if="vm.tradeWithRole.trade.status == 'disputed'"
+  br
+  trade-payment-information trade-with-role="vm.tradeWithRole" ng-if="vm.tradeWithRole"

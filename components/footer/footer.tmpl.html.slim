@@ -1,0 +1,82 @@
+.footer-copyright
+  .container
+    span.visible-xs(ng-if="!vm.isMobileApp()" ng-include="'components/navbar/mobile_download_links.tmpl.html'")
+    .row
+      .col-lg-4.col-sm-4.col-md-3.col-xs-12.text-center-mobile
+        a.main_logo ui-sref="root.landing"
+          div ng-if="$root.country_code=='tw'"
+            img.logo-img alt="Remitano's Logo" cdn-src="" ng-src="/logos/logo-tw.png"
+          div ng-if="$root.country_code!='tw'"
+            h1 translate-once="header_site_name"
+        .company-info-section
+          .company-info
+            strong © 2014–#{Time.now.year}, REMITANO
+            br
+            span Babylon Solutions Limited
+            br
+            span Seychelles Reg. No. 168830
+          ul.contact-list
+            li
+              i.icon.icon-mail
+              span translate-once="footer_email">
+              ' :
+              a.mailto href="mailto:team@remitano.com" team@remitano.com
+            li ng-if="!vm.isMobileApp()"
+              i.icon.icon-chat
+              a> href="" ng-click="vm.openLiveChat()" translate-once="footer_livechat">
+            li ng-if="rvm.hotline"
+              i.icon.icon-phone
+              span translate-once="footer_hotline">
+              ' :
+              a> ng-href="{{rvm.hotline_link}}" ng-bind="rvm.hotline"
+            li
+              i.icon.icon-lifebuoy
+              a> href="https://support.remitano.com" translate-once="footer_help_center" target="_blank"
+
+      .col-lg-4.col-sm-4.col-md-3.col-xs-12.footer-column
+        h5.title translate="footer_introduction"
+        ul
+          li
+            a> ui-sref="root.about" translate-once="cano_title_root_about" ng-click="vm.scrollToTop()"
+          li
+            a> ui-sref="root.careers" translate-once="cano_title_root_careers" ng-click="vm.scrollToTop()"
+          li
+            a> ui-sref="root.escrowService" translate-once="landing_escrowed_trade" ng-click="vm.scrollToTop()"
+          li
+            a> ui-sref="root.press" translate-once="cano_title_root_press" ng-click="vm.scrollToTop()"
+          li
+            a> ui-sref="root.team" translate-once="cano_title_root_team" ng-click="vm.scrollToTop()"
+          li
+            a> ui-sref="root.policy({page: 'terms_of_service'})" translate-once="footer_legal_policy" ng-click="vm.scrollToTop()"
+          li
+            a> ui-sref="root.partners" translate-once="cano_title_root_partners" ng-click="vm.scrollToTop()"
+      .col-lg-4.col-sm-4.col-md-3.col-xs-12.footer-column
+        h5.title translate="footer_social"
+        ul
+          li
+            a href="https://www.facebook.com/remitano.escrow/" target="_blank"
+              i.icon-facebook-squared aria-hidden="true"
+              | Facebook
+          li
+            a href="https://twitter.com/remitano" target="_blank"
+              i.icon-twitter-squared
+              | Twitter
+          li
+            a href="https://www.reddit.com/r/remitano" target="_blank"
+              i.icon-reddit-squared
+              | Reddit
+          li
+            a href="https://www.linkedin.com/company/Remitano" target="_blank"
+              i.icon-linkedin-squared
+              | LinkedIn
+          li
+            a href="https://www.youtube.com/channel/UCgKoFPtHOXD77lLQMsGFlWg" target="_blank"
+              i.icon-youtube-squared aria-hidden="true"
+              | Youtube
+          li
+            a href="http://weibo.com/remitano" target="_blank"
+              i.icon-weibo aria-hidden="true"
+              | Weibo
+
+      .col-md-3.mobile-links-wrapper.visible-md
+        span(ng-if="!vm.isMobileApp()" ng-include="'components/navbar/mobile_download_links.tmpl.html'")

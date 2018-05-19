@@ -1,0 +1,20 @@
+.box.trade-messages
+  .loading-container.text-center ng-show="vm.fetching"
+    .loading-bar
+  .alert.alert-danger ng-show="vm.fetchError"
+    span translate-once="fetching_data_error"
+    a(ng-click="vm.getMessages()")  Try again
+  .main-container ng-cloak="" ng-hide="vm.fetching||vm.fetchError"
+    form.form.message-form name="form" ng-hide='vm.chatDisabled'
+      .form-group
+        label translate="message_send_message_to_s" translate-values='{user: vm.otherUser}'
+        textarea.form-control#trade_message name="trade_message" ng-model="vm.content" ng-disabled="vm.sending" cmd-enter-submit="vm.sendMessage()"
+      .form-group
+        .row
+          .col-xs-4
+            button.btn.btn-block.btn-primary.btn-send ng-click="vm.sendMessage()" ng-disabled="vm.sending" translate-once='send'
+          .col-xs-8
+            upload-documents trade-ref="vm.tradeWithRole.trade.ref" messages="vm.messages" button-klass="vm.imageOnly ? 'btn-info' : 'btn-default'"
+
+    .trade-messages-list
+      message-item ng-repeat="message in vm.messages track by message.id" message="::message" trade-ref="vm.tradeWithRole.trade.ref" image-only='vm.imageOnly'

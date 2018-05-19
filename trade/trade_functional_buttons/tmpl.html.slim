@@ -1,0 +1,42 @@
+.functional-buttons(ng-switch="vm.tradeWithRole.role")
+  .buyer ng-switch-when="buyer" ng-class="vm.trade.status"
+    .button-container(ng-if="!vm.tradeWithRole.use_fiat_deposit && vm.trade.status == 'unpaid' && !vm.isPoliPayment()")
+      button#trade_mark_paid.btn.btn-success(ng-click="vm.markAsPaid()"
+      ng-disabled="vm.tradeProcessing"
+      translate-once="{{vm.customPrefix}}trade_mark_as_paid")
+    .button-container(ng-if="vm.trade.status == 'unpaid' && vm.isPoliPayment()")
+      button#pay_via_poli.btn.btn-success(ng-click="vm.payViaPoli()"
+      ng-disabled="vm.tradeProcessing"
+      translate-once="trade_make_payment")
+    .button-container(ng-if="vm.statusIn(['awaiting', 'unpaid', 'paid', 'disputed'])")
+      button.btn-cancel-trade.btn.btn-danger(ng-click="vm.cancelTrade()"
+      ng-disabled="vm.tradeProcessing"
+      translate-once="{{vm.customPrefix}}trade_cancel")
+    .button-container(ng-if="!vm.tradeWithRole.use_fiat_deposit && vm.trade.status == 'paid' ")
+      button#trade_dispute.btn.btn-warning(ng-click="vm.disputeTrade()"
+      ng-disabled="vm.tradeProcessing"
+      translate-once="trade_dispute")
+    .button-container(ng-if="!vm.tradeWithRole.use_fiat_deposit && vm.statusIn(['cancelled', 'cancelled_automatically'])")
+      button.btn-reopen-trade.btn.btn-danger(ng-click="vm.reopenTrade()"
+      ng-disabled="vm.tradeProcessing"
+      translate-once="{{vm.customPrefix}}trade_reopen")
+  .seller ng-switch-when="seller" ng-class="vm.trade.status"
+    .button-container(ng-if="vm.trade.status == 'awaiting'")
+      button.btn-cancel-trade.btn.btn-danger(ng-click="vm.cancelTrade()"
+      ng-disabled="vm.tradeProcessing"
+      translate-once="trade_cancel")
+    .button-container(ng-if="vm.canRelease()")
+      button#trade_release.btn.btn-success(ng-click="vm.releaseTrade()"
+      ng-disabled="vm.tradeProcessing"
+      translate-once="trade_release")
+    .button-container(ng-if="!vm.tradeWithRole.use_fiat_deposit && vm.trade.status == 'paid' ")
+      button#trade_dispute.btn.btn-warning(ng-click="vm.disputeTrade()"
+      ng-disabled="vm.tradeProcessing"
+      translate-once="trade_dispute")
+.functional-buttons.reminding
+  .buyer(ng-if="vm.tradeWithRole.role == 'buyer' && vm.statusIn(['paid', 'disputed'])")
+    .button-container
+      trade-reminding(trade-with-role="vm.tradeWithRole")
+  .seller(ng-if="vm.tradeWithRole.role == 'seller' && vm.statusIn(['unpaid', 'disputed'])")
+    .button-container
+      trade-reminding(trade-with-role="vm.tradeWithRole")

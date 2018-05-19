@@ -1,0 +1,22 @@
+.row.fiat-withdrawal-account-list
+  .col-xs-12.container ng-class="{loading: vm.fetching}"
+    .loading-container.text-center
+      .loading-bar
+
+    .alert.alert-danger ng-show="vm.fetchError"
+      span> translate-once="fetching_data_error"
+      a ng-click="vm.fetchAccountList()" translate-once="try_again"
+
+  .col-xs-12.main-containter ng-if="vm.fiatWithdrawalDetails"
+    .row
+      .col-md-6.col-sm-12.fiat-withdrawal-account-new-item
+        .panel.panel-primary.btn-create-fwd ng-click="vm.openCreateAccountForm()"
+          .panel-heading
+            h4.panel-title translate-once="fiat_withdrawal_create_new_account"
+          .panel-body
+            .icon-box.centered
+              .icon
+                i.fa.icon-plus-circled
+
+      .col-md-6.col-sm-12 ng-repeat="withdrawalDetails in vm.fiatWithdrawalDetails"
+        fiat-withdrawal-account-item(details="withdrawalDetails" on-select="vm.selectAccount($details)")

@@ -1,0 +1,23 @@
+.remittance-progress
+  .step-row
+    ul.nav.nav-wizard.nav-justified(remi-wizard)
+      li.step-initialize(remi-wizard-step ng-model="vm.remittance.step" active="0" warning="0")
+        a
+          span.number 1
+          span.text translate="remittance_initialize"
+      li.step-deposit(remi-wizard-step ng-model="vm.remittance.step" active="11" warning="0")
+        a
+          span.number 2
+          span.text translate="deposit_with_vendor" translate-values="vm.fromCountryValues"
+      li.step-confirm-deposit(remi-wizard-step ng-model="vm.remittance.step" active="21" warning="20" danger="25")
+        a
+          span.number 3
+          span.text translate="vendor_confirm_deposit" translate-values="vm.fromCountryValues"
+      li.step-withdraw(remi-wizard-step ng-model="vm.remittance.step" active="40" warning="30")
+        a
+          span.number 4
+          span.text translate="vendor_send_payment" translate-values="vm.toCountryValues"
+      li.step-confirm-withdraw(remi-wizard-step ng-model="vm.remittance.step" active="50" danger="45" warning="40")
+        a
+          span.number 5
+          span.text translate="confirm_vendor_payment" translate-values="vm.toCountryValues"

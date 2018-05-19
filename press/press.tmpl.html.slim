@@ -1,0 +1,55 @@
+div
+  div(ng-include="'about/subnav.tmpl.html'")
+  react-press(fetching="vm.fetching")
+  / section.container.press-container.block-45
+  /   .title-accent.title-decorated.text-center
+  /     h1 translate-once="cano_title_root_press_media"
+  /   .row.content-wrapper ng-class="{loading: vm.fetching}"
+  /     .loading-container.text-center
+  /       .loading-bar
+  /     .table-presses ng-hide="vm.chunkPresses.length == 0"
+  /       .table-row(ng-repeat="arrPresses in vm.chunkPresses")
+  /         .table-cell.col-md-6.col-sm-12(ng-repeat="press in arrPresses")
+  /           .press-row.text-center-mobile
+  /             .logo-row
+  /               a(ng-href="{{press.link}}" target="_blank")
+  /                 img alt="" cdn-src="" ng-src="{{press.attachment_thumb_url}}"
+  /               span.press-date(ng-if="press.published_date" ng-bind="press.published_date | dateFormater")
+  /             a.press-title(ng-href="{{press.link}}" target="_blank" ng-bind="press.title")
+  /             p ng-bind="press.summary"
+
+  / section.container.block-45
+  /   exchanges-index-section
+
+  / section.container
+  /   h3.title-section translate-once="press_for_media"
+  /   .row
+  /     .col-md-6.col-sm-6
+  /       .media-content-left.mobile-media
+  /         h4.sub-title translate-once="press_inqueries"
+  /         p
+  /           span translate-once="press_inqueries_about_media_and_press"
+  /           br
+  /           strong
+  /             a.mailto href="mailto:marketing@remitano.com"  marketing@remitano.com
+  /         p
+  /           span translate-once="press_inqueries_about_partnership"
+  /           br
+  /           strong
+  /             a.mailto href="mailto:team@remitano.com"  team@remitano.com
+
+  /     .col-md-6.col-sm-6
+  /       .media-content-right.mobile-media
+  /         h4.sub-title translate-once="press_assets"
+  /         p
+  /           span translate-once="press_use_commercially"
+  /           br
+  /           a.mailto> href="mailto:marketing@remitano.com" marketing@remitano.com
+  /           span translate-once="press_for_permission"
+  /         p style="font-weight:bolder"
+  /           i.icon-download
+  /           a href="https://github.com/remitano/remitano-assets/archive/master.zip" translate-once="press_download_brand_assets"
+  /           ' |
+  /           i.icon-code
+  /           a href="https://github.com/remitano/remitano-assets" translate-once="press_repository"
+

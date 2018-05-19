@@ -1,0 +1,4 @@
+div.referral-link
+  strong.text-danger.referral-link ng-bind="vm.referral_url"
+  a.text-gray href="{{network.url}}" target="_blank" ng-repeat="network in vm.socialNetworks"
+    i(ng-class="network.icon")

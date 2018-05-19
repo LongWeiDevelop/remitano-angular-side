@@ -1,0 +1,22 @@
+.file-upload
+  div.progress-striped.active(uib-progressbar max="100" value="vm.progress" ng-if="vm.uploading")
+    i
+      span.progress-label translate-once="message_uploading"
+      span ng-bind="vm.progress + '%'"
+  .upload-button ng-if="!vm.uploading"
+    - if Rails.env.test?
+      input.btn.btn-block.btn-default.dz-hidden-input#attachment(ng-model="vm.myFile" type="file"
+        onchange="angular.element(this).scope().vm.onSelectFile(this)" ngf-drop-available="true"
+        resetOnClick="true" accept="'image/*'" name="attachment")
+    - else
+      input.btn.btn-block.btn-default.btn-upload#attachment(ng-model="vm.myFile" ng-if="!vm.MobileApp.android()"
+        type="button" ngf-drag-over-class="{accept:'drop-box dragover', reject:'drop-box dragover-err', delay:100}"
+        ngf-select="" ngf-drop="" ngf-drop-available="true"
+        resetOnClick="true" accept="'image/*'" name="attachment" value="{{'button_click_or_drag_to_upload' | translate}}")
+      input.btn.btn-block.btn-default.btn-upload(ng-model="vm.myFile" ng-if="vm.MobileApp.android()"
+        type="button" ng-click="vm.onAndroidUpload()" value="{{'button_click_to_upload' | translate}}")
+    span.help-block translate-once="images_only"
+
+    .text-center.preview-image ng-if="vm.ngPreviewUrl"
+      img.img-responsive cdn-src="" ng-src="{{vm.ngPreviewUrl}}"
+

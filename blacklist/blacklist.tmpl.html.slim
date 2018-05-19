@@ -1,0 +1,23 @@
+react-account-settings-blacklist
+
+/.row.blacklist-table(ng-class="{ loading: vm.fetching }")
+/  .loading-container.text-center(ng-hide="!vm.fetching")
+/    .loading-bar
+/  .col-md-6(ng-show="!vm.fetching")
+/    table.table.table-striped.no-margin-bottom
+/      thead
+/        tr
+/          th.text-center translate-once="blocked_accounts"
+/          th
+/      tbody
+/        tr ng-repeat="blocking in vm.blockings"
+/          td.text-center(ng-class="{'line-through' : blocking.removed}")
+/            a> ui-sref="root.profile({username: blocking.blockee_username})"
+/              span ng-bind="blocking.blockee_username"
+/          td
+/            a.button.remove-blocking-btn(ng-hide="blocking.removed" ng-click="vm.removeBlocking(blocking)") X
+
+/    .text-center
+/      .pagination-wrapper
+/        remi-pagination(meta="vm.paginationMeta" on-page-changed="vm.pageChanged($page)")
+

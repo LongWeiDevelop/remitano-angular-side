@@ -1,0 +1,10 @@
+section.container.policy-container
+  .row
+    .title-accent.title-decorated.text-center
+      h1 translate-once="cano_title_root_{{vm.currentPage()}}"
+    .col-sm-3
+      policy-sidebar current-page="{{vm.currentPage()}}"
+    .col-sm-9
+      .well.well-transparent.box-description
+        ng-include src="vm.countryCodeFile()"
+

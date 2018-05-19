@@ -1,0 +1,31 @@
+section.fiat-withdraw-wizard
+  .row
+    .col-sm-12.text-center
+      .step-row
+        ul.nav.nav-wizard.nav-justified(remi-wizard)
+          li.step-select-account(remi-wizard-step ng-model="vm.step" active="1" warning="0")
+            a(ng-click="vm.backToStep(0)")
+              span.number 1
+              span.text translate-once="fiat_withdraw_select_account"
+          li.step-enter-payment-details(remi-wizard-step ng-model="vm.step" active="2" warning="1")
+            a(ng-click="vm.backToStep(1)")
+              span.number 2
+              span.text translate-once="fiat_withdraw_enter_payment_details" ng-click="vm.backToStep(1)"
+          li.step-confirm-withdrawal(remi-wizard-step ng-model="vm.step" active="3" warning="2")
+            a(ng-click="vm.backToStep(2)")
+              span.number 3
+              span.text translate-once="fiat_withdraw_confim"
+
+  hr
+  .row
+    .col-sm-12
+      div ng-switch="vm.step"
+        div ng-switch-when="0"
+          h3 translate-once="fiat_withdraw_select_account_explain"
+          fiat-withdrawal-account-list on-account-select="vm.selectAccount($account)"
+        div ng-switch-when="1"
+          h3 translate-once="fiat_withdraw_enter_payment_details_explain"
+          fiat-withdrawal-amount-form on-fiat-amount-enterred="vm.enterFiatAmount($amount)"
+        div ng-switch-when="2"
+          h3 translate-once="fiat_withdraw_confim_explain"
+          fiat-withdrawal-confirm fiat-withdrawal="vm.fiatWithdrawal" on-confirm-fiat-withdrawal="vm.confirmFiatWithdrawal()" on-reset="vm.backToStep(0)"

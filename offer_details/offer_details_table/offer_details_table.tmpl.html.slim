@@ -1,0 +1,105 @@
+.offer-details-table
+  profile-blocking ng-show="vm.offer.blocked_by_current_user" is-blocked="vm.offer.blocked_by_current_user" username="vm.offer.username"
+  form.form.open-trade-form name="form" novalidate="" ng-show="vm.showForm()" ng-submit="vm.openTrade(form)"
+    .row
+      .col-md-6
+        .form-group ng-class="{'has-error': vm.amountError || (form.amount.$error.required && form.$submitted)}"
+          label
+            ' {{ 'offer_amount_of' | translate }} {{ $root.COIN_CURRENCY }}:
+          .input-group
+            input.form-control#amount(required="" name="amount" ng-model="vm.amount" type="text"
+              ng-change="vm.calculateOtherAmount()" autocomplete='off' awnum='' num-thousand='true' num-fract='8')
+          span.help-block translate="offer_amount_too_big" translate-values="{amount: vm.offer.max_amount, currency: $root.COIN_CURRENCY }" ng-show="vm.amountError == 'big'"
+          span.help-block translate="offer_amount_too_small" translate-values="{amount: vm.offer.min_amount, currency: $root.COIN_CURRENCY }" ng-show="vm.amountError == 'small'"
+          span.help-block ng-show='form.amount.$error.required && form.$submitted' translate-once="input_required"
+          coin-currency-to-usd coin-currency-amount='vm.amount' ng-show='!vm.amountError'
+
+      .col-md-6
+        label
+          span ng-bind="('offer_amount_of'|translate) + ' ' + vm.offer.currency + ':'"
+        .form-group
+          span.form-control#fiat_amount disabled='' ng-bind='vm.fiat_amount|currencyFormatter:vm.offer.currency'
+
+    .row
+      .col-md-6
+        btc-address-input ng-model="vm.coin_withdrawal_address" ng-if="(vm.offer.offer_type == 'sell')"
+      .col-md-6
+        label
+          span &nbsp;
+        button.btn.btn-lg.btn-block.btn-open-trade.btn-primary(ng-disabled="vm.amountError || vm.submitting")
+          span translate='offer_{{vm.offer.counter_offer_type}}'
+          '
+          span ng-bind="$root.COIN_CURRENCY"
+  .alert-warning uib-alert="" ng-show="!vm.enoughBalance() && !vm.isMyOffer"
+    span translate-once='offer_seller_not_enough_balance'
+
+  .alert.alert-warning ng-show="!vm.buyOfferActive() && !vm.isMyOffer"
+    span translate-once='offer_not_active'
+
+  .text-center ng-show="vm.isMyOffer"
+    span> translate-once="this_is_your_offer"
+    span translate-once='offer_status'
+    ':
+    strong.text-success translate-once='other_active' ng-hide="vm.offer.disabled"
+    strong.text-danger translate-once='other_inactive' ng-show="vm.offer.disabled"
+    br
+    br
+    offer-toolbox(offer="vm.offer" on-deleted="vm.onDeleted()")
+  hr
+  /.offer-details-switch
+    /currency-switch
+  .panel.offer-details
+    .panel-heading
+      span translate-once="offer_details"
+    table.table.table-bordered
+      thead
+        tr
+          th translate="escrow_{{vm.offer.counter_offer_type}}_action" width="40%"
+          th
+            a ui-sref="root.profile({username: vm.offer.username})"
+              u ng-bind="::vm.offer.username"
+      tbody
+        tr
+          td translate-once="offer_price"
+          td
+            react-offer-price(offer="vm.offer.toJSON()")
+
+        tr
+          td translate-once="offer_amount_limits"
+          td
+            react-currency-amount.min-amount amount="vm.offer.min_amount" ng-click="vm.prefillAmount('min')" coin-currency="vm.offer.coin_currency"
+            '  -
+            react-currency-amount.max-amount amount="vm.offer.max_amount" ng-click="vm.prefillAmount('max')" coin-currency="vm.offer.coin_currency"
+        tr
+          td translate-once="offer_payment_method"
+          td
+            span pm-translate="{{vm.offer.payment_method}}"
+            span ng-bind="': {{:: vm.offer.payment_descriptions}}'" ng-if=":: vm.offer.payment_descriptions"
+        tr
+          td translate-once="offer_location"
+          td ng-bind="::vm.offer.country_name"
+        tr
+          td translate-once="offer_payment_window"
+          td ng-bind="::vm.offer.payment_time + ' ' + ('offers_minutes'|translate)"
+        tr(ng-if="vm.offer.need_topup && vm.isMyOffer")
+          td.text-center.text-danger(colspan="2")
+            strong> translate-once="deposit_to_publish"
+            br
+            a.btn.btn-sm.btn-danger(ui-sref="root.coinWallet.deposit" translate-once="deposit_now")
+        tr(ng-if="vm.offer.need_fiat_topup && vm.isMyOffer")
+          td.text-center.text-danger(colspan="2")
+            strong> translate-once="deposit_fiat_to_publish" translate-values="{currency: vm.offer.currency}"
+            br
+            a.btn.btn-sm.btn-danger(ui-sref="root.fiatWallet.deposit" translate-once="deposit_now")
+        tr(ng-if="vm.offer.need_verify && vm.isMyOffer")
+          td.text-center.text-danger(colspan="2")
+            strong> translate-once="verify_to_publish"
+            br
+            a.btn.btn-sm.btn-danger(ui-sref="root.verify" translate-once="verify_now")
+        tr(ng-if="vm.offer.require_verified_buyer")
+          td.text-center.text-warning(colspan="2")
+            span.badge.badge-warning
+              em.icon-lock
+              span translate-once="buyer_verification_required"
+
+

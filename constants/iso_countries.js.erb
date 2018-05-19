@@ -1,0 +1,7 @@
+'use strict';
+
+angular.module('remitano').constant(
+  'isoCountries',
+  <%= ISO3166::Country.all.map(&:name).to_json %>
+)
+

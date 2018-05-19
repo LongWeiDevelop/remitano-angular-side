@@ -1,0 +1,14 @@
+section.page-content.quick-page
+  .container
+    .row
+      .col-lg-12
+        .tabs
+          ul.nav.nav-tabs
+            li ui-sref-active="active"
+              a ui-sref="root.quick.buy"
+                span translate-once="landing_buy_now"
+            li ui-sref-active="active"
+              a ui-sref="root.quick.sell"
+                span translate-once="landing_sell_now"
+          .tab-content
+            .tab-pane.active(ui-view="")

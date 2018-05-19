@@ -1,0 +1,92 @@
+.other-informations
+  .form-group.payment_time ng-class="{'has-error': vm.validateInput(form, 'payment_time')}"
+    label translate-once="offer_payment_time" ng-show="vm.editing.payment_time"
+    .row
+      .col-md-7
+        .row ng-hide="vm.editing.payment_time"
+          .col-sm-5.col-xs-7
+            label translate-once="offer_payment_time"
+          .col-sm-4.text-right.col-xs-5
+            strong ng-bind="vm.offer.payment_time + ' '"
+            span translate-once="offers_minutes"
+          .col-sm-3.text-left.col-xs-12.text-xs-right
+            a ng-click="vm.editing.payment_time = true" translate-once='offers_change'
+
+        div ng-show="vm.editing.payment_time"
+          .input-group
+            ui-select(ng-model="vm.offer.payment_time" id="payment_time" name="payment_time"  required="" )
+              ui-select-match(placeholder="{{'offer_select_payment_time_frame' | translate}}")
+                | {{$select.selected}}
+              ui-select-choices(repeat = "time in payment_subvm.availablePaymentTimes | filter: $select.search")
+                | {{time}}
+            .input-group-addon translate-once='offers_minutes'
+          span.help-block ng-show='vm.validateInput(form, "payment_time")' translate-once='input_required'
+      .col-md-5
+        span.explanation translate-once='offers_explain_payment_time'
+
+  .form-group.location
+    label translate-once="offer_location" ng-show="vm.editing.location"
+    .row
+      .col-md-7
+        .row ng-hide="vm.editing.location"
+          .col-sm-5.col-xs-7
+            label translate-once="offer_location"
+          .col-sm-4.text-right.col-xs-5
+            strong ng-bind="inforvm.countryName(vm.offer.country_code)"
+          .col-sm-3.text-left.col-xs-12.text-xs-right
+            a ng-click="vm.editing.location = true" translate-once='offers_change'
+
+        div ng-show="vm.editing.location"
+          .input-group
+            ui-select(ng-model="vm.offer.country_code" id="country_code" name="country_code" required="")
+              ui-select-match
+                | {{$select.selected.name}}
+              ui-select-choices(repeat="country.code as country in inforvm.allCountries | filter: $select.search")
+                | {{country.name}}
+          span.help-block ng-show='vm.validateInput(form, "country_code")' translate-once='input_required'
+
+  .form-group.require_verified_buyer(ng-if="vm.offer.offer_type == 'sell' && !inforvm.skip_verification()")
+    label translate-once="offer_require_verified_buyer" ng-show="inforvm.editRejectUnverifedBuyer"
+    .row
+      .col-md-7
+        .row ng-hide="inforvm.editRejectUnverifedBuyer"
+          .col-sm-5.col-xs-7
+            label translate-once="offer_require_verified_buyer"
+          .col-sm-4.text-right.col-xs-5
+            strong translate="{{inforvm.booleanKey(vm.offer.require_verified_buyer)}}"
+          .col-sm-3.text-left.col-xs-12.text-xs-right
+            a ng-click="inforvm.editRejectUnverifedBuyer = true" translate-once='offers_change'
+
+        div ng-show="inforvm.editRejectUnverifedBuyer"
+          .input-group
+            switch.wide#require_verified_buyer(name="require_verified_buyer"
+              disabled="inforvm.change_verification_requirement_disabled"
+              ng-model="vm.offer.require_verified_buyer"
+              handle-width="100"
+              on="{{'boolean_yes'|translate}}" off="{{'boolean_no'|translate}}")
+
+      .col-md-5
+        span.explanation translate-once='offers_explain_require_verified_buyer'
+  .form-group.terms-of-trade ng-if="$root.country_code == 'au'"
+    label translate-once="offer_terms" ng-show="vm.editing.terms"
+    .row
+      .col-md-7
+        .row ng-hide="vm.editing.terms"
+          .col-sm-5.col-xs-7
+            label translate-once="offer_terms"
+          .col-sm-4.text-right.col-xs-5 ng-hide="vm.offer.terms_of_trade"
+            i.text-gray translate="offers_optional"
+          .col-sm-offset-4.col-sm-3.text-left.col-xs-12.text-xs-right
+            a ng-click="vm.editing.terms = true" translate-once='offers_change'
+
+        .row
+          .col-md-12 ng-show="!vm.editing.terms && vm.offer.terms_of_trade"
+            pre.text-gray ng-bind="vm.offer.terms_of_trade"
+          .col-md-12 ng-show="vm.editing.terms"
+            .input-group
+              textarea.form-control#terms_of_trade(name="terms_of_trade" ng-model="vm.offer.terms_of_trade")
+            span.help-block ng-show='vm.validateInput(form, "terms_of_trade")' translate-once='input_required'
+
+      .col-md-5
+        span.explanation translate-once='offers_explain_terms'
+

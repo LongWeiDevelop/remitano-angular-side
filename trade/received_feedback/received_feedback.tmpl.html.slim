@@ -1,0 +1,13 @@
+.received-feedback-container
+  .panel.received-feedback
+    .panel-heading
+      span translate="trade_feedback_from" translate-values="{user: vm.otherUser}"
+    .panel-body ng-class="vm.trade.feedback.score || 'unrated'"
+      .icon-box.centered.circled
+        .icon ng-class="vm.trade.feedback.score || 'unrated'"
+          i.fa ng-class="vm.emoFromScore(vm.trade.feedback.score)"
+        .icon-box-body
+          h3.text-center ng-bind="vm.feedbackScore(vm.trade.feedback.score)"
+          div.text-center translate='trade_feedback_not_yet_rated' translate-values="{user: vm.otherUser}" ng-hide="vm.trade.feedback.score"
+          div.text-center ng-bind="vm.trade.feedback.message" ng-show="vm.trade.feedback"
+          p(ng-bind="vm.trade.feedback.feedback_content")

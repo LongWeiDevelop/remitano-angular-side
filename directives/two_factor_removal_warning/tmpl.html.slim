@@ -1,0 +1,10 @@
+div.alert-danger(uib-alert ng-if="vm.two_factor_removal_time || vm.actionVerificationDisableTwoFactor")
+  div ng-if="vm.two_factor_removal_time"
+    span translate="settings_profile_two_factor_removing" translate-values="{removal_time: (vm.two_factor_removal_time | amCalendar)}"
+    br ng-if='vm.fullDetails'
+    = ' '
+    a translate-once="settings_profile_two_factor_undo_removal" ng-click="vm.undoTwoFactorRemoval()" href="#"
+  div ng-if="!vm.two_factor_removal_time && vm.actionVerificationDisableTwoFactor"
+    span translate="settings_profile_two_factor_action_verification_submitted"
+    / = ' '
+    / a translate-once="settings_profile_two_factor_undo_removal" ng-click="vm.undoTwoFactorRemoval()" href="#"

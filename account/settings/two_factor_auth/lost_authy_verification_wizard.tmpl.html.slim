@@ -1,0 +1,28 @@
+section.lost-authy-verification-wizard
+  .row.wizard-step-header
+    .col-sm-12.text-center
+      .step-row
+        ul.nav.nav-wizard.nav-justified(remi-wizard)
+          li.step-initialize(remi-wizard-step ng-model="vm.step" active="1" warning="0")
+            a
+              span.number 1
+              span.text translate="settings_lost_authy_step_title_verify_account"
+          li.step-deposit(remi-wizard-step ng-model="vm.step" active="2" warning="1")
+            a
+              span.number 2
+              span.text translate="settings_lost_authy_step_title_removal_verification"
+  .wizard-content.icon-box.circled.boxed
+    .row : .col-sm-12
+      div ng-switch="vm.step"
+        div ng-switch-when="0"
+          react-account-verify-document-wizard
+        div ng-switch-when="1"
+          .col-sm-12.alert.alert-info ng-if="vm.actionVerification && vm.actionVerification.status == 'pending'"
+            span translate-once="action_verification_submitted"
+          .block-20
+            span translate-once="settings_lost_authy_disable_two_factor_message"
+          .text-center.block-20
+            img.symbolic cdn-src="" ng-src="/verify/man_hold_confirm_disable_two_factor.png"
+          react-account-verify-upload-document(docType="vm.docType" uploadPath="vm.uploadPath" mediaType="vm.mediaType" documentStatus="vm.documentStatus" onDocumentUploaded="vm.documentUploaded")
+    .clearfix
+

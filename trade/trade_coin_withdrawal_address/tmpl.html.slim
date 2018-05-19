@@ -1,0 +1,12 @@
+.panel.black-panel.coin-withdrawal-address(ng-show="vm.isVisible")
+  .panel-heading
+    span translate-once="your_coin_withdrawal_address" translate-values="{user: vm.profile.username}"
+  .div-table.tabular
+    .table-row
+      .table-cell translate-once="coin_address"
+      .table-cell
+        blockchain-address address="vm.tradeWithRole.coin_withdrawal_address" link-as-icon="true"
+    .table-row(ng-if="vm.isWarningVisible")
+      .table-cell
+      .table-cell
+        span.text-danger translate-once="coin_address_virus_warning"

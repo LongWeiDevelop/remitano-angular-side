@@ -1,0 +1,9 @@
+section.page-content.trade-page
+  .container#article ng-class="{'loading': vm.fetching}"
+    .loading-container.text-center
+      .loading-bar
+    .alert.alert-danger ng-show="vm.fetchError"
+      span> translate-once="fetching_data_error"
+      a ng-click="vm.fetchArticle()" translate-once="try_again"
+    .main-container ng-if="vm.article"
+      div ng-bind-html="vm.article.body_html"

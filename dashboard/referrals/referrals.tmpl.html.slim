@@ -1,0 +1,46 @@
+react-referrals
+  / .dashboard-escrow-content.referrals-list-container
+  /   .row
+  /     .col-lg-12
+  /       .row
+  /         .col-sm-8
+  /           .title-accent
+  /             h3
+  /               span translate="dashboard_referrals"
+
+  /   .row(ng-if="vm.filters.length > 0")
+  /     .col-lg-12
+  /       .radio.radio__custom.radio__style4
+  /         label.referral-status(ng-repeat="filter in vm.filters")
+  /           input type="radio" ng-model="vm.filter" value="{{filter}}" ng-change="vm.pageChanged()"
+  /           span translate="referral_{{filter}}" id="filter-{{filter}}"
+
+  /   .row ng-show="vm.referrals.length == 0 && !vm.fetching"
+  /     .col-xs-12
+  /       i translate-once="referrals_not_found"
+
+  /   .content-wrapper ng-class="{loading: vm.fetching}" ng-show="vm.referrals.length > 0"
+  /     .loading-container.text-center
+  /       .loading-bar
+  /     .alert.alert-danger ng-show="vm.errorFetchingReferrals"
+  /       span translate-once="fetching_data_error"
+  /     div ng-hide="vm.errorFetchingReferrals"
+  /       table.table.table-striped wt-responsive-table=""
+  /         thead
+  /           tr
+  /             th.text-right.col-sm-1
+  /               '#
+  /             th.text-left.col-sm-4 translate-once="referral_username"
+  /             th.text-center.col-sm-3 translate-once="referral_status" ng-if="vm.hasStatus"
+  /             th.text-center.col-sm-4 translate-once="referral_date"
+  /         tbody.text-center
+  /           tr.referral-item ng-repeat="referral in vm.referrals"
+  /             td.text-right ng-bind="::($index + 1)"
+  /             td.text-left
+  /               a ui-sref="root.profile({username: referral.username})" ng-bind="referral.username"
+  /             td ng-if="vm.hasStatus"
+  /               span.badge(translate="referral_{{referral.status}}"
+  /                 ng-class="{ 'badge-success': referral.status == 'completed', 'badge-warning': referral.status == 'pending' }")
+  /             td ng-bind="referral.created_at | dateTimeFromTimestamp"
+
+  /       remi-pagination(meta="vm.paginationMeta" on-page-changed="vm.pageChanged($page)" max-size="10")

@@ -1,0 +1,13 @@
+.other-payment-details
+  .form-group(ng-repeat="fieldName in vm.additionalFields" has-error-for="{{fieldName}}")
+    label translate-once="{{fieldName}}"
+    .row
+      .col-sm-7
+        input.form-control(
+          id="{{fieldName}}"
+          required=""
+          ng-model="vm.paymentDetails[fieldName]"
+          type="text" name="{{fieldName}}"
+        )
+
+        span.help-block show-error-for="{{fieldName}}" error="required" translate-once='input_required'

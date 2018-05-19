@@ -1,0 +1,14 @@
+.coin-transaction-item data-btc-transaction-id="{{vm.btcTransaction.id}}" class="{{vm.btcTransaction.animateClass}}"
+  .row.text-right
+    .col-xs-3.col-sm-2
+      strong(ng-bind="vm.btcTransaction.amount | currencyFormatter:$root.COIN_CURRENCY"
+        ng-class="{ 'text-success': vm.btcTransaction.amount > 0, 'text-danger': vm.btcTransaction.amount < 0 }")
+    .col-xs-9.col-sm-5
+      span ng-bind="vm.btcTransaction.created_at | dateTimeFromTimestamp"
+    .col-xs-12.col-sm-5
+      em
+        span> translate="{{vm.btcTransaction.details_key}}" translate-values="vm.btcTransaction.operation"
+        a (ng-href="{{vm.tradeLink()}}" ng-bind="' #' + vm.btcTransaction.trade_ref"
+          target="{{vm.MobileApp.exists() ? '' : '_blank'}}" ng-if="vm.btcTransaction.trade_ref")
+        i(ng-if="vm.btcTransaction.notes")
+          ' ({{ vm.btcTransaction.notes | translate }})

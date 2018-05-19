@@ -1,0 +1,39 @@
+.coin-address{
+  .input-address {
+    font-size: 12px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 36px;
+    width: 100%;
+    cursor: text;
+  }
+
+  .address-text-line {
+    margin: 0 auto 15px auto;
+  }
+  .input-group-address {
+    max-width: 380px;
+  }
+
+  .input-group-address-note {
+    max-width: 380px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    &.no-margin-bottom {
+      margin-bottom: 0;
+    }
+  }
+  .input-group-address-wrapper {
+    display: inline-block;
+    margin-right: 3px;
+  }
+  .btn-copy-clipboard {
+    vertical-align: top;
+    height: 40px;
+    padding: 0 10px;
+  }
+}
+
+.btn-generate-deposit-address {
+  margin-top: 12px;
+}

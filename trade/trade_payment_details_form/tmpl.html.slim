@@ -1,0 +1,10 @@
+.panel.panel-default.trade-payment-information
+  .panel-heading translate-once="trade_payment_details"
+  .panel-body
+    .col-sm-12
+      form.payment-details-form.form name='payment_form' novalidate="" ng-submit="vm.submitPaymentDetails($event, payment_form)" ng-switch="vm.paymentMethod"
+        wechat-details-input(ng-switch-when="wechat" payment-details="vm.paymentDetails")
+        alipay-details-input(ng-switch-when="alipay" payment-details="vm.paymentDetails")
+        local-bank-payment-details(ng-switch-when="local_bank|cash_deposit" ng-switch-when-separator="|" payment-details="vm.paymentDetails" country-code="vm.offerCountry" fixed-bank-name="!vm.crossBankSelling")
+        other-payment-details(ng-switch-default payment-method="vm.paymentMethod" payment-details="vm.paymentDetails")
+        button.btn.btn-primary.btn-continue translate-once="continue" type="submit"

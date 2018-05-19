@@ -1,0 +1,18 @@
+section.page-content.bitcoin-wallet-page
+  .container#bitcoin-wallet
+    .row
+      .col-lg-12
+        .tabs
+          ul.nav.nav-tabs
+            li ui-sref-active="active"
+              a ui-sref="root.remittance.new"
+                i.icon-paper-plane-empty
+                span.hidden-xs translate-once="request"
+            li ui-sref-active="active" ng-if="rvm.authenticated"
+              a ui-sref="root.remittance.history"
+                i.icon-docs
+                span.hidden-xs translate-once="history"
+            li.active ng-if="'root.remittance.show' | includedByState"
+              a(ui-view="tab-bar")
+          .tab-content
+            .tab-pane.active(ui-view="")

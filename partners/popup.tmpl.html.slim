@@ -1,0 +1,25 @@
+.partners-popup-dialog
+  .modal-header.dialog-header-confirm
+    h4.modal-title Becoming our business partner
+  .modal-body
+    .col-sm-4.hmargin-auto.hidden-xs
+      img.img-responsive cdn-src="" ng-src="/imgs/partners.jpg"
+    .col-sm-8
+      .row
+        .col-xs-4.hmargin-auto.visible-xs
+          img.img-responsive cdn-src="" ng-src="/imgs/partners.jpg"
+        .col-xs-8
+          .title-accent
+            h3
+              span Becoming our business partner
+        .col-xs-12
+          div
+            ' We know there are strong demand for our service in other area of the world, especially in your country, that's why we are finding business partner to expand our business. If you are currently interested in Bitcoin and seeking your financial freedom, cick on below button to read more detail and leave us your contact. We will contact you shortly.
+          br
+          .buttons
+            a.btn.btn-primary ui-sref="root.partners" ng-click="vm.close()" Read more
+    .clearfix
+
+  .modal-footer
+    button.btn.btn-default ng-click="vm.close()" translate-once="DIALOGS_CLOSE"
+

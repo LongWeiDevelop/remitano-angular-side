@@ -1,0 +1,28 @@
+.container-fluid
+  .row
+    section.opening ng-class="$root.coin_currency"
+      .container
+        .row
+          .col-lg-6.intro-tex
+            .row.content.text-center.mobile-app-hidden
+              .vcenter.col-md-9
+                .introduction.last
+                  h1.header-a translate-once="landing_marketplace" translate-values="{ coin: $root.coin_currency_name }"
+                  p translate-once="landing_safest_place"
+            .row.content.price-content.text-center
+              .col-xs-6
+                h4 translate-once="info_ask"
+                strong.text-success ng-bind="vm.coinAsk()|currencyFormatter:$root.CURRENCY_CODE:'full':true"
+                br
+                a.btn.btn-success ui-sref="root.quickBuy" translate-once="landing_buy_now"
+              .col-xs-6
+                h4 translate-once="info_bid"
+                strong.text-danger ng-bind="vm.coinBid()|currencyFormatter:$root.CURRENCY_CODE:'full':true"
+                br
+                a.btn.btn-danger ui-sref="root.quickSell" translate-once="landing_sell_now"
+          .col-lg-6.how-to-video.mobile-app-hidden
+            .embed-responsive.embed-responsive-16by9
+              - unless Rails.env.test?
+                embed ng-if="vm.videoSrc == 'youku' && vm.videoUrl" align="middle" allowfullscreen="true" allowscriptaccess="always" height="400" quality="high" src="https://players.youku.com/player.php/sid/XMTc4MjA1NDM5Ng==/v.swf" type="application/x-shockwave-flash" width="480"
+                iframe.embed-responsive-item ng-if="vm.videoSrc != 'youku' && vm.videoUrl" ng-src="{{vm.videoUrl}}" allowfullscreen=""
+

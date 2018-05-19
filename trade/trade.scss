@@ -1,0 +1,68 @@
+.panel.black-panel {
+  .panel-heading {
+    background: $black-background-color;
+    color: #fff;
+  }
+  border: 1px solid #dcdcdc;
+}
+
+.trade-currency-switch {
+  float: right;
+  margin-top: 23px;
+}
+
+#trade {
+  .trade-fiat-withdrawal-details {
+    margin-top: 15px;
+  }
+  .trade-messages {
+    margin-top: 72px;
+  }
+  .trade-guide {
+    .icon-box.circled {
+      margin: 6px 15px 5px 10px;
+
+      .icon {
+        &.awaiting, &.paid, &.unpaid{
+          &:before {
+            background: $warning-color;
+          }
+        }
+
+        &.cancelled, &.cancelled_automatically, &.aborted {
+          &:before {
+            background: gray;
+          }
+        }
+
+        &.released {
+          &:before {
+            background: $success-color;
+          }
+        }
+
+        &.disputed {
+          &:before {
+            background: $danger-color;
+          }
+        }
+      }
+    }
+
+    .icon-box-body {
+      .step-row {
+        margin-bottom: 14px;
+      }
+    }
+  }
+}
+
+.trade-perspective {
+  .nav-wizard { display: inline-block; }
+}
+
+#trade-create {
+  h3 {
+    color: #bb3737;
+  }
+}

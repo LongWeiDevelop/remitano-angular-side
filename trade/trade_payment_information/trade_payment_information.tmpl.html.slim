@@ -1,0 +1,120 @@
+payment-receipt(trade-with-role="vm.tradeWithRole")
+.post-trade-cancelling-notice(ng-if="vm.visible && vm.tradeCancelled")
+  .position-stablizer
+    div.alert-warning.fade-and-collapse(uib-alert)
+      span translate="deposit_will_be_post_processed" translate-values="{ currency: vm.tradeWithRole.trade.currency }"
+
+  .position-stablizer
+
+.trade-payment-information-container(ng-if="vm.visible")
+  .panel.black-panel
+    .panel-heading
+      span translate-once="trade_payment_details"
+    table.table.table-bordered.table-striped(ng-switch="vm.payment_method")
+      tbody
+        tr
+          td.col-xs-4
+            span translate-once="offer_payment_method"
+          td.col-xs-8.trade-payment-method pm-translate="{{vm.payment_method}}"
+        tr
+          td
+            span translate-once="trade_fiat_amount_as_{{vm.role}}"
+          td.text-success
+            strong
+              span ng-bind-html="vm.trade.fiat_amount|safeCopyCurrencyFormatter:vm.trade.offer_data.currency"
+              span ng-class=":: 'currency-' + vm.trade.offer_data.currency"
+
+      tbody ng-switch-when="local_bank|cash_deposit" ng-switch-when-separator="|"
+        tr
+          td.col-xs-4
+            span translate-once="bank_name"
+          td.col-xs-8 ng-bind="vm.payment_details.bank_name"
+        tr
+          td.col-xs-4
+            span translate-once="bank_account_name"
+          td.col-xs-8
+            strong ng-bind="vm.payment_details.bank_account_name"
+        tr ng-repeat="field in vm.additionalBankFields()"
+          td.col-xs-4
+            span translate="{{field.name}}"
+          td.col-xs-8
+            strong ng-bind="vm.payment_details[field.name]"
+        tr
+          td.col-xs-4
+            span translate-once="bank_account_number"
+          td.col-xs-8
+            strong ng-bind="vm.payment_details.bank_account_number"
+
+        tr ng-if="vm.trade.offer_data.country_code == 'us' && vm.payment_method == 'cash_deposit'"
+          td.col-xs-4
+          td.col-xs-8
+            .alert.alert-extrainfo.alert-no-padding-left
+              span translate-once="offer_payment_instruction_cash_deposit" translate-values="{username: vm.trade.offer_data.username.toUpperCase(), ref: '#' + vm.trade.ref}"
+
+
+      tbody ng-switch-when="alipay"
+        tr
+          td colspan=2
+            span translate-once="offer_alipay_qr_url"
+        tr
+          td colspan=2
+            img.img-responsive cdn-src="" ng-src="{{vm.payment_details.alipay_qr_url}}"
+        tr ng-if="vm.payment_details.alipay_email"
+          td
+            span translate-once="offer_alipay_email"
+          td
+            p.pre-text ng-bind="vm.payment_details.alipay_email"
+
+      tbody ng-switch-when="wechat"
+        tr
+          td colspan=2
+            span translate-once="offer_wechat_qr_url"
+        tr
+          td colspan=2
+            img.img-responsive cdn-src="" ng-src="{{vm.payment_details.wechat_qr_url}}"
+
+      tbody ng-switch-when="fiat_deposit"
+        tr.content-wrapper.loading ng-if="!vm.payment_details"
+          td.loading-container.text-center colspan=2
+            .loading-bar
+        tr ng-repeat="(key, value) in vm.payment_details | removeAppendix"
+          td.col-xs-4
+            span translate="{{key}}"
+          td.col-xs-8.fiat-deposit-field(ng-class="key")
+            span ng-bind="value"
+
+      tbody ng-switch-when="fiat_wallet"
+        tr
+          td(colspan=2)
+            span(translate="payment_will_be_sent_to_fiat_wallet"
+              translate-values="{ currency: vm.tradeWithRole.trade.currency }")
+
+      tbody(ng-switch-default)
+        tr ng-repeat="(key, value) in vm.payment_details "
+          td.col-xs-4
+            span translate-once="{{key}}"
+          td.col-xs-8
+            span ng-bind="value"
+
+      tbody
+        tr ng-if="vm.banking_memo && !(vm.payment_method == 'fiat_wallet')"
+          td.col-xs-4
+            span translate-once="bank_payment_ref"
+          td.col-xs-8
+            strong ng-bind="vm.banking_memo"
+        tr.payment-recommendation(ng-if="vm.tradeWithRole.role == 'buyer'")
+          td(colspan=2)
+            .text
+              strong.text-danger(translate-once="important")
+              span>
+                | :
+              em> translate-once="trading_precision_required"
+              em translate-once="fiat_deposit_update_appendix" ng-if="vm.hasAppendix()"
+            .alert.alert-warning ng-if="vm.showDelayMessage()"
+              span translate-once="fiat_deposit_delay"
+        tr.payment-fee
+          td(colspan=2 ng-switch="vm.trade.offer_data.offer_type")
+            em ng-switch-when="buy" translate-once="seller_bears_fiat_fee" translate-values="{ currency: vm.trade.currency }"
+            em ng-switch-when="sell" translate-once="buyer_bears_fiat_fee" translate-values="{ currency: vm.trade.currency }"
+
+  appendix-functional-button(fiat-deposit="vm.tradeWithRole.fiat_deposit" ng-if="vm.hasAppendix()")

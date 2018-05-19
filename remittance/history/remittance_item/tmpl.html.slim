@@ -1,0 +1,6 @@
+li.remittance-item(ng-class="vm.colorClass")
+  .remittance-item-wrapper
+    a.btn.btn-default.btn-sm> ui-sref="root.remittance.show({ref: vm.remittance.ref})" ng-bind="vm.remittance.ref"
+    span>(translate="remittance_description" translate-values="vm.remittance" translate-compile)
+    ' :
+    strong: fiat-amount(amount="vm.remittance.sending_amount" currency="vm.remittance.sending_currency")

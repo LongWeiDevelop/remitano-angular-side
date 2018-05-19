@@ -1,0 +1,182 @@
+'use strict'
+
+angular.module 'remitano'
+.controller 'NavbarController', ($scope, $state, $stateParams, i18n, $translate, $http, Auth,
+  SocketWrapper, $rootScope, Notification, AccountManager, RatesManager, RAILS_ENV,
+  Configures, $timeout, MobileApp, $location, Flash, MobileMenu) ->
+  vm = this
+  vm.notifications = []
+  init = ->
+    vm.MobileApp = MobileApp
+    vm.hidden = MobileApp.exists()
+    vm.Auth = Auth
+    vm.AccountManager = AccountManager
+    vm.RAILS_ENV = RAILS_ENV
+    vm.currency = RAILS_ENV.current_currency
+    vm.country = RAILS_ENV.current_country
+    vm.otherCoins = populateOtherCoins()
+    vm.showFiatWallet = showFiatWallet
+    vm.isCollapsed = true
+    vm.availableCountries = RAILS_ENV.available_countries
+    vm.selectCountry = selectCountry
+    vm.markAllAsViewed = markAllAsViewed
+    vm.markAllAsRead = markAllAsRead
+    vm.setPendingNotificationCount = setPendingNotificationCount
+    vm.activeTradesCount = Auth.currentUser()?.active_trades_count
+    vm.countryNames = RAILS_ENV.country_names
+    vm.remittanceDisabled = shouldDisableRemittance()
+    vm.nativeLocale = i18n.nativeLocale()
+    vm.canSwitchLocale = i18n.nativeLocale() != "en"
+    vm.refreshMenuItems = refreshMenuItems
+    vm.sendMenuItems = sendMenuItems
+    if vm.canSwitchLocale
+      vm.otherLocale = if i18n.locale() == "en" then i18n.nativeLocale() else "en"
+      vm.otherLanguage = $translate.instant("current_language", null, null, vm.otherLocale)
+      vm.switchLocale = switchLocale
+
+    subscribeBtcRates()
+    initUserData()
+
+    $scope.$on "userLoggedIn", initUserData
+    $scope.$on "userLoggedOut", onUserLoggedOut
+    $scope.$on '$stateChangeStart', ->
+      vm.isCollapsed = true
+      vm.remittanceDisabled = shouldDisableRemittance()
+
+    $scope.$on 'pendingNotificationCountChanged', onPendingNotificationCountChanged
+    $rootScope.$on "web_bridge_ready", sendMenuItems
+    Auth.fetchSsoToken()
+
+  populateOtherCoins = ->
+    coinVariables = window.COIN_CURRENCY_CONFIG
+    coins = []
+    for coin in coinVariables.enable_coin_currencies
+      if coin != RAILS_ENV.coin_currency_name
+        coins.push
+          coin_currency: coin
+          name: coinVariables.coin_names[coin]
+          url: "#{coinVariables.coin_domains[coin]}/#{vm.country}"
+    coins
+
+  showFiatWallet = ->
+    Auth.hasFiatWallet() || RAILS_ENV.fiat_wallet
+
+  onPendingNotificationCountChanged = (_, count) ->
+    vm.pendingNotificationCount = count
+
+  setPendingNotificationCount = (count) ->
+    vm.pendingNotificationCount = count
+    Notification.saveJstorage(vm.pendingNotificationCount)
+
+  switchLocale = -> setLocale(vm.otherLocale)
+
+  setLocale = (locale)->
+    Configures.setLang lang: locale, (response) ->
+      return unless response.lang?
+      language = if response.lang == i18n.nativeLocale() then "" else "-en"
+      window.location = $state.href($state.current, language: language)
+
+  selectCountry = (countryCode) ->
+    Configures.setCountry country: countryCode, (response) ->
+      return unless response.country?
+      window.location = $state.href($state.current, country: response.country, language: "")
+
+  initUserData = ->
+    vm.refreshMenuItems()
+    vm.currentUser = Auth.currentUser()
+    if Auth.isLoggedIn()
+      AccountManager.fetchCoinAccounts()
+      AccountManager.fetchFiatAccountIfApplicable()
+      fetchNotifications()
+      subscribeUserBalance()
+      subscribeNotifications()
+      subscribeActiveTradesCountChanged()
+
+  subscribeBtcRates = ->
+    SocketWrapper.subscribe($rootScope, "exchange_rates", "update", (event, data) ->
+      RatesManager.assignExchangeRates(data)
+    )
+
+    SocketWrapper.subscribe($scope, RAILS_ENV.btc_rates_pusher_channel, "update", (event, data) ->
+      RatesManager.assignBtcRates(data)
+      $scope.$apply()
+    )
+
+  sound_path = "<%= asset_path('ding.ogg') %>"
+  sound = new Audio(sound_path)
+
+  onUserLoggedOut = ->
+    refreshMenuItems()
+    vm.currentUser = null
+    if !Auth.isLoggedIn() && Auth.oldUser()
+      user_id = Auth.oldUser().id
+      SocketWrapper.unsubscribe($scope, "private-user_#{user_id}@user_balance_channel_#{user_id}", "update")
+      for event in ["new", "new-#{RAILS_ENV.coin_currency}"]
+        SocketWrapper.unsubscribe($scope, "private-user_#{user_id}@user_notifications_#{user_id}", event)
+      SocketWrapper.unsubscribe($scope, "private-user_#{user_id}@user_#{user_id}", "active_trades_count_changed")
+
+  subscribeUserBalance = ->
+    if Auth.isLoggedIn()
+      user_id = Auth.currentUser().id
+    SocketWrapper.subscribe($scope, "private-user_#{user_id}@user_balance_channel_#{user_id}", "update", ->
+      AccountManager.fetchCoinAccounts()
+      AccountManager.fetchFiatAccountIfApplicable()
+    )
+
+  subscribeNotifications = ->
+    if Auth.isLoggedIn()
+      user_id = Auth.currentUser().id
+      for event in ["new", "new-#{RAILS_ENV.coin_currency}"]
+        SocketWrapper.subscribe($scope, "private-user_#{user_id}@user_notifications_#{user_id}", event, handleNotification)
+
+  handleNotification = (event, data) ->
+    vm.setPendingNotificationCount(vm.pendingNotificationCount + 1)
+    vm.notifications.unshift(new Notification(data))
+    Notification.saveJstorage(vm.pendingNotificationCount)
+    sound.play()
+    renderNotification(data) if data.path == $location.path()
+
+  subscribeActiveTradesCountChanged = ->
+    if Auth.isLoggedIn()
+      user_id = Auth.currentUser().id
+      SocketWrapper.subscribe $scope, "private-user_#{user_id}@user_#{user_id}", "active_trades_count_changed", (event, data) ->
+        vm.activeTradesCount = data.active_trades_count
+
+  renderNotification = (notification) ->
+    Flash.add('info', notification.message, true)
+
+  fetchNotifications = ->
+    Notification.query {}, (data) ->
+      vm.notifications = data.notifications
+      vm.setPendingNotificationCount(data.meta?.pending_count)
+      Notification.saveJstorage(vm.pendingNotificationCount)
+      if vm.pendingNotificationCount > 0
+        sound.play()
+
+  markAllAsViewed = ->
+    Notification.markAllAsViewed(last_id: vm.notifications[0]?.id).$promise.then ->
+      for notification in vm.notifications
+        notification.status = 'viewed'
+      count = vm.pendingNotificationCount
+      $timeout (-> vm.setPendingNotificationCount(vm.pendingNotificationCount - count)), if RAILS_ENV.env == 'test' then 0 else 2000
+
+  markAllAsRead = (event) ->
+    event.stopPropagation?()
+    Notification.markAllAsRead(last_id: vm.notifications[0]?.id).$promise.then ->
+      for notification in vm.notifications
+        notification.status = 'read'
+
+  refreshMenuItems = ->
+    vm.mobileMenuItems = MobileMenu.getItems()
+    vm.sendMenuItems()
+
+  sendMenuItems = ->
+    $timeout( ->
+      MobileApp.sendMenuItems(vm.mobileMenuItems || MobileMenu.getItems())
+    , 100)
+
+  shouldDisableRemittance = ->
+    RAILS_ENV.remittance_disabled[$stateParams.country] || RAILS_ENV.coin_currency != "btc"
+
+  init()
+  return

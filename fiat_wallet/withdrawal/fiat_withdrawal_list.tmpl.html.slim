@@ -1,0 +1,39 @@
+.box-wrapper.fiat-withdrawal-list
+  .box-head
+    .title translate-once="fiat_withdrawal_history" translate-values="{currency: vm.currency}"
+  .box-body
+    .content-wrapper ng-class="{loading: vm.fetching}"
+      .loading-container.text-center
+        .loading-bar
+      .alert.alert-danger ng-show="vm.errorFetching"
+        span translate-once="fetching_data_error"
+      .main-container ng-cloak="" ng-hide="vm.errorFetching"
+        .no-order-message.text-center ng-if="vm.fiatWithdrawals.length==0" translate-once="no_transactions"
+        #table_fiat_withdrawal_history.table-responsive ng-if="vm.fiatWithdrawals.length>0"
+          table.table.table-striped wt-responsive-table=""
+            thead
+              tr
+                th.text-center translate-once="transaction_time"
+                th.text-center translate-once="fiat_withdrawal_ref"
+                th.text-center translate-once="fiat_amount" translate-values="{currency: vm.currency}"
+                th.text-center translate-once="fiat_withdrawal_status"
+            tbody
+              tr.fiat-withdrawal-item data-fiat-withdrawal-id="{{fiatWithdrawal.id}}" ng-repeat="fiatWithdrawal in vm.fiatWithdrawals"
+                td ng-bind="fiatWithdrawal.created_at | dateTimeFromTimestamp"
+                td ng-bind="fiatWithdrawal.ref"
+                td ng-bind="fiatWithdrawal.fiat_amount | currencyFormatter:vm.currency"
+                td
+                  span.badge>(ng-class="vm.fiatWithdrawalStatusClass(fiatWithdrawal.status)")
+                    | {{ 'status_' + fiatWithdrawal.status | translate }}
+                  span ng-if="fiatWithdrawal.status == 'error'"
+                    ' {{ fiatWithdrawal.status_explanation | translate }}
+                  span ng-if="fiatWithdrawal.can_cancel"
+                    '
+                    a href="" ng-click="vm.cancelFiatWithdrawal($event, fiatWithdrawal)" translate-once="button_cancel"
+                  span ng-if="fiatWithdrawal.can_confirm"
+                    '
+                    a href="" ng-click="vm.confirmFiatWithdrawal($event, fiatWithdrawal)" translate-once="button_confirm"
+
+
+
+          remi-pagination(meta="vm.paginationMeta" on-page-changed="vm.pageChanged($page)" max-size="5")

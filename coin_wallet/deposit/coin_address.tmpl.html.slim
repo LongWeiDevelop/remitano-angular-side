@@ -1,0 +1,19 @@
+section.coin-address
+  .address-text-line
+    .input-group-address-wrapper
+      .input-group.input-group-address
+        .input-address ng-bind="vm.address"
+        .input-group-addon
+          a(ng-href="{{$root.addressLink(vm.address)}}" target="_blank")
+            i.icon-link-ext
+      .input-group-address-note.alert.alert-info.text-left.no-margin-bottom
+        span> translate-once="transaction_network_fee_operation"
+        b.coin_amount ng-bind="vm.depositFee | currencyFormatter:$root.COIN_CURRENCY:'symbol':false:4"
+      .input-group-address-note.text-left
+        small> translate-once="transaction_only_accept_coin_currency" translate-values="{coin_currency: $root.COIN_CURRENCY }"
+    btn-copy-clipboard(text="{{vm.address}}" tooltip="{{'copy_to_clipboard' | translate}}")
+  #deposit_qr_code
+    .qr.text-center
+      a.mobile-app-hidden ng-href="{{vm.coinProtocol}}{{vm.address}}" style='color: red'
+        remi-qr text="{{vm.coinProtocol}}{{vm.address}}"
+      remi-qr.mobile-app-visible text="{{vm.coinProtocol}}{{vm.address}}"

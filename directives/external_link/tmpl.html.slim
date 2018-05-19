@@ -1,0 +1,5 @@
+span.external-link
+  a.mobile-app-hidden ng-href="{{vm.href}}" target="_blank"
+    span ng-transclude=""
+  a.mobile-app-visible ng-click="vm.openExternalLink()"
+    span ng-transclude=""

@@ -1,0 +1,11 @@
+.profile-blocking ng-class="{loading: vm.updating}"
+  .loading-container.text-center(ng-show="vm.updating")
+    .loading-bar
+  .alert.alert-danger ng-show="vm.updateError"
+    span translate-once="profile_error_blocking"
+  .text-center
+    a.btn.btn-block-trader.btn-danger(ng-click="vm.block()" translate-once="profile_block" ng-if="!vm.isBlocked")
+    span ng-if="vm.isBlocked"
+      span(translate-once="profile_blocked")
+      '
+      a.btn.btn-unblock-trader.btn-danger(ng-click="vm.unblock()" translate-once="profile_unblock")

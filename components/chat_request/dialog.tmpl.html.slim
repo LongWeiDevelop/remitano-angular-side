@@ -1,0 +1,24 @@
+form.chat-request-form(ng-submit="vm.submitRequest()")
+    .modal-header.dialog-header-confirm
+      h4.modal-title translate="request_customer_support"
+    .modal-body
+      div(uib-alert ng-class="vm.message.type" ng-if="vm.message" uib-close="vm.message = null")
+        span ng-bind="vm.message.content"
+
+      fieldset ng-disabled="vm.submitting || vm.submitted"
+        .form-group(has-error-for="from")
+          label.control-label translate="your_email"
+          input.form-control type="email" name="from" ng-model="vm.chatRequest.from" ng-required="true" ng-if="!vm.signedIn"
+          label.form-control ng-bind="vm.chatRequest.from" ng-if="vm.signedIn"
+          span.help-block show-error-for='from' error='required' translate='input_required'
+        .form-group(has-error-for="content")
+          label.control-label translate="your_question"
+          textarea.form-control name="content" ng-model="vm.chatRequest.content" ng-required="true"
+          span.help-block show-error-for='content' error='required' translate='input_required'
+    .modal-footer
+      fieldset ng-disabled="vm.submitting" ng-if="!vm.submitted"
+        button.btn.btn-primary.btn-submit.ng-animate-disabled type="submit"
+          em.animate-spin.icon-spin4> ng-if="vm.submitting"
+          span translate-once="button_submit"
+        button.btn.btn-default.btn-cancel type="button" translate-once="button_cancel" ng-click="vm.close()"
+      button.btn.btn-default.btn-close type="button" translate-once="DIALOGS_CLOSE" ng-click="vm.close()" ng-if="vm.submitted"

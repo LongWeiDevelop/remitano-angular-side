@@ -1,0 +1,17 @@
+section.page-content.login-page
+  .container
+    .row
+      .col-sm-4.col-sm-push-4
+        form.form.login-form(name='requestLoginForm' ng-submit='vm.requestLogin(requestLoginForm)' novalidate='')
+          .form-group.form-grop__icon(ng-class='{ "has-success": requestLoginForm.email.$valid && requestLoginForm.$submitted,\
+          "has-error": requestLoginForm.email.$invalid && requestLoginForm.$submitted }')
+            i.fa.icon-mail
+            input.form-control(ng-model='vm.user.email' type='email' name='email'
+              placeholder="{{placeholderText('account_email')}}" required='' ng-model-options="{ updateOn: 'default blur' }")
+            p.help-block ng-show='requestLoginForm.email.$error.email && requestLoginForm.$submitted' translate-once="account_invalid_email"
+            p.help-block ng-show='requestLoginForm.email.$error.required && requestLoginForm.$submitted' translate-once="account_email_is_required"
+
+          .form-group
+            button.btn.btn-block.btn-primary.btn-continue type='submit' ng-disabled="requestLoginForm.submitting"
+              em.icon-spin4.animate-spin.ng-animate-disabled(ng-if="requestLoginForm.submitting")
+              span translate-once="continue"

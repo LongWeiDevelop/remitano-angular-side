@@ -1,0 +1,37 @@
+.create-account-dialog
+  .modal-header
+    h4.modal-title
+      span> translate-once="fiat_withdrawal_create_new_account"
+      span> -
+      span ng-bind="vm.withdrawalMethod.bank_name"
+
+  .modal-body
+    .row ng-if="vm.errorMessage"
+      .col-lg-12
+        .alert.alert-danger ng-bind="vm.errorMessage"
+    form.create-account-form.form role="form" novalidate="" name="form"
+      fieldset ng-disabled="form.submitting"
+        .form-group
+          span ng-bind="vm.withdrawalMethod.name"
+
+        .form-group ng-repeat="field in vm.withdrawalMethod.payment_details_fields" has-error-for="payment_details.{{ field }}" ng-class="field"
+          label translate="{{field}}"
+          .row
+            .col-sm-12 ng-if="vm.autoBankAccountNumberInput && (field == 'bank_account_number')"
+              auto-bank-account-number-input(payment-details="vm.fiatWithdrawalDetails.details")
+            .col-sm-12 ng-if="!vm.autoBankAccountNumberInput || (field != 'bank_account_number')"
+              input.form-control(
+                name="payment_details.{{field}}"
+                ng-model="vm.fiatWithdrawalDetails.details[field]" required=""
+                ng-readonly="vm.fiatWithdrawalDetails.details.auto_populated && (field == 'bank_account_name')"
+                type="text"
+              )
+              span.help-block show-error-for="payment_details.{{ field }}" translate-once="input_required" error="required"
+
+
+  .modal-footer
+    button.btn.btn-primary type="button" ng-click="vm.create(form)" ng-disabled="form.submitting"
+      em.icon-spin4.animate-spin(ng-if="form.submitting")
+      span translate-once="button_create"
+
+    button.btn.btn-default translate-once="button_cancel" ng-click="vm.close()" ng-disabled="form.submitting"

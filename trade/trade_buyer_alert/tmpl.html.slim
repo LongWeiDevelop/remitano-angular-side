@@ -1,0 +1,40 @@
+div ng-if="vm.trade.is_seller_banned"
+  .position-stablizer
+    div.alert-danger.fade-and-collapse.text-center(uib-alert ng-if="vm.trade.status == 'unpaid'")
+      div
+        i.icon-clock
+        span translate-once="{{vm.customPrefix}}trade_time_left"
+        div
+          timer interval="17" seconds-to-deadline="vm.trade.payment_seconds_to_deadline"
+            span.timer.huge
+              span.base
+                |{{hhours}}:{{mminutes}}:{{sseconds}}
+              span.super
+                |{{mmillis}}
+
+    div.alert-danger.fade-and-collapse.text-center(uib-alert)
+      div: em translate="trade_seller_banned" translate-values="{ seller: vm.trade.seller_username }"
+  .position-stablizer
+
+div ng-if="!vm.trade.is_seller_banned"
+  div ng-switch="vm.trade.status"
+    div ng-switch-when="unpaid"
+      .position-stablizer
+      div.alert-danger.fade-and-collapse.text-center(uib-alert)
+        i.icon-clock
+        span translate-once="{{vm.customPrefix}}trade_time_left"
+        div
+          timer interval="17" seconds-to-deadline="vm.trade.payment_seconds_to_deadline"
+            span.timer.huge
+              span.base
+                |{{hhours}}:{{mminutes}}:{{sseconds}}
+              span.super
+                |{{mmillis}}
+        div: em translate-once="{{vm.customPrefix}}trade_unpaid_buyer_warning"
+      .position-stablizer
+
+    div ng-switch-when="disputed"
+      .position-stablizer
+      div.alert-warning.fade-and-collapse.text-center(uib-alert)
+        div: em translate-once="{{vm.customPrefix}}trade_disputed_buyer_warning"
+      .position-stablizer

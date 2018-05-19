@@ -1,0 +1,71 @@
+ol.trades-list {
+  padding-left: 0;
+  list-style: none;
+  margin-bottom: 2px;
+
+  li {
+    &:first-of-type {
+      margin-top: 2px;
+    }
+
+    .trade-wrapper {
+      background: #f7f7f7;
+      margin-bottom: 2px;
+      position: relative;
+      border-left: 5px solid #d4d4d4;
+      padding: 18px;
+      @media (max-width: 768px) {
+        padding: 10px;
+      }
+
+      &.as-buyer {
+        border-color: rgba(92, 184, 92, 1);
+        .trade-prefix {
+          color: rgba(92, 184, 92, 1);
+        }
+
+        .price {
+          color: $danger-color;
+        }
+      }
+
+      &.as-seller {
+        border-color: $danger-color;
+        .trade-prefix {
+          color: $danger-color;
+        }
+
+        .price {
+          color: $success-color;
+        }
+      }
+
+      &:before {
+        content: " ";
+        display: table;
+      }
+      &:after {
+        content: " ";
+        display: table;
+        clear: both;
+      }
+    }
+    .trade-partner {
+      h5 {
+        display: inline-block;
+        margin-right: 2px;
+        margin-bottom: .2em;
+      }
+    }
+    .trade-meta {
+      font-size: 12px;
+      font-style: italic;
+      > a {
+        color: #b4b8be;
+      }
+    }
+    .trade-body {
+      clear: both;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+span.blockchain-address
+  a(ng-href="{{::$root.addressLink(vm.address)}}" target="_blank" ng-if=":: !vm.linkAsIcon")
+    strong ng-bind-html=":: vm.addressWbr"
+
+  span(ng-if=":: vm.linkAsIcon")
+    strong ng-bind-html=":: vm.addressWbr"
+    '
+    a(ng-href="{{::$root.addressLink(vm.address)}}" target="_blank")
+      i.icon-link-ext

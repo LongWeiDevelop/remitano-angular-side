@@ -1,0 +1,29 @@
+.panel.black-panel.partner-summary
+  .panel-heading
+    span translate="profile_summary" translate-values="{user: vm.profile.username}"
+  .div-table.tabular
+    .table-row
+      .table-cell translate-once="profile_trade_volume"
+      .table-cell
+        react-currency-amount(ng-repeat="(coin, volume) in vm.profile.volume" amount="volume" coin-currency="coin")
+    .table-row
+      .table-cell translate-once="profile_last_sign_in_at"
+      .table-cell
+        strong am-time-ago="vm.profile.last_active_all"
+        i.fa.icon-iphone ng-show="vm.profile.last_active_type == 'mobile'"
+    .table-row
+      .table-cell translate-once="profile_document_verified"
+      .table-cell
+        strong ng-class="vm.profile.docStatusClass"
+          | {{ 'status_' + vm.profile.doc_status | translate }}
+        div ng-if="vm.profile.isMyself && vm.profile.doc_status != 'verified'"
+          a ui-sref="root.verify" translate="{{vm.profile.uploadMessage}}"
+    .table-row
+      .table-cell translate-once="profile_facebook"
+      .table-cell
+        strong ng-class="::{'text-success' : vm.profile.facebook_verified}" ng-bind="vm.socialStatusText(vm.profile.facebook_verified)"
+    .table-row
+      .table-cell translate-once="profile_twitter"
+      .table-cell
+        strong ng-class="::{'text-success' : vm.profile.twitter_verified}" ng-bind="vm.socialStatusText(vm.profile.twitter_verified)"
+  div ng-transclude=""

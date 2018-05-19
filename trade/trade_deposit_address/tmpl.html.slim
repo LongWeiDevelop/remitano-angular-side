@@ -1,0 +1,8 @@
+.trade-deposit-address.panel.black-panel
+  .panel-heading
+    span translate-once="trade_deposit_address"
+  .panel-body.text-center ng-class="{loading: !vm.address()}"
+    .loading-container.text-center ng-if="!vm.address()"
+      .loading-bar
+    .main-container ng-cloak="" ng-if="vm.address()"
+      coin-address address="vm.address()"

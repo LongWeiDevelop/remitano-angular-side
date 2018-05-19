@@ -1,0 +1,91 @@
+.seller-perspective.trade-perspective
+  .trade-guide
+    .icon-box.circled.icon-box-animated.animation.fadeInLeft.animation-visible
+      .icon ng-class="vm.trade.status"
+        i.fa ng-class="vm.tradeIcon()"
+      .icon-box-body
+        .step-row
+          ul.nav.nav-wizard.nav-justified(remi-wizard)
+            li.step-deposit(remi-wizard-step ng-model="vm.trade.step" active="0" warning="0")
+              a
+                span.number 1
+                span.text translate-once="trade_initialize"
+            li.step-deposit(remi-wizard-step ng-model="vm.trade.step" active="10" warning="0")
+              a
+                span.number 2
+                span.text translate-once="trade_seller_deposit"
+            li.step-wait-for-payment(remi-wizard-step ng-model="vm.trade.step" active="20" warning="10")
+              a
+                span.number 3
+                span.text translate-once="trade_seller_wait_for_payment"
+            li.step-release(remi-wizard-step ng-model="vm.trade.step" active="30" warning="20" danger="25")
+              a
+                span.number 4
+                span.text translate="trade_seller_release" translate-values="{ currency: $root.coin_currency }"
+        div ng-switch="vm.tradePhase()"
+          div ng-switch-when="provide_payment_details"
+            div
+              span> translate-once="trade_you_are_selling"
+              react-currency-amount> amount="vm.trade.seller_sending_coin_amount" coin-currency="vm.trade.coin_currency"
+              span> translate-once="trade_to"
+              a ui-sref="root.profile({username: vm.trade.buyer_username})"
+                strong
+                  u ng-bind="vm.trade.buyer_username"
+              | .
+            div: span translate-once="trade_provide_payment_details"
+          trade-deposit-instruction trade-with-role="vm.tradeWithRole" ng-switch-when="awaiting"
+          div ng-switch-when="cancelled"
+            h3
+              strong translate-once="trade_cancelled_title"
+            span
+              span> translate-once="trade_your_trade_of"
+              react-currency-amount> amount="vm.trade.seller_sending_coin_amount" coin-currency="vm.trade.coin_currency"
+              span> translate-once="trade_with"
+              a> ui-sref="root.profile({username: vm.trade.buyer_username})"
+                strong
+                  u ng-bind="vm.trade.buyer_username"
+              span translate-once="trade_is_cancelled"
+              span ng-if="vm.hasAvailableBalance()"
+                '
+                a.btn.btn-primary ui-sref="root.offers({offer_type: 'buy'})" translate-once="sell_to_another"
+
+
+          div ng-switch-when="released"
+            h3
+              strong.text-success translate-once="trade_completed"
+            span
+              span> translate-once="trade_you_sold"
+              react-currency-amount> amount="vm.trade.seller_sending_coin_amount" coin-currency="vm.trade.coin_currency"
+              span> translate-once="trade_to"
+              a ui-sref="root.profile({username: vm.trade.buyer_username})"
+                strong
+                  u ng-bind="vm.trade.buyer_username"
+
+            trade-fiat-withdrawal-details(trade-with-role="vm.tradeWithRole"
+              ng-if="vm.tradeWithRole.fiat_withdrawal_details"
+            )
+
+            div ng-if="!vm.tradeWithRole.fiat_withdrawal_details && vm.tradeWithRole.trade.paid_with_fiat"
+              br
+              strong.badge.badge-primary>
+                ' {{ vm.tradeWithRole.trade.fiat_amount | currencyFormatter:vm.currency}}
+                ' {{ vm.currency }}
+              span> translate-once="fiat_credited"
+              a.btn.btn-primary.btn-withdraw ui-sref="root.fiatWallet.withdrawal" translate-once="withdraw_fiat_title" translate-values="{currency: vm.currency}"
+
+          div ng-switch-when="locked"
+            h3(ng-switch="vm.trade.status")
+              strong.text-success translate-once="trade_seller_paid" ng-switch-when="paid"
+              strong.text-success translate-once="trade_seller_unpaid" ng-switch-when="unpaid"
+              strong.text-danger translate-once="trade_disputed_title" ng-switch-when="disputed"
+            span
+              span> translate-once="trade_you_are_selling"
+              react-currency-amount> amount="vm.trade.seller_sending_coin_amount" coin-currency="vm.trade.coin_currency"
+              span> translate-once="trade_to"
+              a ui-sref="root.profile({username: vm.trade.buyer_username})"
+                strong
+                  u ng-bind="vm.trade.buyer_username"
+              ' .
+              span> translate="trade_fund_frozen" translate-values="{ currency: $root.COIN_CURRENCY }"
+              span translate="trade_fund_release" translate-values="{ currency: $root.COIN_CURRENCY }" ng-if="!vm.tradeWithRole.use_fiat_deposit"
+      trade-pending-coin-deposit coin-deposit-address="vm.tradeWithRole.coin_deposit_address" ng-if="vm.tradeWithRole.coin_deposit_address"

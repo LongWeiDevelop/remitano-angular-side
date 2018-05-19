@@ -1,0 +1,54 @@
+.received-feedback {
+  .icon {
+    :before {
+      color: black;
+    }
+    &.positive:before{
+      background-color: $brand-success;
+    }
+    &.neutral:before{
+      background-color: $brand-warning;
+    }
+    &.negative:before{
+      background-color: $brand-danger;
+    }
+    &.unrated:before{
+      background-color: $gray-lighter;
+    }
+  }
+}
+
+.panel.received-feedback {
+  .panel-heading {
+    background: $black-background-color;
+    color: #fff;
+  }
+  border: 1px solid #dcdcdc;
+
+  .panel-body {
+    &.unrated {
+      h3 {
+        color: $gray-light;
+      }
+      color: $gray-light;
+    }
+    &.positive {
+      h3 {
+        color: $brand-success;
+      }
+      color: $brand-success;
+    }
+    &.negative{
+      h3 {
+        color: $brand-danger;
+      }
+      color: $brand-danger;
+    }
+    &.neutral {
+      h3 {
+        color: $brand-warning;
+      }
+      color: $brand-warning;
+    }
+  }
+}

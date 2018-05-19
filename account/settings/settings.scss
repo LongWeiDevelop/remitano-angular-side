@@ -1,0 +1,112 @@
+.settings-page {
+  #two-factor-enabling {
+    img.two-factor-qrcode {
+      max-width: 200px;
+    }
+  }
+  #two-factor-disabling {
+    .icon-help-circled {
+      padding-left: 5px;
+    }
+  }
+  .show-public-profile-link {
+    margin-left: 10px;
+  }
+
+  .daily-price {
+    padding-top: 6px;
+  }
+
+  .notifications-form {
+    .switch-container {
+      padding-top: 6px;
+    }
+  }
+
+  .profile-form {
+    .dropdown-menu {
+      height: auto;
+      max-height: 210px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+    .status {
+      padding-top: 13px;
+    }
+  }
+  .notifications {
+    label {
+      line-height: 40px;
+    }
+  }
+  .list-heading {
+    cursor: pointer;
+    .title {
+      font-size: 16px;
+      font-family: 'Oswald', sans-serif;
+      font-weight: normal;
+      line-height: 1.2em;
+      margin: 0 0 1em 0.5em;
+      color: #2f2f2f;
+    }
+  }
+}
+
+.lost-authy-verification-wizard {
+  .icon-box {
+    margin-bottom: 20px;
+  }
+}
+
+.switch-container {
+  .switch {
+    width: 67px;
+  }
+  .switch.checked small {
+    left: 37px;
+  }
+  .switch .on {
+    top: 20%;
+  }
+  .switch .off {
+    top: 20%;
+  }
+}
+
+.btn-facebook, .btn-twitter {
+  position: relative;
+  padding-top: 10px;
+  padding-bottom: 7px;
+  height: 42px;
+  &.has-icon {
+    padding-left: 50px;
+    .icon-facebook-squared, .icon-twitter-squared {
+      display: block;
+    }
+  }
+  &.has-image {
+    padding-right: 50px;
+    .img-avatar {
+      display: block;
+    }
+  }
+  &.active {
+    cursor: auto;
+  }
+  .icon-facebook-squared, .icon-twitter-squared {
+    display: none;
+    font-size: 35px;
+    position: absolute;
+    left: 0;
+    top: -5px;
+  }
+  .img-avatar {
+    display: none;
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    right: 0;
+    top: 0;
+    border-radius: 0 4px 4px 0;
+  }
+}

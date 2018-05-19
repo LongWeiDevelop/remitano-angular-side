@@ -1,0 +1,15 @@
+.wechat-payment-details
+  .form-group(has-error-for="wechat_qr_url")
+    label translate-once='offer_wechat_qr_url'
+    .row
+      .col-sm-7
+        file-upload(path="/api/v1/images/"
+          name="wechat_qr_url"
+          ng-model="vm.paymentDetails.wechat_qr_url"
+          ng-required="true"
+          label="{{'upload_document' | translate}}"
+          ng-preview-url="vm.paymentDetails.wechat_qr_thumb_url"
+        )
+        span.help-block show-error-for='wechat_qr_url' error="required" translate-once='input_required'
+      .col-sm-5
+        span.explanation translate-once="offer_wechat_qr_url_explain"

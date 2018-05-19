@@ -1,0 +1,9 @@
+.fiat-withdrawal-account-item.deleted.deleted {
+  opacity: 0.2;
+  background: inherit;
+}
+
+.fiat-withdrawal-account-item.unconfirmed {
+  opacity: 0.7;
+  background: #f0ad4e;
+}

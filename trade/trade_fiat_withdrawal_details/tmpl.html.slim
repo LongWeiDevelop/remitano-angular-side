@@ -1,0 +1,45 @@
+.trade-fiat-withdrawal-details
+  .panel.black-panel (ng-show="vm.isVisible")
+    .panel-heading
+      span translate="trade_fiat_withdrawal_details" translate-values="{currency: vm.currency}"
+    table.table.table-bordered.table-striped
+      tbody
+        tr
+          td
+            span translate="fiat_withdrawal_status"
+            ':
+
+          td
+            strong
+              span.badge(ng-class="vm.fiatWithdrawalStatusClass(vm.fiatWithdrawalDetails.status)")
+                | {{ 'status_' + vm.fiatWithdrawalDetails.status | translate }}
+        tr
+          td
+            span translate="fiat_withdrawal_ref"
+            ':
+
+          td
+            strong
+              span ng-bind="vm.fiatWithdrawalDetails.ref"
+        tr
+          td
+            span translate="fiat_amount" translate-values="{currency: vm.currency}"
+            ':
+          td.text-success
+            strong
+              span ng-bind-html="vm.trade.fiat_amount|safeCopyCurrencyFormatter:vm.trade.offer_data.currency"
+              span ng-class=":: 'currency-' + vm.trade.offer_data.currency"
+        tr
+          td.col-xs-4
+            span translate-once="offer_payment_method"
+            ':
+          td.col-xs-8 pm-translate="{{vm.trade.offer_data.payment_method}}"
+        tr ng-repeat="(key, value) in vm.fiatWithdrawalDetails.withdrawal_details"
+          td.col-xs-4
+            span translate="{{key}}"
+            ':
+          td.col-xs-8 ng-bind="value"
+        tr
+          td(colspan="2")
+            em translate="remitano_sending_you_trade_fiat" ng-if="!vm.manualPayment"
+            em translate="remitano_sending_you_trade_fiat_manually" ng-if="vm.manualPayment"

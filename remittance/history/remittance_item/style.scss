@@ -1,0 +1,65 @@
+@mixin colorize($color) {
+  .remittance-item-wrapper {
+    background-color: lighten($color, 30%);
+    border-left-color: $color;
+  }
+}
+
+.remittance-list {
+  padding-left: 0;
+  list-style: none;
+  margin-bottom: 2px;
+  li {
+    &:first-of-type {
+      margin-top: 2px;
+    }
+    background-color: black;
+    .remittance-item-wrapper {
+      background: #EEE;
+      padding: 18px;
+      margin-bottom: 2px;
+      position: relative;
+
+
+      border-left: 5px solid #CCC;
+
+      &:before {
+        content: " ";
+        display: table;
+      }
+      &:after {
+        content: " ";
+        display: table;
+        clear: both;
+      }
+
+      &:hover {
+        background: #CCC;
+        border-left: 5px solid #BBB;
+      }
+    }
+
+    &.success {
+      @include colorize($success-color);
+    }
+
+    &.danger {
+      @include colorize($danger-color);
+    }
+
+    &.warning {
+      @include colorize($warning-color);
+    }
+
+    .remittance-meta {
+      font-size: 12px;
+      font-style: italic;
+      > a {
+        color: #b4b8be;
+      }
+    }
+    .remittance-body {
+      clear: both;
+    }
+  }
+}

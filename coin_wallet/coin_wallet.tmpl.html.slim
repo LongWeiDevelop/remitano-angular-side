@@ -1,0 +1,20 @@
+section.page-content.coin-wallet-page
+  .container#coin-wallet
+    .row
+      .col-lg-12
+        .tabs
+          ul.nav.nav-tabs
+            li ui-sref-active="active"
+              a ui-sref="root.coinWallet.withdrawal"
+                i.icon-paper-plane-empty
+                span.hidden-xs translate-once="coin_wallet_withdrawal"
+            li ui-sref-active="active"
+              a ui-sref="root.coinWallet.deposit"
+                i.icon-download
+                span.hidden-xs translate-once="coin_wallet_deposit"
+            li ui-sref-active="active"
+              a ui-sref="root.coinWallet.transactions"
+                i.icon-docs
+                span.hidden-xs translate-once="history"
+          .tab-content
+            .tab-pane.active(ui-view="")

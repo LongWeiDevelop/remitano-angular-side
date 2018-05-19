@@ -1,0 +1,43 @@
+.press-container {
+  position: relative;
+  .loading-container{
+    position: absolute;
+    width: 100%;
+  }
+  .table-presses {
+    tr > td {
+      vertical-align: top;
+    }
+  }
+  @media (max-width: 768px) {
+    .table-row {
+      display: block;
+    }
+    .table-cell {
+      display: block;
+    }
+  }
+  .press-title {
+    font-size: 1.3em;
+    color: black;
+    font-weight: bold;
+    border-left: 5px solid $primary-background-color;
+    padding-left: 2px;
+  }
+
+  .press-date {
+    font-size: 1.0em;
+    color: #666C6F;
+  }
+
+  .press-title-sub {
+    font-size: 0.9em;
+    color: black;
+  }
+
+  img {
+    height: 30px;
+    max-width: 350px;
+    padding: 5px;
+  }
+}

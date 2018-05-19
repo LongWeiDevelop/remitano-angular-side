@@ -1,0 +1,12 @@
+.trade-payment-receipt(ng-if="vm.visible")
+  .panel.black-panel
+    .panel-heading
+      span translate-once="payment_receipt"
+    table.table.table-bordered.table-striped
+      tbody
+        tr(ng-if="vm.trade.payment_receipt_details.proof_url")
+          td
+            img.img-responsive ng-src="{{ vm.trade.payment_receipt_details.proof_url }}"
+        tr(ng-if="vm.tradeWithRole.role == 'seller'")
+          td
+            span translate="cash_deposit_verification_instruction" translate-values="{ seller: vm.trade.seller_username, ref: vm.trade.ref }"

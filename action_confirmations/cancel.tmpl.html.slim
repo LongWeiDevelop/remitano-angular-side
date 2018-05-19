@@ -1,0 +1,24 @@
+section.container.page-content
+  .row
+    .col-lg-8.col-lg-offset-2
+      .project-item
+        .project-item-inner
+          .project-desc
+            h2(translate-once="cancel_action_title")
+            action-explanation(action-confirmation="vm.actionConfirmation")
+          .project-desc
+            div(ng-switch="vm.actionConfirmation.via" ng-show="!vm.submitting")
+              div(ng-switch-when="email")
+                span(translate-once="please_cancel_action_via_email")
+              div(ng-switch-when="authenticator")
+                form.form-horizontal.confirm-action-form(name='form' ng-submit='vm.submitConfirm(vm.otp)' novalidate='')
+                  .form-group
+                    label.col-sm-offset-1.col-sm-3.control-label for='otp' translate-once='account_otp'
+                    .col-sm-6
+                      .group-btc-address
+                        input.form-control(ng-model='vm.otp' type='text' name='otp' required='')
+                  .form-group
+                    .button-container
+                      button.btn.btn-primary.btn-confirm type='submit' translate-once="button_confirm"
+            div(ng-show="vm.submitting")
+              i.fa.fa-spinner.fa-spin

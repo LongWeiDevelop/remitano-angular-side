@@ -1,0 +1,27 @@
+section.page-content.settings-page
+  .container
+    uib-accordion close-others='true'
+      div(uib-accordion-group heading="{{'settings_section_two_factor_auth' | translate}}"
+        is-open="vm.is_two_factor_open" ng-class="{'collapsed': !vm.is_two_factor_open}")
+        two-factor-auth-form
+      div(uib-accordion-group ng-if="vm.isIos" heading="{{'settings_section_touch_id' | translate}}"
+        is-open="vm.is_touch_id_open" ng-class="{'collapsed': !vm.is_touch_id_open}")
+        touch-id-settings
+      div(uib-accordion-group heading="{{'settings_section_notifications' | translate}}"
+        is-open="vm.is_notification_open" ng-class="{'collapsed': !vm.is_notification_open}")
+        notifications-form
+      div(uib-accordion-group heading="{{'settings_section_profile' | translate}}"
+        is-open="vm.is_profile_open" ng-class="{'collapsed': !vm.is_profile_open}")
+        profile-form
+      / uib-accordion-group(heading="{{'settings_section_api' | translate}}"
+        is-open="vm.isApiOpen" ng-class="{'collapsed': !vm.isApiOpen}")
+        api-form
+      div(uib-accordion-group heading="{{'trusted_devices' | translate}}"
+        is-open="vm.is_trusted_devices_open" ng-class="{'collapsed': !vm.is_trusted_devices_open}")
+        trusted-devices(ng-if="vm.is_trusted_devices_ever_opened")
+      div(uib-accordion-group heading="{{'settings_section_other_blacklist' | translate}}"
+        is-open="vm.is_blacklist_open" ng-class="{'collapsed': !vm.is_blacklist_open}")
+        blacklist-table(ng-if="vm.is_blacklist_ever_opened")
+      div(uib-accordion-group heading="{{'settings_section_other_recent_used_ips' | translate}}"
+        is-open="vm.is_recent_used_ips_open" ng-class="{'collapsed': !vm.is_recent_used_ips_open}")
+        recent-used-ips-table(ng-if="vm.is_recent_used_ips_ever_opened")

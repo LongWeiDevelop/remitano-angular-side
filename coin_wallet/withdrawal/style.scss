@@ -1,0 +1,35 @@
+.withdrawal-container {
+  .coin-withdrawal-item {
+    .address-name {
+      margin-left: 10px;
+      font-size: 10px;
+      color: #999;
+    }
+  }
+
+  .button-container {
+    text-align: left;
+  }
+}
+
+.create-coin-withdrawal-form {
+  .form-control + .in-help {
+    position: inherit;
+  }
+  .coin-withdrawal-item {
+    position: relative;
+  }
+  .btn-address-book {
+    position: absolute;
+    right: -35px;
+    top: 0;
+    height: 46px;
+    width: 46px;
+    text-align: center;
+    line-height: 46px;
+    border: 1px solid transparent;
+    &:hover {
+      border-color: $primary-background-color;
+    }
+  }
+}

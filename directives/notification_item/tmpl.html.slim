@@ -1,0 +1,7 @@
+.notification-item(ng-class="vm.notification.status")
+  .notification-content
+    a ng-href="{{:: vm.notification.path}}" ng-click="vm.markAsRead()"
+      div ng-bind=":: vm.notification.message"
+      div.notification-time am-time-ago="vm.notification.unix_time | amFromUnix"
+  i.notification-icon(ng-class=":: vm.icon")
+

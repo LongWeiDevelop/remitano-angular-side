@@ -1,0 +1,38 @@
+.row.fiat-withdrawal-confirm
+  .col-lg-offset-2.col-lg-8
+    .panel.black-panel.text-left
+      .panel-heading
+        span translate-once="fiat_withdrawal_details"
+      table.table.table-bordered.table-striped
+        tbody
+          tr
+            td.col-xs-4
+              span translate-once="fiat_withdrawal_amount"
+              ':
+            td.col-xs-8.text-success
+              strong
+                span ng-bind-html="vm.fiatWithdrawal.fiat_amount|safeCopyCurrencyFormatter:vm.currency"
+                span ng-class=":: 'currency-' + vm.currency"
+          tr
+            td.col-xs-4
+              span translate-once="fiat_withdrawal_method"
+              ':
+              td.col-xs-8 ng-bind="vm.fiatWithdrawal.account.name"
+          tr ng-repeat="(key, value) in vm.fiatWithdrawal.account.details"
+            td.col-xs-4
+              span translate="{{key}}"
+              ':
+            td.col-xs-8 ng-bind="value"
+
+        td(colspan=2)
+          strong.text-danger
+            span translate-once="important"
+            ':
+          i translate-once="fiat_withdrawal_recommendation"
+
+    .buttons
+      button.btn.btn-default ng-click="vm.resetWithdrawal()"
+        span translate-once="back"
+      button.btn.btn-danger ng-click="vm.confirmWithdrawal()" ng-disabled="vm.submitting"
+        em.icon-spin4.animate-spin(ng-if="vm.submitting")
+        span translate-once="button_confirm"

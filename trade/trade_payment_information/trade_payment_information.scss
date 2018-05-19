@@ -1,0 +1,13 @@
+.trade-payment-information-container {
+  margin-bottom: 20px;
+  p {
+    font-size: 1.2em;
+  }
+  .payment-not-given {
+    color: $gray-light;
+  }
+  .payment-recommendation .alert {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}

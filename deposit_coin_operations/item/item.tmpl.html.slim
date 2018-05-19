@@ -1,0 +1,16 @@
+.list-group-item.deposit-coin-operation-item data-coin-deposit-id="{{vm.coinTransaction.id}}" class="{{vm.coinTransaction.animateClass}}"
+  .list-group-item-heading
+    span translate-once="amount"
+    ' :
+    strong> ng-bind="vm.coinTransaction.coin_amount | currencyFormatter:$root.COIN_CURRENCY"
+  .list-group-item-text
+    span translate-once="transaction_details"
+    ' :
+    a.hidden-sm.hidden-md.hidden-lg> (ng-href="{{vm.transactionLink()}}" ng-bind="'{{vm.shortTxId()}}...'"
+      target="{{vm.MobileApp.exists() ? '' : '_blank'}}")
+    a.hidden-xs> (ng-href="{{vm.transactionLink()}}" ng-bind="vm.coinTransaction.tx_hash"
+      target="{{vm.MobileApp.exists() ? '' : '_blank'}}")
+  .list-group-item-text
+    span translate-once="transaction_time"
+    ' :
+    span ng-bind="vm.coinTransaction.created_at | dateTimeFromTimestamp"

@@ -1,0 +1,57 @@
+.local-bank-payment-details
+  .form-group has-error-for="bank_name"
+    label translate-once='bank_name' ng-if="vm.countryCode != 'in'"
+    label translate-once='offer_payment_method' ng-if="vm.countryCode == 'in'"
+    .row
+      .col-sm-7
+        span#bank_name.form-control(disabled="true" ng-bind="vm.paymentDetails.bank_name" ng-if="vm.fixedBankName")
+
+        ui-select(ng-model='vm.paymentDetails.bank_name' id="bank_name" ng-if="!vm.fixedBankName"
+          name="bank_name" required="")
+            ui-select-match(placeholder="{{'offer_select_bank_name' | translate}}")
+              | {{$select.selected}}
+            ui-select-choices repeat = "bank in (vm.availableBanks|filter: $select.search)"
+              span ng-bind-html="bank | highlight: $select.search"
+        span.help-block show-error-for='bank_name' error="required" translate-once='input_required'
+
+  div ng-if="!vm.buying"
+    .form-group(ng-repeat="bankField in vm.additional_bank_fields" has-error-for="{{bankField.name}}")
+      label translate="{{bankField.name}}"
+      .row
+        .col-sm-7
+          input.form-control(
+            id="{{bankField.name}}"
+            ng-model="vm.paymentDetails[bankField.name]" ng-required="bankField.required"
+            ng-minlength="{{bankField.minlength}}" ng-maxlength="{{bankField.maxlength}}"
+            type="text" name="{{bankField.name}}"
+          )
+          span.help-block ng-if='bankField.required' show-error-for="{{bankField.name}}" error="required" translate-once='input_required'
+          span.help-block(ng-if='bankField.length' show-error-for="{{bankField.name}}" error="length"
+            translate-once='offers_input_must_have_exact_digits' translate-values="{digits: bankField.length}")
+          span.help-block(ng-if='bankField.minlength' show-error-for="{{bankField.name}}" error="minlength"
+            translate-once='offers_input_must_have_at_least_digits' translate-values="{digits: bankField.minlength}")
+          span.help-block(ng-if='bankField.maxlength' show-error-for="{{bankField.name}}" error="maxlength"
+            translate-once='offers_input_must_have_less_than_digits' translate-values="{digits: bankField.maxlength}")
+
+    .form-group.bank_account_number.has-feedback(has-error-for='bank_account_number')
+      label translate-once='bank_account_number'
+      .row
+        .col-sm-7 ng-if="vm.autoBankAccountNumberInput"
+          auto-bank-account-number-input(payment-details="vm.paymentDetails")
+        .col-sm-7 ng-if="!vm.autoBankAccountNumberInput"
+          input.form-control#bank_account_number(
+            ng-model='vm.paymentDetails.bank_account_number' required=""
+            type="text" name="payment_details.bank_account_number"
+          )
+          span.help-block show-error-for="bank_account_number" error="required" translate-once='input_required'
+
+    .form-group(has-error-for='bank_account_name')
+      label translate-once='bank_account_name'
+      .row
+        .col-sm-7
+          input.form-control#bank_account_name(
+            ng-model='vm.paymentDetails.bank_account_name' required=""
+            ng-readonly="vm.paymentDetails.auto_populated"
+            type="text" name="payment_details.bank_account_name"
+          )
+          span.help-block show-error-for="bank_account_name" error="required" translate-once='input_required'

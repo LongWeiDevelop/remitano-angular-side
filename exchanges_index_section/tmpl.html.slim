@@ -1,0 +1,12 @@
+.exchange-section
+  .title-section.text-center
+    hr.hr-over
+    span.title-text translate="exchanges_listed_on"
+
+  .row
+    .exchange-item.text-center ng-class="vm.colClass" data-animation="fadeInDown" data-animation-delay="0" ng-repeat="(exchange, url) in vm.exchanges"
+      span(ng-if="url")
+        a(href="{{url}}" target="_blank")
+          img.img-responsive alt="{{exchange}}" title="{{exchange}}" cdn-src="" ng-src="{{ vm.exchangeUrls[$index] }}"
+      span(ng-if="!url")
+        img.img-responsive alt="{{exchange}}" title="{{exchange}}" cdn-src="" ng-src="{{ vm.exchangeUrls[$index] }}"

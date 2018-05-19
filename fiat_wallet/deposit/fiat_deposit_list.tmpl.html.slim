@@ -1,0 +1,29 @@
+.box-wrapper.list-fiat-deposits
+  .box-head
+    .title translate-once="fiat_deposit_history" translate-values="{currency: vm.currency}"
+  .box-body
+    .content-wrapper ng-class="{loading: vm.fetching}"
+      .loading-container.text-center
+        .loading-bar
+      .alert.alert-danger ng-show="vm.errorFetching"
+        span translate-once="fetching_data_error"
+      .main-container ng-cloak="" ng-hide="vm.errorFetching"
+        .no-order-message.text-center ng-if="vm.fiatDeposits.length==0" translate-once="no_transactions"
+        #table_fiat_deposit_history.table-responsive ng-if="vm.fiatDeposits.length>0"
+          table.table.table-striped wt-responsive-table=""
+            thead
+              tr
+                th.text-center translate-once="transaction_time"
+                th.text-center translate-once="fiat_deposit_ref"
+                th.text-center translate-once="fiat_amount" translate-values="{currency: vm.currency}"
+                th.text-center translate-once="fiat_deposit_status"
+            tbody
+              tr.fiat-deposit-item data-fiat-deposit-id="{{fiatDeposit.id}}" ng-repeat="fiatDeposit in vm.fiatDeposits"
+                td ng-bind="fiatDeposit.created_at | dateTimeFromTimestamp"
+                td ng-bind="fiatDeposit.memo"
+                td ng-bind="fiatDeposit.fiat_amount | currencyFormatter:vm.currency"
+                td
+                  span.badge(ng-class="vm.fiatDepositStatusClass(fiatDeposit.status)")
+                    | {{ 'status_' + fiatDeposit.status | translate }}
+
+          remi-pagination(meta="vm.paginationMeta" on-page-changed="vm.pageChanged($page)" max-size="5")

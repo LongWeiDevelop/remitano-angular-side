@@ -1,0 +1,32 @@
+.panel.offer-details {
+  .panel-heading {
+    background: $black-background-color;
+    color: #fff;
+  }
+  a {
+    color: black;
+  }
+  border: 1px solid #dcdcdc;
+  margin-top: 40px;
+  @media (max-width: 768px) {
+    margin-top: 20px;
+  }
+  table {
+    table-layout: fixed;
+    td {
+      word-wrap: break-word;
+    }
+  }
+}
+.offer-details-switch {
+  float: right;
+}
+
+.offer-details-table .input-group {
+  width: 100%;
+}
+
+.offer-extra-fields {
+  border-left: 1px dashed;
+  padding-left: 10px;
+}

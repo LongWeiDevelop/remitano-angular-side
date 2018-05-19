@@ -1,0 +1,11 @@
+.press-section {
+  .press-item {
+    img {
+      width: 100%;
+      filter: grayscale(100%);
+      &:hover {
+        filter: none;
+      }
+    }
+  }
+}

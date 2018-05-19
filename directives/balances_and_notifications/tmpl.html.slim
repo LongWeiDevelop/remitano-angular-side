@@ -1,0 +1,44 @@
+span translate-once="account_balance"
+span.nav-item.balance-item.available-fiat(ng-if="vm.fiatAccount() && vm.fiatAccount().available_balance > 0")
+  u ng-bind="vm.fiatAccount().available_balance | currencyFormatter:vm.fiatAccount().currency:'symbol'"
+span.nav-item.balance-item.available-btc
+  u ng-bind="vm.coinAccount().available_balance | currencyFormatter:$root.COIN_CURRENCY:'symbol':false:4"
+span.nav-item.balance-item.frozen-fund.frozen-btc(ng-if="vm.coinAccount().frozen_balance > 0")
+  i.icon-lock
+  u ng-bind="vm.coinAccount().frozen_balance | currencyFormatter:$root.COIN_CURRENCY:'symbol':false:4"
+span.nav-item.notifications-item(uib-dropdown ng-click="vm.onNotificationsViewed()" ng-if="!vm.compact")
+  a.badge.dropdown-toggle(uib-dropdown-toggle ng-class="{ 'badge-warning': vm.pendingNotificationCount > 0 }")
+    span ng-if="vm.pendingNotificationCount > 0"
+      span ng-bind="vm.pendingNotificationCount"
+      '
+    i.icon-bell
+  ul.notifications-dropdown(uib-dropdown-menu)
+    li.notifications-list-wrapper
+      .notifications-list
+        notification-item(ng-repeat="notification in vm.notifications" notification="notification")
+    li.buttons-wrapper
+      .row
+        .col-xs-6
+          a.btn-view-all(ui-sref="root.notifications" translate-once="view_all")
+        .col-xs-6
+          a.btn-mark-all-as-read(ng-click="vm.onNotificationsRead({ '$event': $event })" translate-once="mark_all_as_read")
+span.nav-item.notifications-item ng-if="vm.compact"
+  span.badge ng-class="{ 'badge-warning': vm.pendingNotificationCount > 0 }" ng-click="vm.viewAllNotifications()"
+    span ng-if="vm.pendingNotificationCount > 0"
+      span ng-bind="vm.pendingNotificationCount"
+      '
+    i.icon-bell
+
+span.nav-item.active-trades-counter ng-if="!vm.compact"
+  a.badge.badge-info ng-if="vm.activeTradesCount && (vm.activeTradesCount > 0)" ng-click="vm.viewActiveTrades()"
+    span
+      span ng-bind="vm.activeTradesCount"
+      '
+    i.icon-clock
+
+span.nav-item ng-if="vm.compact"
+  span.badge.badge-info ng-if="vm.activeTradesCount && (vm.activeTradesCount > 0)" ng-click="vm.viewActiveTrades()"
+    span
+      span ng-bind="vm.activeTradesCount"
+      '
+    i.icon-clock

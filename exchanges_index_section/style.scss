@@ -1,0 +1,11 @@
+.exchange-section {
+  .exchange-item {
+    img {
+      max-height: 70px;
+      filter: grayscale(100%);
+      &:hover {
+        filter: none;
+      }
+    }
+  }
+}

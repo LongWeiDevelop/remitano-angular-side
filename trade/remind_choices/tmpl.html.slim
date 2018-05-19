@@ -1,0 +1,13 @@
+.remind-choices-dialog
+  .modal-body
+    .container-fluid
+      .row
+        .col-sm-12
+          button.btn.btn-block(ng-repeat="option in vm.options"
+            ng-class="vm.classFor(option)"
+            ng-click="vm.optionSelected(option.name)"
+            ng-disabled="vm.trade.remaining_reminds[option.name] <= 0")
+            span> translate="remind_via_{{option.name}}"
+            | ({{vm.trade.remaining_reminds[option.name]}})
+  .modal-footer
+    button.btn.btn-default ng-click="vm.close()" translate-once="DIALOGS_CLOSE"

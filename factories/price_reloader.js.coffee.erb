@@ -1,0 +1,79 @@
+'use strict'
+
+angular.module 'remitano'
+  .service 'PriceReloader', (SocketWrapper, RatesManager, SellOfferAmountCalculator, BuyOfferAmountCalculator, $rootScope) ->
+    service = this
+    PERIODICAL_RELOAD_INTERVAL = 60000
+    MIN_WAIT_BETWEEN_RELOAD = 30000
+    init = ->
+      $rootScope.$on '$stateChangeStart', ->
+        unsubscribeBtcRates()
+        service._offersDict = {}
+      service._offersDict = {}
+      service.addOffer = addOffer
+      service.removeOffer = removeOffer
+      service.recalculateOfferPrices = recalculateOfferPrices
+      setInterval reloadOfferPrices, PERIODICAL_RELOAD_INTERVAL
+      service.rates = RatesManager.currentExchangeRates()
+
+    addOffer = (offer) ->
+      service._offersDict[offer.id] = offer
+      subscribeBtcRates() if _.size(service._offersDict) == 1
+      recalculateOfferPrices(offer)
+
+    removeOffer = (offer) ->
+      delete service._offersDict[offer.id]
+      unsubscribeBtcRates() if _.size(service._offersDict) == 0
+
+    subscribeBtcRates = ->
+      unless service.subscribed
+        service.subscribed = true
+        SocketWrapper.subscribe($rootScope, "exchange_rates", "update", (event, data) -> recalculateOffersPrices(data))
+
+    unsubscribeBtcRates = ->
+      if service.subscribed
+        SocketWrapper.unsubscribe($rootScope, "exchange_rates", "update")
+        service.subscribed = false
+
+    reloadOfferPrices = ->
+      return if service._recalculatedAt? && (service._recalculatedAt + MIN_WAIT_BETWEEN_RELOAD > (new Date()).getTime())
+      RatesManager.fetchExchangeRates().$promise.then recalculateOffersPrices
+
+    recalculateOffersPrices = (rates) ->
+      service._recalculatedAt = (new Date()).getTime()
+      service.rates = rates
+      delete rates.channel
+      delete rates.event
+      RatesManager.assignExchangeRates(rates)
+      recalculateOfferPrices(offer) for id, offer of service._offersDict
+
+    recalculateOfferPrices = (offer) ->
+      if offer.offer_type == "sell"
+        recalculateSellOfferPrices(offer)
+      else
+        recalculateBuyOfferPrices(offer)
+
+    btcCalculatorFor = (offer) ->
+      if offer.offer_type == "sell"
+        new SellOfferAmountCalculator(requested_coin_amount: 1)
+      else
+        new BuyOfferAmountCalculator(requested_coin_amount: 1)
+
+    recalculateSellOfferPrices = (offer) ->
+      btc_calculator = btcCalculatorFor(offer)
+      btc_rate = service.rates[offer.reference_exchange]
+      offer.price_per_coin_before_fee = offer.price * btc_rate
+      if offer.min_coin_price? && (offer.price_per_coin_before_fee < offer.min_coin_price)
+        offer.price_per_coin_before_fee = offer.min_coin_price
+      offer.price_per_coin = offer.price_per_coin_before_fee * btc_calculator.seller_sending_coin_amount()
+
+    recalculateBuyOfferPrices = (offer) ->
+      btc_calculator = btcCalculatorFor(offer)
+      btc_rate = service.rates[offer.reference_exchange]
+      offer.price_per_coin_before_fee = offer.price * btc_rate
+      if offer.max_coin_price? && (offer.price_per_coin_before_fee > offer.max_coin_price)
+        offer.price_per_coin_before_fee = offer.max_coin_price
+      offer.price_per_coin = offer.price_per_coin_before_fee * btc_calculator.buyer_receiving_coin_amount()
+
+    init()
+    return

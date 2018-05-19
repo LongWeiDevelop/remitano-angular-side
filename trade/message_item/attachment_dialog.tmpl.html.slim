@@ -1,0 +1,6 @@
+.attachment-dialog
+  .modal-body
+    a.dlink ng-href="{{message.attachment_full_url}}" target="_blank"
+      img cdn-src="" ng-src="{{message.attachment_full_url}}" style="width: 100%"
+  .modal-footer
+    button.btn.btn-default ng-click="close()" Close

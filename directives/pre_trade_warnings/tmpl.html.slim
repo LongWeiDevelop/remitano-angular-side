@@ -1,0 +1,7 @@
+.pre-trade-warning
+  div.alert-danger.fade-and-collapse(uib-alert)
+    h3
+      strong translate-once="trade_attention"
+    hr
+    div: em(translate="{{ vm.customPrefix }}{{ vm.currentWarning }}" translate-values="{payment_window: vm.paymentWindow}")
+  button.btn.btn-primary.btn-dismiss ng-click="vm.dismissCurrentWarning()" translate="button_agree"

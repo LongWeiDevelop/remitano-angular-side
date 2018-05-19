@@ -1,0 +1,125 @@
+.header-top ng-hide='vm.hidden' ng-class="{'fix-to-top': !vm.MobileApp.exists(), 'test-mode': vm.RAILS_ENV.env=='test'}"
+  .container
+    .header-top-left
+      ul.header-top-nav ng-show="vm.currentUser"
+        li(balances-and-notifications user="vm.currentUser"
+            notifications="vm.notifications"
+            pending-notification-count="vm.pendingNotificationCount"
+            active-trades-count="vm.activeTradesCount"
+            on-notifications-viewed="vm.markAllAsViewed()"
+            on-notifications-read="vm.markAllAsRead($event)")
+
+    .header-top-right
+      span ng-repeat="coin in vm.otherCoins" ng-if="coin.coin_currency != $root.coin_currency"
+        a ng-href='{{coin.url}}' ng-bind=":: coin.name"
+
+      ul.header-top-nav
+        li.dropdown(uib-dropdown)
+          a#dropdown_lang(uib-dropdown-toggle)
+            i.icon-globe-new
+            span.current-country country-name="{{$root.country_code}}"
+            span.caret
+          ul.countries-dropdown(uib-dropdown-menu)
+            li ng-repeat="country in vm.availableCountries" ng-class="{active: country == $root.country_code}"
+              a ng-click="vm.selectCountry(country)" href="#"
+                country-label country="{{country}}" use-native-name="true"
+      span ng-if='vm.canSwitchLocale'
+        a.btn-switch-locale ng-click='vm.switchLocale()'
+          span ng-bind="vm.otherLanguage"
+
+      span.btn-login.login ng-hide='vm.Auth.isLoggedIn()'
+        i.icon-user
+        a ui-sref='root.login' translate-once="login"
+      span ng-show='vm.Auth.isLoggedIn()'
+        a ui-sref='root.profile({username: vm.Auth.currentUser().username})'
+          span ng-bind="vm.Auth.currentUser().username"
+      span ng-show='vm.Auth.isLoggedIn()'
+        a ui-sref='root.settings'
+          i.icon-cog
+          span translate-once="header_settings"
+      span ng-show='vm.Auth.isLoggedIn()'
+        a ui-sref='root.logout'
+          i.icon-logout
+          span translate-once="header_logout"
+.header-main ng-hide="vm.hidden"
+  .container
+    nav.navbar.navbar-default.fhmm role="navigation"
+      .navbar-header
+        .right-mobile-menu
+          button.navbar-toggle(data-target="#main-nav" data-toggle="collapse"
+            type="button" ng-click="vm.isCollapsed = !vm.isCollapsed"
+            ng-class="{ "has-notification": vm.pendingNotificationCount > 0 }")
+            i.icon-menu
+          span.visible-sm(ng-include="'components/navbar/mobile_download_links.tmpl.html'")
+
+        .logo.left-mobile-menu
+          a.main_logo ui-sref="root.landing"
+            div ng-if="$root.country_code=='tw'"
+              img.logo-img alt="Remitano's Logo" cdn-src="" ng-src="/logos/logo-tw.png"
+            div ng-if="$root.country_code!='tw'"
+              h1 translate-once="header_site_name"
+              p.tagline translate-once="header_headline" translate-values="{ coin: $root.coin_currency_name }"
+
+      #main-nav.navbar-collapse.collapse uib-collapse="vm.isCollapsed"
+        ul.nav.navbar-nav
+          li.hidden-xs.hidden-sm.hidden-md
+            a style='margin:0; padding:1px' href="https://itunes.apple.com/us/app/remitano/id1116327021?ls=1&mt=8" target='_blank' ng-show='!vm.MobileApp.shouldDownloadIos()'
+              img cdn-src="" ng-src='/appstore.png' height='30px'
+            a style='margin:0; padding:1px' ui-sref="root.apps_download" ng-show='vm.MobileApp.shouldDownloadIos()'
+              img cdn-src="" ng-src='/appstore.png' height='30px'
+          li.hidden-xs.hidden-sm.hidden-md
+            a style='margin:0; padding:1px' href="https://play.google.com/store/apps/details?id=com.remitano.remitano&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" target='_blank' ng-show='!vm.MobileApp.shouldDownloadAndroid()'
+              img cdn-src="" ng-src='/playstore.png' height='30px'
+            a style='margin:0; padding:1px' ui-sref="root.apps_download" ng-show='vm.MobileApp.shouldDownloadAndroid()'
+              img cdn-src="" ng-src='/playstore.png' height='30px'
+
+          li.hidden-xs ng-class="{'active': ('root.landing' | includedByState)}"
+            a ui-sref="root.landing" translate-once="menu_trade_coin"
+          li.hidden-xs ng-class="{'active': ('root.remittance' | includedByState)}" ng-if="!vm.remittanceDisabled"
+            a ui-sref="root.remittance.new" translate-once="remittance"
+          li.hidden-xs ng-class="{'active': ('root.coinWalletIntroduction' | includedByState)}" ng-if='!vm.Auth.isLoggedIn()'
+            a ui-sref="root.coinWalletIntroduction" translate-once="menu_coin_wallet"
+          li.hidden-xs ng-class="{'active': ('root.login' | includedByState)}" ng-hide="vm.Auth.isLoggedIn()"
+            a ui-sref="root.login" ng-hide="vm.Auth.isLoggedIn()" translate-once="login_or_register"
+
+          li.hidden-xs ng-class="{'active': ('root.dashboard' | includedByState)}" ng-if='vm.Auth.isLoggedIn()'
+            a ui-sref="root.dashboard.escrow.trades({tradeStatus: 'active'})" translate-once="dashboard_dashboard"
+
+          li.hidden-xs ng-class="{'active': ('root.coinWallet' | includedByState)}" ng-if='vm.Auth.isLoggedIn()'
+            a ui-sref="root.coinWallet.withdrawal" translate-once="menu_coin_wallet"
+          li.hidden-xs ng-class="{'active': ('root.fiatWallet' | includedByState)}" ng-if='vm.Auth.isLoggedIn() && vm.showFiatWallet()'
+            a ui-sref="root.fiatWallet.deposit" translate-once="menu_fiat_wallet"  translate-values="{currency: vm.currency}"
+          li.visible-xs(ng-if='vm.Auth.isLoggedIn()')
+            a(balances-and-notifications user="vm.currentUser"
+              notifications="vm.notifications"
+              active-trades-count="vm.activeTradesCount"
+              pending-notification-count="vm.pendingNotificationCount"
+              compact="true")
+
+          li.visible-xs ng-class="{'open dropdown': menuItem.isCategory}" ng-repeat="menuItem in vm.mobileMenuItems" ng-hide='menuItem.hide'
+            a.disabled ng-if="menuItem.isCategory"
+              span= "{{menuItem.text}}"
+            ul.dropdown-menu role='menu' ng-if='menuItem.isCategory'
+              li ng-repeat="subItem in menuItem.items" ng-hide='subItem.hide'
+                a ui-sref="{{subItem.sref}}"
+                  i ng-class="subItem.icon" ng-if="subItem.icon"
+                  span= "{{subItem.text}}"
+            a ui-sref="{{menuItem.sref}}" ng-if="!menuItem.isCategory"
+              i ng-class="menuItem.icon" ng-if="menuItem.icon"
+              span= "{{menuItem.text}}"
+
+          li.visible-xs ng-repeat="coin in vm.otherCoins"
+            a ng-href='{{coin.url}}' ng-bind=":: coin.name"
+
+          li.visible-xs.dropdown.dropdown_lang_mobile(uib-dropdown)
+            a.dropdown-toggle(uib-dropdown-toggle)
+              i.icon-globe-new
+              span.current-country country-name="{{$root.country_code}}"
+              span.caret
+            ul.multi-level(uib-dropdown-menu)
+              li ng-repeat="country in vm.availableCountries" ng-class="{active: country == $root.country_code}"
+                a ng-click="vm.selectCountry(country)" href="#"
+                  country-label country="{{country}}" use-native-name="true"
+          li.visible-xs ng-if='vm.canSwitchLocale'
+            a.btn-switch-locale-xs ng-click='vm.switchLocale()'
+              span ng-bind="vm.otherLanguage"

@@ -1,0 +1,10 @@
+span.mobile-links
+  a.link.appstore ng-show='!vm.MobileApp.shouldDownloadIos()' href="https://itunes.apple.com/us/app/remitano/id1116327021?ls=1&mt=8" target="_blank"
+    img.img-responsive alt="{{'available_on_appstore' | translate}}" cdn-src="" ng-src="/appstore.png"
+  a.link.appstore ng-show='vm.MobileApp.shouldDownloadIos()' ui-sref="root.apps_download"
+    img.img-responsive alt="{{'available_on_appstore' | translate}}" cdn-src="" ng-src="/appstore.png"
+
+  a.link.playstore ng-show='!vm.MobileApp.shouldDownloadAndroid()' href="https://play.google.com/store/apps/details?id=com.remitano.remitano&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" target="_blank"
+    img.img-responsive alt="{{'get_it_on_google_play' | translate}}" cdn-src="" ng-src="/playstore.png"
+  a.link.playstore ng-show='vm.MobileApp.shouldDownloadAndroid()' ui-sref="root.apps_download"
+    img.img-responsive alt="{{'get_it_on_google_play' | translate}}" cdn-src="" ng-src="/playstore.png"
